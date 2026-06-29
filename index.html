@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diritto dell'Economia — Favaro</title>
+<style>
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;600&display=swap");
+:root{--bg:#0f1117;--surface:#181c27;--surface2:#1e2235;--border:#2a2f45;--accent:#818cf8;--accent2:#60a5fa;--accent3:#f59e0b;--accent4:#f472b6;--danger:#f87171;--text:#e2e8f0;--muted:#64748b;--muted2:#94a3b8;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:"IBM Plex Sans",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6;}
+::-webkit-scrollbar{width:5px;height:5px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.logo{display:flex;align-items:center;gap:10px;}.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;}.logo-text{font-weight:700;font-size:16px;}.logo-sub{font-size:11px;color:var(--muted2);}
+.timer-bar{display:flex;align-items:center;gap:10px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:7px 13px;font-family:"IBM Plex Mono",monospace;font-size:13px;}.timer-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite;}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.progress-strip{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 24px;display:flex;gap:10px;align-items:center;}.prog-label{font-size:12px;color:var(--muted2);min-width:72px;}.prog-bar-wrap{flex:1;background:var(--surface2);border-radius:4px;height:5px;overflow:hidden;}.prog-bar{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width .5s;}.prog-pct{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--accent);min-width:34px;text-align:right;}
+.tabs{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;display:flex;overflow-x:auto;}.tab{padding:11px 16px;cursor:pointer;font-size:13px;font-weight:500;color:var(--muted2);border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;}.tab:hover{color:var(--text);}.tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+main{padding:20px 24px;max-width:1080px;margin:0 auto;width:100%;}
+.section{display:none;}.section.active{display:block;}
+.section-header{margin-bottom:20px;}.section-header h2{font-size:21px;font-weight:700;}.section-header p{color:var(--muted2);font-size:14px;margin-top:4px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;}.card-title{font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--muted2);margin-bottom:10px;}
+.btn{padding:9px 18px;border-radius:8px;border:1px solid var(--border);cursor:pointer;font-family:"IBM Plex Sans",sans-serif;font-size:13px;font-weight:600;transition:all .15s;background:var(--surface2);color:var(--text);}.btn:hover{border-color:var(--accent2);}.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}.btn.primary:hover{filter:brightness(1.1);}.btn.danger{background:var(--danger);color:#000;border-color:var(--danger);}.btn.warn{background:var(--accent3);color:#000;border-color:var(--accent3);}.btn:disabled{opacity:.4;cursor:not-allowed;}
+.morale-box{background:linear-gradient(135deg,#0f1027,#1a1040,#1e1535);border:1px solid #3a3a6a;border-radius:12px;padding:18px;margin-bottom:20px;display:flex;gap:14px;align-items:flex-start;}.morale-emoji{font-size:32px;}.morale-title{font-weight:700;font-size:15px;color:var(--accent);margin-bottom:5px;}.morale-text{font-size:13px;color:var(--muted2);line-height:1.7;}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:20px;}.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center;}.stat-num{font-size:30px;font-weight:700;font-family:"IBM Plex Mono",monospace;}.stat-num.green{color:var(--accent);}.stat-num.blue{color:var(--accent2);}.stat-num.yellow{color:var(--accent3);}.stat-num.pink{color:var(--accent4);}.stat-label{font-size:11px;color:var(--muted2);margin-top:3px;}
+.topic-list{display:flex;flex-direction:column;gap:7px;}.topic-item{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color .2s;}.topic-item:hover{border-color:var(--accent);}.topic-item.done{border-color:var(--accent);opacity:.7;}.topic-check{width:19px;height:19px;border:2px solid var(--border);border-radius:4px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;transition:all .2s;}.topic-item.done .topic-check{background:var(--accent);border-color:var(--accent);color:#fff;}.topic-name{font-size:13px;font-weight:500;flex:1;}.topic-tag{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;white-space:nowrap;}.tag-hot{background:#4c1d95;color:#c4b5fd;}.tag-mid{background:#78350f;color:#fcd34d;}.tag-ok{background:#14532d;color:#86efac;}
+.percorsi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-bottom:24px;}.percorso-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;cursor:pointer;transition:border-color .2s,transform .15s;position:relative;overflow:hidden;}.percorso-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;}.percorso-card.c1::before{background:linear-gradient(90deg,var(--accent),var(--accent2));}.percorso-card.c2::before{background:linear-gradient(90deg,var(--accent2),var(--accent4));}.percorso-card.c3::before{background:linear-gradient(90deg,var(--accent3),var(--danger));}.percorso-card.c4::before{background:linear-gradient(90deg,var(--accent4),var(--accent3));}.percorso-card.c5::before{background:linear-gradient(90deg,var(--accent),var(--accent3));}.percorso-card.c6::before{background:linear-gradient(90deg,var(--accent2),var(--accent));}.percorso-card:hover{border-color:var(--accent2);transform:translateY(-2px);}.p-icon{font-size:28px;margin-bottom:10px;}.p-title{font-weight:700;font-size:14px;margin-bottom:5px;}.p-desc{font-size:12px;color:var(--muted2);line-height:1.5;}.p-meta{display:flex;gap:8px;margin-top:10px;align-items:center;}.p-steps{font-size:11px;color:var(--muted);font-family:"IBM Plex Mono",monospace;}.p-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;}.p-done{background:rgba(129,140,248,.15);color:var(--accent);}.p-todo{background:rgba(96,165,250,.15);color:var(--accent2);}
+.player{display:none;max-width:720px;margin:0 auto;}.player-header{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap;}.player-back{cursor:pointer;color:var(--muted2);font-size:13px;border:1px solid var(--border);padding:6px 12px;border-radius:7px;background:none;transition:all .2s;}.player-back:hover{color:var(--text);border-color:var(--accent2);}.player-title{font-weight:700;font-size:16px;}.player-prog{flex:1;min-width:80px;background:var(--surface2);border-radius:4px;height:5px;overflow:hidden;}.player-prog-bar{height:100%;background:var(--accent);border-radius:4px;transition:width .4s;}.player-step-num{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--muted2);white-space:nowrap;}
+.step-type-label{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;padding:3px 9px;border-radius:4px;display:inline-block;}.lbl-info{background:rgba(96,165,250,.15);color:var(--accent2);}.lbl-concept{background:rgba(129,140,248,.15);color:var(--accent);}.lbl-check{background:rgba(244,114,182,.15);color:var(--accent4);}.lbl-recap{background:rgba(129,140,248,.2);color:var(--accent);}
+.step-content{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:22px;min-height:200px;}.step-h{font-size:18px;font-weight:700;margin-bottom:12px;line-height:1.4;}.step-body{font-size:14px;color:var(--muted2);line-height:1.8;}.step-body strong{color:var(--text);}
+.hbox{background:var(--surface2);border-left:3px solid var(--accent);padding:12px 16px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px;}.hbox.blue{border-color:var(--accent2);}.hbox.yellow{border-color:var(--accent3);}.hbox.red{border-color:var(--danger);}
+.stbl{width:100%;border-collapse:collapse;margin:10px 0;font-size:12px;}.stbl th{background:rgba(129,140,248,.1);color:var(--accent);padding:8px 10px;text-align:left;border:1px solid var(--border);}.stbl td{padding:8px 10px;border:1px solid var(--border);color:var(--muted2);}.stbl td strong{color:var(--text);}
+.check-q{font-size:16px;font-weight:600;margin-bottom:14px;}.check-opts{display:flex;flex-direction:column;gap:8px;}.check-opt{padding:12px 14px;border-radius:9px;border:1px solid var(--border);background:var(--surface2);cursor:pointer;font-size:13px;color:var(--text);transition:all .15s;text-align:left;font-family:"IBM Plex Sans",sans-serif;}.check-opt:hover:not(.locked){border-color:var(--accent2);}.check-opt.correct{border-color:var(--accent);background:rgba(129,140,248,.12);}.check-opt.wrong{border-color:var(--danger);background:rgba(248,113,113,.12);}.check-opt.locked{cursor:default;}.check-fb{margin-top:12px;padding:11px 14px;border-radius:8px;font-size:13px;display:none;}.check-fb.show{display:block;}.check-fb.ok{background:rgba(129,140,248,.12);border:1px solid var(--accent);color:var(--accent);}.check-fb.ko{background:rgba(248,113,113,.12);border:1px solid var(--danger);color:var(--danger);}
+.step-nav{display:flex;gap:10px;margin-top:16px;align-items:center;flex-wrap:wrap;}.step-score{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--muted2);margin-left:auto;}
+.fc-filter{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;}.filter-btn{padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--muted2);cursor:pointer;font-size:12px;font-weight:500;transition:all .15s;}.filter-btn.active{border-color:var(--accent2);color:var(--accent2);}
+.flashcard-area{display:flex;flex-direction:column;align-items:center;gap:16px;}.fc-meta{display:flex;gap:10px;align-items:center;}.fc-counter{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--muted2);}.fc-cat-badge{font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;background:var(--surface2);color:var(--accent2);border:1px solid var(--border);}
+.flashcard{width:100%;max-width:680px;min-height:240px;cursor:pointer;perspective:1000px;}.fc-inner{position:relative;width:100%;min-height:240px;transition:transform .5s;transform-style:preserve-3d;}.flashcard.flipped .fc-inner{transform:rotateY(180deg);}.fc-front,.fc-back{position:absolute;width:100%;min-height:240px;backface-visibility:hidden;border-radius:14px;padding:28px;display:flex;flex-direction:column;justify-content:center;}.fc-front{background:var(--surface);border:1px solid var(--border);}.fc-back{background:var(--surface2);border:1px solid var(--accent);transform:rotateY(180deg);}.fc-label{font-size:10px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;}.fc-question{font-size:18px;font-weight:600;line-height:1.4;}.fc-answer{font-size:14px;line-height:1.8;color:var(--muted2);}.fc-answer strong{color:var(--accent);}.fc-hint{font-size:11px;color:var(--muted);margin-top:14px;}.fc-actions{display:flex;gap:8px;}
+.quiz-wrap{max-width:680px;margin:0 auto;}.quiz-q{font-size:17px;font-weight:600;margin-bottom:18px;line-height:1.5;}.quiz-options{display:flex;flex-direction:column;gap:9px;}.quiz-opt{padding:13px 16px;border-radius:9px;border:1px solid var(--border);background:var(--surface2);cursor:pointer;font-size:13px;color:var(--text);transition:all .15s;text-align:left;font-family:"IBM Plex Sans",sans-serif;}.quiz-opt:hover:not(.locked){border-color:var(--accent2);}.quiz-opt.correct{border-color:var(--accent);background:rgba(129,140,248,.12);}.quiz-opt.wrong{border-color:var(--danger);background:rgba(248,113,113,.12);}.quiz-opt.locked{cursor:default;}.quiz-expl{margin-top:14px;padding:12px 16px;background:var(--surface2);border-left:3px solid var(--accent2);border-radius:0 8px 8px 0;font-size:13px;color:var(--muted2);display:none;}.quiz-expl.show{display:block;}.quiz-score-bar{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--muted2);margin-bottom:16px;}.quiz-prog{width:100%;background:var(--surface2);border-radius:4px;height:4px;margin-bottom:16px;overflow:hidden;}.quiz-prog-bar{height:100%;background:var(--accent2);border-radius:4px;transition:width .3s;}.quiz-result{text-align:center;padding:36px 20px;}.quiz-result .big-score{font-size:60px;font-weight:700;font-family:"IBM Plex Mono",monospace;}
+.glossario-search{width:100%;padding:11px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:"IBM Plex Sans",sans-serif;font-size:14px;margin-bottom:14px;outline:none;}.glossario-search:focus{border-color:var(--accent2);}.gloss-letter{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:1px;margin:14px 0 6px;}.gloss-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:7px;}.gloss-term{font-weight:700;font-size:13px;color:var(--accent2);}.gloss-def{font-size:12px;color:var(--muted2);margin-top:3px;line-height:1.6;}.chip{display:inline-block;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;margin-top:5px;}.chip-green{background:rgba(74,222,128,.15);color:#4ade80;}.chip-blue{background:rgba(96,165,250,.15);color:var(--accent2);}.chip-yellow{background:rgba(245,158,11,.15);color:var(--accent3);}.chip-red{background:rgba(248,113,113,.15);color:var(--danger);}.chip-purple{background:rgba(129,140,248,.15);color:var(--accent);}
+.esame-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:16px;}.esame-header{background:var(--surface2);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}.esame-anno{font-weight:700;font-size:14px;color:var(--accent2);}.esame-tipo{font-size:11px;color:var(--muted2);background:var(--surface);padding:3px 8px;border-radius:4px;border:1px solid var(--border);}.esame-body{padding:16px 18px;}.esame-section{margin-bottom:14px;}.esame-section-title{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}.domanda-item{background:var(--surface2);border-radius:7px;padding:10px 13px;margin-bottom:6px;font-size:13px;color:var(--muted2);border-left:3px solid var(--border);}.domanda-item.hot{border-left-color:var(--danger);}.domanda-item.mid{border-left-color:var(--accent3);}.domanda-item.ok{border-left-color:var(--accent);}
+.alert-box{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);border-radius:9px;padding:13px 15px;margin-bottom:12px;}.alert-title{font-size:12px;font-weight:700;color:var(--danger);margin-bottom:7px;}.alert-text{font-size:13px;color:var(--muted2);line-height:1.6;}
+.tip-box{background:rgba(129,140,248,.07);border:1px solid rgba(129,140,248,.25);border-radius:9px;padding:13px 15px;margin-bottom:12px;}.tip-title{font-size:12px;font-weight:700;color:var(--accent);margin-bottom:7px;}.tip-text{font-size:13px;color:var(--muted2);line-height:1.6;}
+.prof-header{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;display:flex;gap:16px;align-items:flex-start;}.prof-avatar{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;}.prof-name{font-weight:700;font-size:18px;}.prof-role{font-size:13px;color:var(--muted2);margin-top:3px;}.prof-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.info-block{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px;}.ib-title{font-size:12px;font-weight:700;color:var(--accent3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px;}.info-list{list-style:none;}.info-list li{font-size:13px;color:var(--muted2);padding:5px 0;border-bottom:1px solid var(--border);line-height:1.5;}.info-list li:last-child{border-bottom:none;}.info-list li::before{content:"▸ ";color:var(--accent2);}.info-list li strong{color:var(--text);}
+table{width:100%;border-collapse:collapse;font-size:12px;}th{background:var(--surface2);color:var(--muted2);font-weight:600;padding:9px 11px;text-align:left;border-bottom:1px solid var(--border);font-size:10px;letter-spacing:.5px;text-transform:uppercase;}td{padding:9px 11px;border-bottom:1px solid var(--border);}tr:last-child td{border-bottom:none;}tr:hover td{background:var(--surface2);}
+
+/* ── ATRIUM header ── */
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:0;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,.4);}
+.header-top{background:#07090f;border-bottom:1px solid #1a1f35;padding:8px 24px;display:flex;align-items:center;gap:12px;}
+.header-main{padding:12px 24px;display:flex;align-items:center;justify-content:space-between;background:var(--surface);}
+.atrium-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
+.header-divider{width:1px;height:16px;background:#2a3050;margin:0 4px;}
+.header-subbrand{font-size:11px;color:#6b7fa3;letter-spacing:.3px;}
+/* ── tabs-wrap con fade ── */
+.tabs{background:var(--surface);border-bottom:1px solid var(--border);padding:0 20px;display:flex;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;}.tabs::-webkit-scrollbar{display:none;}
+.tabs-wrap{position:relative;background:var(--surface);border-bottom:1px solid var(--border);}
+.tabs-wrap::before,.tabs-wrap::after{content:"";position:absolute;top:0;bottom:1px;width:32px;pointer-events:none;z-index:2;}
+.tabs-wrap::before{left:0;background:linear-gradient(to right,var(--surface),transparent);}
+.tabs-wrap::after{right:0;background:linear-gradient(to left,var(--surface),transparent);}
+/* ── warn badge + overlay ── */
+.warn-badge{display:flex;align-items:center;gap:5px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.35);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;color:var(--accent3);cursor:pointer;transition:background .15s;white-space:nowrap;border-top:none;border-left:none;border-right:none;font-family:"IBM Plex Sans",sans-serif;}.warn-badge:hover{background:rgba(245,158,11,.22);}
+.warn-overlay{display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);align-items:center;justify-content:center;}.warn-overlay.open{display:flex;}
+.warn-modal{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;max-width:520px;width:90%;box-shadow:0 24px 60px rgba(0,0,0,.6);}
+.warn-modal-title{font-size:16px;font-weight:700;color:var(--accent3);margin-bottom:12px;}
+.warn-modal-body{font-size:13px;color:var(--muted2);line-height:1.7;}
+.warn-source-list{list-style:none;margin-top:12px;}.warn-source-list li{padding:6px 0;border-bottom:1px solid var(--border);font-size:12px;}.warn-source-list li:last-child{border-bottom:none;}
+.warn-modal-close{margin-top:16px;display:flex;justify-content:flex-end;}
+/* ── domande esame con click-to-reveal ── */
+.domanda-q{font-weight:500;}
+.domanda-ans{display:none;margin-top:8px;padding:10px 12px;background:var(--bg);border-radius:6px;font-size:12px;color:var(--muted2);line-height:1.7;border:1px solid var(--border);}
+.domanda-item.open .domanda-ans{display:block;}
+.domanda-item{cursor:pointer;}
+/* ── accordion argomenti ── */
+.acc-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden;}
+.acc-header{padding:13px 16px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:background .15s;user-select:none;}
+.acc-header:hover{background:var(--surface2);}
+.acc-title{font-size:13px;font-weight:600;flex:1;}
+.acc-chev{font-size:11px;color:var(--muted);transition:transform .25s;display:inline-block;}
+.acc-item.open .acc-chev{transform:rotate(180deg);}
+.acc-body{max-height:0;overflow:hidden;transition:max-height .4s ease;}
+.acc-item.open .acc-body{max-height:6000px;}
+.acc-inner{padding:0 16px 16px;}
+.acc-inner ul{padding-left:16px;}
+.acc-inner li{font-size:13px;color:var(--muted2);margin-bottom:5px;line-height:1.6;}
+.acc-inner li strong{color:var(--text);}
+.phbox{background:var(--surface2);border-left:3px solid var(--accent);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0;font-size:13px;line-height:1.7;}
+.phbox.blue{border-color:var(--accent2);}.phbox.yellow{border-color:var(--accent3);}.phbox.red{border-color:var(--danger);}.phbox.green{border-color:#4ade80;}
+/* ── header progress ── */
+#headerProgress{display:flex;align-items:center;gap:8px;font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--muted);}
+/* ── footer ── */
+footer{background:#12161f;border-top:1px solid #2a3050;padding:11px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-family:"IBM Plex Sans",sans-serif;flex-wrap:wrap;}
+/* ── responsive ── */
+@media(max-width:768px){
+  .header-top{display:none;}.header-main{padding:8px 12px;}
+  .logo-icon{width:28px;height:28px;font-size:14px;border-radius:7px;}.logo-text{font-size:13px;}.logo-sub{display:none;}
+  #headerProgress{display:none!important;}
+  .warn-badge{font-size:10px;padding:3px 7px;}
+  .tabs{padding:0 2px;}.tab{padding:10px 12px;font-size:12px;}
+  main{padding:12px 10px;padding-bottom:80px;}
+  .stat-grid{grid-template-columns:repeat(2,1fr);gap:8px;}
+  .percorsi-grid{grid-template-columns:1fr;}
+  .flashcard,.quiz-wrap,.player{max-width:100%;}
+  footer{padding:8px 14px;font-size:11px;gap:8px;}
+}
+@media(max-width:480px){.tab{padding:8px 8px;font-size:10px;}}
+</style>
+</head>
+<body>
+<!-- warn overlay -->
+<div class="warn-overlay" id="warnOverlay" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="warn-modal">
+    <div class="warn-modal-title">⚠️ Fonti parziali</div>
+    <div class="warn-modal-body">
+      Questa dashboard è stata costruita sui <strong>PDF e PPTX delle slide della prof.ssa Favaro</strong>.<br><br>
+      Le seguenti fonti bibliografiche <strong>non sono state lette direttamente</strong>:
+      <ul class="warn-source-list">
+        <li>📖 Baldwin R., Cave M., Lodge M. — <em>Understanding Regulation</em> (Oxford UP, 2011)</li>
+        <li>📖 Cintioli F. — <em>Diritto dell'economia</em> (Giuffrè, 2020)</li>
+        <li>📖 Napolitano G. — <em>Diritto amministrativo comparato</em> (Giuffrè, 2007)</li>
+      </ul>
+      <br>✅ <strong>Fonti lette:</strong> 5.pdf · 7.pdf · 9.pdf · 11.pdf · 12.pdf · 26.02.2026.pdf · 27.02.2026.pdf · 12.03.2026 VERO.pdf · settimana II.pdf
+    </div>
+    <div class="warn-modal-close"><button class="btn primary" onclick="document.getElementById('warnOverlay').classList.remove('open')">Capito, chiudi</button></div>
+  </div>
+</div>
+
+<header>
+  <div class="header-top">
+    <a class="atrium-logo" href="#"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none" width="24" height="24" style="border-radius:6px;flex-shrink:0;"><defs><radialGradient id="ag" cx=".5" cy="0" r="1.15"><stop offset="0" stop-color="#2b3149"/><stop offset=".46" stop-color="#161924"/><stop offset="1" stop-color="#0a0b11"/></radialGradient><linearGradient id="al" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#bcafff"/><stop offset="1" stop-color="#7d6bf0"/></linearGradient></defs><rect width="512" height="512" rx="116" fill="url(#ag)"/><g transform="translate(155 88) scale(2.197)" fill="none"><path d="M14 80 L46 14 L78 80" stroke="#f4f5fb" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><rect x="30" y="55" width="22" height="9" rx="4.5" fill="url(#al)"/></g></svg>
+      <span style="font-size:13px;font-weight:800;color:#e8eaf6;letter-spacing:.3px;font-family:'IBM Plex Sans',sans-serif;">ATRIUM</span>
+      <span style="font-size:12px;font-weight:700;color:#9b8ff5;margin-left:3px;font-family:'IBM Plex Sans',sans-serif;">EDU</span>
+    </a>
+    <div class="header-divider"></div>
+    <span class="header-subbrand">Agente di Studio · Preparazione Esame</span>
+  </div>
+  <div class="header-main">
+    <div class="logo">
+      <div class="logo-icon">⚖️</div>
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="logo-text">Diritto dell'Economia</div>
+          <button class="warn-badge" onclick="document.getElementById('warnOverlay').classList.add('open')">⚠️ Fonti parziali</button>
+        </div>
+        <div class="logo-sub" style="margin-top:3px;">Prof.ssa Tamara Favaro &nbsp;·&nbsp; UniPi &nbsp;·&nbsp; A.A. 2025-26</div>
+      </div>
+    </div>
+    <div id="headerProgress"></div>
+  </div>
+</header>
+<div class="progress-strip">
+  <div class="prog-label">Progressi</div>
+  <div class="prog-bar-wrap"><div class="prog-bar" id="mainProgressBar" style="width:0%"></div></div>
+  <div class="prog-pct" id="mainProgressPct">0%</div>
+</div>
+<div class="tabs-wrap">
+  <div class="tabs" id="tabsBar">
+    <button class="tab active" onclick="showSection(this,'home')">🏠 Piano</button>
+    <button class="tab" onclick="showSection(this,'percorsi')">📚 Percorsi</button>
+    <button class="tab" onclick="showSection(this,'argomenti')">📋 Argomenti</button>
+    <button class="tab" onclick="showSection(this,'glossario')">📖 Glossario</button>
+    <button class="tab" onclick="showSection(this,'flashcard')">🃏 Flashcard</button>
+    <button class="tab" onclick="showSection(this,'quiz')">🎯 Quiz</button>
+    <button class="tab" onclick="showSection(this,'esami')">📝 Domande Esame</button>
+    <button class="tab" onclick="showSection(this,'simula')">🎓 Simulazione</button>
+    <button class="tab" onclick="showSection(this,'prof')">👩‍🏫 La Prof.</button>
+  </div>
+</div>
+<main id="mainContent"></main>
+<script>
+const MORALE=[
+  {e:"⚖️",t:"Diritto senza paura",b:"Ogni articolo è una porta. Aprila, non temere cosa c'è dall'altra parte."},
+  {e:"📜",t:"Il codice parla a chi sa ascoltare",b:"Leggi, rileggi, poi spiega come se lo insegnassi a qualcuno."},
+  {e:"🏛️",t:"Dalla Costituzione al mercato",b:"Art. 41, art. 42: fondamenta dell'economia pubblica italiana. Conosci la tua casa."},
+  {e:"🌐",t:"Europa è vicina",b:"TFUE artt. 106/345, SIEG: il diritto dell'economia è anche europeo."},
+  {e:"🔬",t:"Metodo prima di tutto",b:"Baldwin, Cave & Lodge: capire il perché della regolazione è la metà dell'esame."},
+  {e:"🎯",t:"Ordoliberalismo o Chicago?",b:"Non sono opposti assoluti. La prof. vuole che tu sappia spiegare le sfumature."},
+  {e:"💡",t:"Un percorso alla volta",b:"Studia un blocco tematico completo prima di passare al successivo."},
+  {e:"🚀",t:"Sei più pronto di quanto pensi",b:"Se stai studiando con questa dashboard, stai già un passo avanti."}
+];
+function renderMorale(){
+  var m=MORALE[Math.floor(Math.random()*MORALE.length)];
+  var box=document.getElementById('moraleBox');
+  if(box){box.querySelector('.morale-emoji').textContent=m.e;box.querySelector('.morale-title').textContent=m.t;box.querySelector('.morale-text').textContent=m.b;}
+}
+function updateHeaderProgress(){
+  var done=Object.keys(topicsDone).filter(function(k){return topicsDone[k];}).length;
+  var el=document.getElementById('headerProgress');
+  if(el){el.innerHTML='<span style="color:var(--accent);font-weight:700;">'+done+'</span><span>/'+TOPICS.length+'</span><span style="margin-left:4px;color:var(--muted);">argomenti</span>';}
+}
+function toggleAcc(header){
+  var item=header.parentElement;
+  item.classList.toggle('open');
+}
+function toggleDomanda(el){
+  el.classList.toggle('open');
+}
+var _mem={};
+var LS=(function(){try{var t='__t';window.localStorage.setItem(t,'1');window.localStorage.removeItem(t);return window.localStorage;}catch(e){return{getItem:function(k){return(k in _mem)?_mem[k]:null;},setItem:function(k,v){_mem[k]=String(v);},removeItem:function(k){delete _mem[k];}};} })();
+
+const TOPICS=[
+  {id:'t1',n:'Introduzione al Diritto dell\'Economia — definizioni e metodo',tag:'hot'},
+  {id:'t2',n:'Le tre accezioni di "regolazione" (Baldwin, Cave & Lodge)',tag:'hot'},
+  {id:'t3',n:'Mercato autoregolato vs Pianificazione diretta — spazio intermedio',tag:'hot'},
+  {id:'t4',n:'La nozione giuridica di mercato — costruzione istituzionale',tag:'hot'},
+  {id:'t5',n:'Ordoliberalismo — Scuola di Friburgo, Eucken, ordine costruito',tag:'hot'},
+  {id:'t6',n:'Scuola di Harvard — struttura industriale e potere economico',tag:'hot'},
+  {id:'t7',n:'Scuola di Chicago — efficienza e sospetto dell\'intervento',tag:'hot'},
+  {id:'t8',n:'L\'UE e il mercato instaurato (art. 3 TUE, art. 106 TFUE)',tag:'hot'},
+  {id:'t9',n:'Fallimenti del mercato — monopolio, esternalità, asimmetrie info.',tag:'hot'},
+  {id:'t10',n:'Giustificazioni teoriche dell\'intervento pubblico',tag:'hot'},
+  {id:'t11',n:'Forme della regolazione — command & control, incentivi, info.',tag:'mid'},
+  {id:'t12',n:'Autorità amministrative indipendenti — caratteri e funzioni',tag:'hot'},
+  {id:'t13',n:'Policentricità e governance reticolare (Ostrom, Black, Scott)',tag:'mid'},
+  {id:'t14',n:'Ibridazione pubblico-privato e soft law',tag:'mid'},
+  {id:'t15',n:'Proprietà e libertà d\'impresa — artt. 41-42 Cost.',tag:'hot'},
+  {id:'t16',n:'Funzione sociale della proprietà e limiti costituzionali',tag:'hot'},
+  {id:'t17',n:'Art. 106 TFUE — imprese pubbliche e imprese con diritti speciali',tag:'hot'},
+  {id:'t18',n:'SIEG — nozione UE e caratteri',tag:'hot'},
+  {id:'t19',n:'Obblighi di servizio pubblico — conformazione e deroga concorrenza',tag:'hot'},
+  {id:'t20',n:'SPL — evoluzione normativa (TUEL, 23-bis, d.lgs. 201/2022)',tag:'hot'},
+  {id:'t21',n:'Referendum 2011 e sentenza Cost. n. 199/2012',tag:'mid'},
+  {id:'t22',n:'Riforma SPL — d.lgs. n. 201/2022',tag:'hot'},
+  {id:'t23',n:'Gestione in house — requisiti del controllo analogo',tag:'hot'},
+  {id:'t24',n:'Concorrenza per il mercato — gara pubblica come regola',tag:'mid'},
+  {id:'t25',n:'Industrie a rete — accesso, unbundling, essential facility',tag:'mid'},
+  {id:'t26',n:'Dilemma del prigioniero e razionalità individuale vs collettiva',tag:'ok'},
+  {id:'t27',n:'Asimmetria informativa — Akerlof e il mercato dei limoni',tag:'ok'},
+  {id:'t28',n:'Pendolo Stato-mercato — fattori di oscillazione storica',tag:'ok'},
+];
+
+const PERCORSI=[
+  {id:'p1',cls:'c1',icon:'🏛️',title:'Il Mercato come Costruzione Giuridica',desc:'Dalle origini teoriche alla nozione istituzionale di mercato.',steps:[
+    {type:'info',h:'Cos\'è il Diritto dell\'Economia?',body:'Il <strong>Diritto dell\'Economia</strong> studia come le regole giuridiche incidano sul funzionamento dei mercati. Il mercato non è un ordine naturale: è sempre una <strong>categoria normativamente mediata</strong>, costruita e mantenuta dal diritto.<br><br>La disciplina nasce nella consapevolezza che Stato e mercato sono <strong>sistemi di incentivi</strong> interdipendenti.'},
+    {type:'concept',h:'Le Regole Non Sono Mai Neutre',body:'Ogni assetto giuridico incorpora una certa idea di concorrenza, efficienza, potere economico.<div class="hbox yellow" style="margin-top:12px">📌 Tre concezioni: <strong>mercato come ordine giuridico</strong> (ordoliberalismo/UE), <strong>struttura da analizzare</strong> (Harvard), <strong>meccanismo efficiente da non distorcere</strong> (Chicago).</div>'},
+    {type:'check',h:'Verifica',q:'Quale affermazione rispecchia meglio la posizione del Diritto dell\'Economia?',opts:['Il mercato è un ordine naturale che funziona da solo','Il mercato è una costruzione giuridico-istituzionale normativamente mediata','Il diritto deve solo reprimere i comportamenti illeciti','Le regole giuridiche sono sempre neutre rispetto al mercato'],ans:1,fb:'Corretto. Il mercato non è mai un fatto naturale: è un equilibrio istituzionale reso possibile dal diritto.'},
+    {type:'concept',h:'Il Pendolo Stato-Mercato',body:'Il rapporto tra potere pubblico e mercato oscilla nel tempo in funzione di <strong>crisi economiche</strong>, <strong>trasformazioni sociali</strong>, <strong>ideologie dominanti</strong> e <strong>teorie economiche prevalenti</strong>.'},
+    {type:'recap',h:'Riepilogo',body:'✅ Il mercato è sempre una costruzione giuridica<br>✅ Il diritto dell\'economia studia le regole che incidono sui mercati<br>✅ Tre grandi scuole: Ordoliberalismo, Harvard, Chicago<br>✅ Il rapporto Stato-mercato oscilla storicamente'}
+  ]},
+  {id:'p2',cls:'c2',icon:'📐',title:'La Regolazione — Tre Accezioni',desc:'Baldwin, Cave & Lodge: dalla nozione ampia alla regolazione settoriale.',steps:[
+    {type:'info',h:'Il Problema Definitorio',body:'La <strong>regolazione</strong> non ha una definizione univoca. Baldwin, Cave e Lodge: <em>"Regulation is a term used in radically different ways."</em><br><br>Si colloca tra due poli: <strong>mercato autoregolato</strong> (autonomia privata) e <strong>pianificazione diretta</strong> (comando pubblico).'},
+    {type:'concept',h:'1ª Accezione — Controllo Sociale Generale',body:'Ogni forma di controllo sociale esercitato dallo Stato attraverso il diritto. <em>"La regulation è sinonimo di normativa statale."</em><br><br><strong>Forza:</strong> visione sistemica.<br><strong>Limite:</strong> se tutto è regulation, nulla è specificamente regulation.'},
+    {type:'concept',h:'2ª Accezione — Influenza sui Comportamenti',body:'Intervento pubblico per <strong>influenzare comportamenti privati</strong> e correggere fallimenti di mercato.<br><br>Include: norme ambientali, sicurezza, mercati finanziari, tutela consumatore.<br><br><strong>Limite:</strong> rischia di diventare sinonimo di "politica pubblica".'},
+    {type:'concept',h:'3ª Accezione — Controllo di Settore',body:'<strong>Controllo specialistico</strong> di settori economici specifici da parte di autorità indipendenti.<div class="hbox" style="margin-top:12px"><strong>USA:</strong> FCC, SEC, EPA<br><strong>EU:</strong> Antitrust, ARERA, AGCOM</div>Caratteri: supervisione tecnica, controllo continuo, ex ante, poteri sanzionatori.'},
+    {type:'check',h:'Verifica',q:'Quale accezione è più vicina alla tradizione italiana degli anni \'90?',opts:['La prima — controllo sociale generale','La seconda — influenza comportamenti e correzione fallimenti','La terza — controllo settoriale da autorità indipendenti','Nessuna delle tre'],ans:1,fb:'Sì. La seconda accezione corrisponde alla nozione italiana: liberalizzazione dei monopoli pubblici e tutela della concorrenza.'},
+    {type:'recap',h:'Riepilogo',body:'✅ 1ª: ogni norma = regulation (troppo ampia)<br>✅ 2ª: correggere fallimenti = accezione italiana<br>✅ 3ª: autorità indipendenti + settori specifici = anglosassone<br>✅ Tecnica ibrida: né pura libertà né gestione diretta'}
+  ]},
+  {id:'p3',cls:'c3',icon:'🏫',title:'Le Tre Scuole: Ordo, Harvard, Chicago',desc:'Come tre scuole leggono lo stesso mercato in modo radicalmente diverso.',steps:[
+    {type:'info',h:'Ordoliberalismo — Il Mercato come Ordine Costruito',body:'Nasce in Germania negli anni \'30 attorno alla <strong>Scuola di Friburgo</strong> (Eucken, Böhm). Il mercato non è un ordine spontaneo: è un <strong>ORDO che deve essere costruito e garantito giuridicamente</strong>.<br><br>Il problema non è Stato contro mercato: è impedire che il <strong>potere economico privato</strong> distrugga la concorrenza.'},
+    {type:'concept',h:'Ordoliberalismo — Ordnungspolitik',body:'La politica dell\'ordine non interviene su prezzi o quantità: stabilisce le <strong>regole del gioco</strong>.<br><br><strong>Doveri dello Stato "Ordo":</strong><br>• Garantire la concorrenza<br>• Impedire cartelli<br>• Impedire posizioni dominanti<br>• Assicurare stabilità monetaria<br><br>Influenza diretta nell\'UE: art. 3 TUE — "economia sociale di mercato fortemente competitiva".'},
+    {type:'check',h:'Verifica: Ordoliberalismo',q:'Qual è la differenza fondamentale tra ordoliberalismo e liberalismo classico?',opts:['L\'ordoliberalismo vuole più Stato dirigista','Il liberalismo classico teme il potere privato concentrato quanto il pubblico','L\'ordoliberalismo teme tanto il potere pubblico quanto il potere privato concentrato','Non c\'è differenza sostanziale'],ans:2,fb:'Esatto. Il liberalismo classico si fida dell\'ordine spontaneo; l\'ordoliberalismo teme entrambe le forme di potere concentrato.'},
+    {type:'info',h:'Scuola di Harvard — Struttura e Potere',body:'Parte dalla <strong>struttura industriale</strong>: concentrazione, barriere all\'entrata, integrazione verticale modificano sistematicamente gli incentivi.<div class="hbox blue" style="margin-top:10px">Focus: prevenire la cristallizzazione del potere. Non il prezzo oggi, la struttura domani.</div>'},
+    {type:'info',h:'Scuola di Chicago — Efficienza Prima di Tutto',body:'Parte dagli <strong>effetti concreti e misurabili</strong>. Se una piattaforma offre prezzi bassi e innovazione, la concentrazione può essere espressione di <strong>efficienza</strong>.<br><br><strong>Rischio principale:</strong> il regulatory failure — intervenire potrebbe distruggere economie di scala e ridurre incentivi all\'innovazione.'},
+    {type:'check',h:'Verifica: Harvard vs Chicago',q:'Applicando Chicago ad Amazon: qual è la conclusione più probabile?',opts:['Amazon va smembrata per il suo potere di mercato','Amazon può essere efficiente: prezzi bassi beneficiano i consumatori','Amazon è un cartello da reprimere','Chicago non ha strumenti per le piattaforme'],ans:1,fb:'Esatto. Chicago guarda agli effetti concreti: prezzi bassi = possibile efficienza. Il rischio è il regulatory failure da intervento prematuro.'},
+    {type:'recap',h:'Riepilogo',body:'✅ <strong>Ordoliberalismo:</strong> ordine costruito, impedire concentrazioni<br>✅ <strong>Harvard:</strong> struttura industriale come variabile critica<br>✅ <strong>Chicago:</strong> efficienza misurabile, sospetto dell\'intervento<br>✅ Tutte e tre: il mercato non è un fatto naturale'}
+  ]},
+  {id:'p4',cls:'c4',icon:'📜',title:'Proprietà, Impresa e Costituzione',desc:'Artt. 41-42 Cost., art. 106 TFUE, SIEG e obblighi di servizio pubblico.',steps:[
+    {type:'info',h:'Art. 42 Cost. — La Proprietà',body:'La Costituzione non sceglie tra capitalismo e collettivismo: riconosce entrambe le forme di proprietà (pubblica e privata) — sistema di <strong>economia mista</strong>.<br><br>La proprietà privata è garantita dalla legge, che ne determina modi di acquisto, godimento e <strong>limiti</strong>.'},
+    {type:'concept',h:'La Funzione Sociale della Proprietà',body:'La proprietà non è un potere assoluto. Il proprietario non può danneggiare l\'interesse collettivo.<table class="stbl" style="margin-top:12px"><thead><tr><th>Limite</th><th>Esempio</th></tr></thead><tbody><tr><td>Ambientale</td><td>Divieto di usi che danneggino l\'ecosistema</td></tr><tr><td>Urbanistico</td><td>Divieto di lasciare inutilizzate aree strategiche</td></tr><tr><td>Sociale</td><td>Funzionalizzazione verso il bene comune</td></tr></tbody></table>'},
+    {type:'check',h:'Verifica: Costituzione',q:'Cosa prevede l\'art. 42 Cost. riguardo all\'espropriazione?',opts:['Non è mai ammessa','È ammessa solo per legge, per motivi di interesse generale e con indennizzo','Lo Stato può espropriare senza indennizzo in emergenza','È ammessa solo per decisione giudiziaria'],ans:1,fb:'Corretto. Art. 42, comma 3: tre condizioni cumulative — riserva di legge, interesse generale, indennizzo.'},
+    {type:'info',h:'Art. 106 TFUE — Imprese Pubbliche e SIEG',body:'Gli Stati non possono mantenere misure contrarie ai Trattati verso <strong>imprese pubbliche e imprese con diritti speciali</strong>.<br><br>Eccezione: le imprese incaricate di <strong>SIEG</strong> sono soggette alle regole di concorrenza solo nella misura in cui la loro applicazione non ostacoli la missione affidata.<div class="hbox yellow" style="margin-top:10px">📌 Art. 345 TFUE: neutralità sul regime di proprietà. L\'UE non impone né privatizzazione né nazionalizzazione.</div>'},
+    {type:'concept',h:'Gli Obblighi di Servizio Pubblico',body:'Requisiti imposti al gestore per orientare l\'attività verso finalità collettive:<br><br>• Continuità del servizio<br>• Universalità (anche aree non profittevoli)<br>• Prezzi calmierati<br>• Standard qualitativi minimi'},
+    {type:'recap',h:'Riepilogo',body:'✅ Art. 42: proprietà + funzione sociale + espropriazione con indennizzo<br>✅ Art. 41: libertà d\'impresa nei limiti dell\'utilità sociale<br>✅ Art. 106 TFUE: regole concorrenza applicabili alle imprese pubbliche<br>✅ SIEG: deroga possibile per la missione affidata'}
+  ]},
+  {id:'p5',cls:'c5',icon:'🏙️',title:'Servizi Pubblici Locali — Evoluzione',desc:'Dal TUEL 2000 al d.lgs. 201/2022: storia di un pendolo normativo.',steps:[
+    {type:'info',h:'Le Origini: TUEL 2000',body:'L\'art. 112 TUEL definiva i SPL come attività dirette a <strong>fini sociali</strong> e <strong>sviluppo economico e civile delle comunità locali</strong>.<br><br>Concezione mista: profilo soggettivo (ruolo ente locale) + profilo oggettivo (finalità sociale). Ampia discrezionalità politica.'},
+    {type:'concept',h:'La Svolta: art. 23-bis (2008)',body:'Il D.L. 112/2008 introduce l\'art. 23-bis: la <strong>gara pubblica</strong> diventa il modello ordinario. La gestione in house è residuale ed eccezionale.<br><br>Ratio: diffusione dei principi di concorrenza, libertà di stabilimento, libera prestazione dei servizi.'},
+    {type:'concept',h:'Il Referendum 2011',body:'Il <strong>95% dei votanti</strong> abroga l\'art. 23-bis. Partecipazione: 55% (quorum raggiunto).<br><br>Significato: reazione alla privatizzazione dei servizi pubblici essenziali.<br><br>Ma pochi mesi dopo il Governo introduce l\'art. 4 del D.L. 138/2011 con la stessa ratio...'},
+    {type:'check',h:'Verifica: Sent. Cost. n. 199/2012',q:'Perché la Corte Costituzionale ha dichiarato illegittimo l\'art. 4 D.L. 138/2011?',opts:['Violava le competenze regionali','Il legislatore aveva riprodotto la medesima ratio dell\'articolo abrogato, eludendo la volontà popolare','Era in contrasto con il diritto UE','Mancava la riserva di legge'],ans:1,fb:'Esatto. La Corte censura l\'elusione della volontà popolare: il nuovo articolo riproponeva la stessa ratio di quello appena abrogato dal referendum.'},
+    {type:'info',h:'D.lgs. n. 201/2022 — Il Riordino',body:'Riordina la disciplina dei SPL. Obiettivi:<br>• Superamento della frammentazione normativa<br>• Coordinamento con diritto UE<br>• Attuazione obiettivi PNRR<br>• Equilibrio tra concorrenza e autonomia locale<div class="hbox" style="margin-top:10px">Ancora uno dei settori <strong>più problematici</strong> del diritto amministrativo.</div>'},
+    {type:'concept',h:'Gestione In House — Controllo Analogo',body:'Ammessa quando l\'ente pubblico esercita sulla società un <strong>controllo analogo</strong> a quello sui propri servizi.<br><br><strong>Requisiti (giurisprudenza UE):</strong><br>• Partecipazione pubblica prevalente/totalitaria<br>• Controllo penetrante sulle scelte strategiche<br>• Attività svolta prevalentemente con l\'ente controllante'},
+    {type:'recap',h:'Riepilogo',body:'✅ TUEL 2000: concezione mista, ampia discrezionalità<br>✅ 23-bis 2008: gara come regola, in house come eccezione<br>✅ Referendum 2011: 95% abrogazione<br>✅ Sent. Cost. 199/2012: illegittimità per elusione volontà popolare<br>✅ D.lgs. 201/2022: riordino con obiettivi PNRR'}
+  ]},
+  {id:'p6',cls:'c6',icon:'🕸️',title:'Governance Reticolare e Policentricità',desc:'Oltre lo Stato regolatore: Ostrom, Black, Scott e la normativita\' diffusa.',steps:[
+    {type:'info',h:'Fine del Paradigma Statocentrico',body:'Nei mercati complessi (finanziari, digitali, ambientali), le regole non nascono più in un unico luogo. La normativita\' è prodotta da <strong>centri molteplici</strong> dotati di autonomia relativa e interdipendenza funzionale.'},
+    {type:'concept',h:'Elinor Ostrom — Coordinamento Senza Anarchia',body:'Ostrom dimostra che sistemi complessi possono essere governati da centri decisionali <strong>indipendenti ma coordinati</strong>.<br><br>Un unico centro non riesce a raccogliere le informazioni necessarie per mercati iper-complessi. La diversità istituzionale consente sperimentazione e resilienza.'},
+    {type:'concept',h:'Julia Black — Decentramento Inevitabile',body:'La regolazione è "il tentativo di alterare il comportamento di altri secondo standard o obiettivi definiti".<br><br>Il decentramento è inevitabile per tre motivi:<br>• <strong>Informazioni distribuite:</strong> nessuno possiede tutto il sapere tecnico<br>• <strong>Capacità diffuse:</strong> le leve non sono solo pubbliche<br>• <strong>Potere normativo condiviso:</strong> processi reputazionali creano vincoli reali'},
+    {type:'check',h:'Verifica: Scott',q:'Cosa distingue la "Regulatory Governance" dallo "Stato Regolatore" (Colin Scott)?',opts:['La Regulatory Governance è più centralizzata','Nella Regulatory Governance la normativita\' è condivisa, distribuita e co-prodotta in rete','Lo Stato Regolatore è più efficiente','Non c\'è differenza sostanziale'],ans:1,fb:'Esatto. Scott mostra la transizione: dallo Stato regolatore (statocentrico) alla Regulatory Governance (normativita\' co-prodotta da istituzioni e privati).'},
+    {type:'concept',h:'Ibridazione Pubblico-Privato',body:'<strong>Interdipendenza strutturale</strong> lungo tutto il ciclo regolativo:<br><br>• <strong>Produzione:</strong> standard privati (ISO) diventano parametri pubblici<br>• <strong>Applicazione:</strong> certificazioni private verificano la conformita\' legale<br>• <strong>Controllo:</strong> audit indipendenti svolgono funzioni ispettive'},
+    {type:'recap',h:'Riepilogo',body:'✅ Policentricita\': normativita\' da centri molteplici<br>✅ Ostrom: coordinamento senza anarchia<br>✅ Black: decentramento inevitabile per ragioni conoscitive<br>✅ Scott: Regulatory Governance vs Stato Regolatore<br>✅ Standard privati → vincoli normativi reali'}
+  ]}
+];
+
+const GLOSSARIO=[
+  {t:'Accezione di regolazione (1ª)',d:'Ogni forma di controllo sociale esercitato dallo Stato attraverso il diritto. Troppo ampia: perde potere analitico.',cat:'purple'},
+  {t:'Accezione di regolazione (2ª)',d:'Intervento pubblico per influenzare comportamenti privati e correggere fallimenti di mercato. Accezione italiana degli anni \'90.',cat:'blue'},
+  {t:'Accezione di regolazione (3ª)',d:'Controllo specialistico di settori specifici da autorità indipendenti dotate di competenze tecniche (FCC, SEC, ARERA, AGCOM).',cat:'blue'},
+  {t:'Akerlof, George',d:'Economista del "mercato dei limoni": l\'asimmetria informativa tra venditore e compratore può causare il collasso del mercato.',cat:'yellow'},
+  {t:'Art. 41 Cost.',d:'Libertà di iniziativa economica privata nei limiti dell\'utilità sociale e senza danno alla sicurezza, libertà e dignità umana.',cat:'blue'},
+  {t:'Art. 42 Cost.',d:'Proprietà pubblica e privata. La proprietà privata ha funzione sociale. Prevede espropriazione con riserva di legge, interesse generale e indennizzo.',cat:'blue'},
+  {t:'Art. 106 TFUE',d:'Gli Stati non possono mantenere misure contrarie ai Trattati verso imprese pubbliche o con diritti speciali. I SIEG godono di deroga alle regole di concorrenza.',cat:'blue'},
+  {t:'Art. 345 TFUE',d:'I Trattati lasciano impregiudicato il regime di proprietà negli Stati membri. L\'UE non obbliga né a privatizzare né a nazionalizzare.',cat:'blue'},
+  {t:'Autorità Amministrative Indipendenti',d:'Soggetti regolatori con scopi circoscritti, indipendenti dagli interessi privati e dallo Stato imprenditore. Agiscono come "arbitri terzi".',cat:'purple'},
+  {t:'Baldwin, Cave & Lodge',d:'Autori di "Understanding Regulation". Identificano tre accezioni di regulation e la definiscono "categoria ombrello" inevitabilmente ambigua.',cat:'purple'},
+  {t:'Chicago (Scuola di)',d:'Posner, Bork. Il mercato è un meccanismo tendenzialmente efficiente. Analizza gli effetti concreti e misurabili. Teme il regulatory failure.',cat:'yellow'},
+  {t:'Concorrenza per il mercato',d:'Affidamento dei SPL tramite gara pubblica aperta. Garantisce la scelta del gestore più efficiente.',cat:'green'},
+  {t:'Controllo analogo',d:'Requisito per la gestione in house: l\'ente pubblico esercita sulla società un controllo penetrante sulle scelte strategiche e gestionali.',cat:'purple'},
+  {t:'D.lgs. n. 201/2022',d:'Decreto di riordino dei Servizi Pubblici Locali. Supera la frammentazione normativa, coordina con diritto UE e obiettivi PNRR.',cat:'green'},
+  {t:'Dilemma del prigioniero',d:'La razionalità individuale produce esiti collettivamente inefficienti. Giustifica l\'intervento regolatorio per coordinare i comportamenti.',cat:'yellow'},
+  {t:'Essential facility',d:'Infrastruttura senza cui un concorrente non può fornire il servizio e che non può essere duplicata a costi ragionevoli. L\'accesso non può essere negato.',cat:'purple'},
+  {t:'Fallimenti del mercato',d:'Situazioni in cui il mercato non allocherebbe efficientemente senza intervento: monopolio naturale, esternalità, beni pubblici, asimmetrie informative.',cat:'red'},
+  {t:'Friburgo (Scuola di)',d:'Nucleo intellettuale dell\'ordoliberalismo (Eucken, Böhm). Nasce negli anni \'30 in reazione alla crisi di Weimar e alle concentrazioni del nazionalsocialismo.',cat:'purple'},
+  {t:'Gestione in house',d:'Affidamento del servizio pubblico a una società controllata dall\'ente senza gara pubblica. Ammessa in presenza di controllo analogo.',cat:'green'},
+  {t:'Governance reticolare',d:'Modello in cui la normativita\' è prodotta da centri molteplici (pubblici, privati, ibridi) in modo interdipendente.',cat:'purple'},
+  {t:'Harvard (Scuola di)',d:'Bain, Mason. La struttura industriale modifica gli incentivi. Il potere economico è il rischio principale. Focus: struttura domani.',cat:'yellow'},
+  {t:'Ibridazione pubblico-privato',d:'Standard privati (ISO) diventano parametri pubblici; certificazioni private verificano conformita\' legale; audit indipendenti svolgono funzioni ispettive.',cat:'purple'},
+  {t:'Industrie a rete',d:'Settori con infrastrutture fisiche non duplicabili (ferrovie, reti elettriche, gasdotti). Richiedono discipline su accesso, tariffe e unbundling.',cat:'blue'},
+  {t:'Mercato istituzionale',d:'Concezione condivisa da tutte e tre le scuole: il mercato non è un fatto naturale ma un assetto istituzionale normativamente mediato.',cat:'purple'},
+  {t:'Monopolio naturale',d:'Mercato in cui i costi diminuiscono all\'aumentare dell\'output al punto che è più efficiente avere un solo produttore. Tipico delle industrie a rete.',cat:'red'},
+  {t:'Obblighi di servizio pubblico',d:'Requisiti imposti dall\'autorità al gestore di un SIEG per finalità collettive: continuità, universalità, prezzi calmierati, standard qualitativi.',cat:'blue'},
+  {t:'Ordnungspolitik',d:'Politica dell\'ordine. Lo Stato non dirige prezzi o quantita\': stabilisce le regole del gioco per garantire la concorrenza.',cat:'purple'},
+  {t:'Ordoliberalismo',d:'Corrente tedesca (Scuola di Friburgo). Il mercato è un ORDO da costruire e garantire giuridicamente. Influenza il diritto UE (art. 3 TUE).',cat:'purple'},
+  {t:'Ostrom, Elinor',d:'Economista (Nobel 2009). I sistemi complessi possono essere governati da centri decisionali indipendenti ma coordinati (policentricita\').',cat:'yellow'},
+  {t:'Pendolo Stato-mercato',d:'Metafora del rapporto non stabile tra potere pubblico e mercato: oscilla per crisi economiche, trasformazioni sociali, ideologie dominanti.',cat:'blue'},
+  {t:'PNRR',d:'Piano Nazionale di Ripresa e Resilienza. Contiene obiettivi di razionalizzazione dei SPL e rafforzamento della concorrenza.',cat:'green'},
+  {t:'Policentricita\'',d:'La normativita\' è prodotta da centri molteplici con autonomia relativa e interdipendenza funzionale (istituzioni, imprese, standard tecnici, societa\' civile).',cat:'purple'},
+  {t:'Referendum 2011',d:'12-13 giugno 2011. Il 95% dei votanti abroga l\'art. 23-bis D.L. 112/2008 sui SPL. Reazione alla privatizzazione dei servizi essenziali.',cat:'red'},
+  {t:'Regulatory failure',d:'Fallimento della regolazione: l\'intervento causa danni maggiori dei fallimenti di mercato che intendeva correggere. Rischio enfatizzato da Chicago.',cat:'red'},
+  {t:'Scott, Colin',d:'Teorico della "Regulatory Governance": la normativita\' emerge dall\'interazione tra istituzioni e privati, superando il paradigma dello Stato regolatore.',cat:'yellow'},
+  {t:'SIEG',d:'Servizi di Interesse Economico Generale. Servizi economici assoggettati a obblighi di servizio pubblico. Godono di deroga alle regole di concorrenza.',cat:'blue'},
+  {t:'Servizi Pubblici Locali (SPL)',d:'Attivita\' di produzione di beni e servizi per fini sociali e sviluppo delle comunita\' locali. Disciplinati dal d.lgs. 201/2022.',cat:'green'},
+  {t:'Soft law',d:'Atti normativi privi di forza vincolante formale (linee guida, raccomandazioni, codici di condotta) che acquisiscono forza normativa reale tramite incorporazione.',cat:'purple'},
+  {t:'TUEL (Testo Unico Enti Locali)',d:'D.lgs. n. 267/2000. Artt. 112-113: disciplina originaria dei SPL come attivita\' dirette a fini sociali e sviluppo delle comunita\' locali.',cat:'green'},
+  {t:'Unbundling',d:'Separazione (contabile, funzionale o proprietaria) tra gestione dell\'infrastruttura di rete ed erogazione del servizio. Tipico energia e telecomunicazioni.',cat:'blue'},
+];
+
+const FLASHCARDS=[
+  {cat:'Regolazione',q:'Qual è la differenza fondamentale tra regolazione e pianificazione diretta?',a:'La regolazione interviene sull\'attività privata senza sostituirvisi integralmente (tecnica ibrida). La pianificazione diretta sostituisce l\'iniziativa privata con il comando pubblico.'},
+  {cat:'Regolazione',q:'Cosa intende Baldwin per "regulation come concetto ombrello"?',a:'La regulation è una categoria funzionale inevitabilmente ambigua: descrittiva, normativa, istituzionale e funzionale insieme. "L\'ambiguità è il prezzo della sua centralità."'},
+  {cat:'Regolazione',q:'Quali sono i caratteri della 3ª accezione di regolazione?',a:'1) Supervisione tecnica 2) Controllo continuo (non episodico) 3) Regolazione ex ante 4) Poteri sanzionatori'},
+  {cat:'Regolazione',q:'Perché la 2ª accezione rischia di diventare sinonimo di "politica pubblica"?',a:'Perché se ogni intervento che influenza comportamenti è regulation, si includerebbe fiscalità incentivante, normativa del lavoro, diritto penale economico — troppo inclusiva.'},
+  {cat:'Mercato',q:'Cosa significa che il mercato è un "ordine istituzionale"?',a:'Il mercato non è spontaneo. È un equilibrio costruito e mantenuto dal diritto: senza regole su proprietà, contratti e concorrenza, non esiste mercato.'},
+  {cat:'Mercato',q:'Quali sono le tre concezioni del mercato secondo il diritto?',a:'1) Ordine giuridico da costruire e preservare (ordoliberalismo/UE) 2) Struttura economica da analizzare (Harvard) 3) Meccanismo efficiente da non distorcere (Chicago)'},
+  {cat:'Scuole',q:'Qual è l\'idea centrale dell\'Ordoliberalismo?',a:'Il mercato è un ORDO da costruire e garantire giuridicamente. Il problema non è Stato vs mercato: è impedire che il potere economico privato distrugga la concorrenza.'},
+  {cat:'Scuole',q:'Cosa distingue Harvard da Chicago nell\'analisi antitrust?',a:'Harvard: rischio strutturale nel lungo periodo (struttura industriale critica). Chicago: rischio regolatorio nell\'intervento prematuro (si analizzano effetti concreti e prezzi).'},
+  {cat:'Scuole',q:'Cosa significa "Ordnungspolitik"?',a:'Politica dell\'ordine: lo Stato non dirige prezzi o quantità ma stabilisce le regole del gioco. Garantire concorrenza, impedire cartelli e posizioni dominanti.'},
+  {cat:'Scuole',q:'Come l\'ordoliberalismo ha influenzato il diritto dell\'UE?',a:'Art. 3 TUE: l\'Unione "instaura" un mercato interno (non lo "consente"). Parla di "economia sociale di mercato fortemente competitiva". Il mercato è un assetto istituzionale.'},
+  {cat:'Costituzione',q:'Cosa prevede l\'art. 42 Cost. sull\'espropriazione?',a:'Tre condizioni cumulative: 1) Riserva di legge 2) Interesse generale 3) Indennizzo. Senza queste è confisca incostituzionale.'},
+  {cat:'Costituzione',q:'Qual è la "funzione sociale" della proprietà?',a:'La proprietà non è assoluta: il proprietario non può danneggiare l\'interesse collettivo. La legge impone limiti ambientali, urbanistici e sociali.'},
+  {cat:'Costituzione',q:'Cosa prevede l\'art. 41 Cost. sulla libertà d\'impresa?',a:'L\'iniziativa economica privata è libera ma non può svolgersi in contrasto con l\'utilità sociale o recare danno a sicurezza, libertà e dignità umana.'},
+  {cat:'TFUE',q:'Qual è la regola generale dell\'art. 106 TFUE?',a:'Gli Stati non possono mantenere misure contrarie ai Trattati verso imprese pubbliche o con diritti speciali. I SIEG sono soggetti alle regole di concorrenza salvo incompatibilità con la missione.'},
+  {cat:'TFUE',q:'Cosa garantisce l\'art. 345 TFUE agli Stati membri?',a:'I Trattati lasciano impregiudicato il regime di proprietà. L\'UE non obbliga né a privatizzare né a nazionalizzare: è scelta politica nazionale.'},
+  {cat:'SIEG',q:'Cosa sono gli Obblighi di Servizio Pubblico?',a:'Requisiti imposti al gestore per finalità collettive: continuità, universalità (anche zone non profittevoli), prezzi calmierati, standard qualitativi minimi.'},
+  {cat:'SPL',q:'Cosa prevedeva l\'art. 23-bis D.L. 112/2008?',a:'La gara pubblica come modello ordinario di affidamento SPL. La gestione in house come eccezione residuale.'},
+  {cat:'SPL',q:'Perché la Corte Cost. ha dichiarato illegittimo l\'art. 4 D.L. 138/2011?',a:'Il legislatore aveva riprodotto la medesima ratio dell\'art. 23-bis appena abrogato dal referendum (95% voti), eludendo la volontà popolare.'},
+  {cat:'SPL',q:'Quali sono i requisiti del controllo analogo per la gestione in house?',a:'1) Partecipazione pubblica prevalente/totalitaria 2) Controllo penetrante sulle scelte strategiche 3) Attività svolta prevalentemente con l\'ente controllante.'},
+  {cat:'SPL',q:'Quali fattori hanno determinato l\'evoluzione dei SPL negli ultimi decenni?',a:'1) Armonizzazione con diritto UE 2) Centralità del principio di concorrenza 3) Referendum 2011 4) Pronunce Corte Costituzionale 5) Obiettivi PNRR.'},
+  {cat:'Fallimenti',q:'Quali sono i principali fallimenti del mercato?',a:'1) Monopolio naturale 2) Esternalità negative 3) Beni pubblici 4) Asimmetrie informative (Akerlof) 5) Potere di mercato.'},
+  {cat:'Fallimenti',q:'Cosa dimostra il modello del "mercato dei limoni" di Akerlof?',a:'L\'asimmetria informativa può causare il collasso del mercato: solo i venditori di beni scadenti trovano conveniente offrire, i compratori si ritirano (selezione avversa).'},
+  {cat:'Governance',q:'Perché il decentramento regolatorio è inevitabile secondo Julia Black?',a:'Tre motivi: 1) Informazioni distribuite 2) Capacità diffuse (le leve non sono solo pubbliche) 3) Potere normativo condiviso (processi reputazionali creano vincoli reali).'},
+  {cat:'Governance',q:'Cosa distingue "Stato Regolatore" da "Regulatory Governance" (Colin Scott)?',a:'Stato Regolatore: statocentrico (Stato produce, privati obbediscono). Regulatory Governance: normativita\' condivisa, distribuita e co-prodotta in rete.'},
+];
+
+const QUIZ=[
+  {q:'Secondo Baldwin, Cave e Lodge, la regolazione è una categoria:',opts:['Univoca e ben definita','Inevitabilmente ambigua, funzionale e adattiva alla complessità','Solo tipica del sistema americano','Coincidente con il diritto penale economico'],ans:1,expl:'La regulation è una "categoria ombrello" inevitabilmente ambigua. L\'ambiguità è il prezzo della sua centralità nei sistemi contemporanei.'},
+  {q:'La regolazione si colloca nello spazio intermedio tra:',opts:['Diritto pubblico e diritto privato','Diritto italiano e diritto UE','Mercato autoregolato e pianificazione diretta','Soft law e hard law'],ans:2,expl:'Tecnica ibrida: né pura libertà di mercato né gestione diretta dello Stato.'},
+  {q:'Quale affermazione descrive meglio il mercato secondo l\'ordoliberalismo?',opts:['Il mercato è un ordine spontaneo che emerge dall\'interazione libera','Il mercato è un ORDO da costruire e garantire giuridicamente','Il mercato è un meccanismo efficiente da non distorcere','Il mercato è una struttura da analizzare empiricamente'],ans:1,expl:'L\'ordoliberalismo (Scuola di Friburgo) ritiene che il mercato richieda costruzione giuridica attiva.'},
+  {q:'L\'art. 3 TUE parla di "economia sociale di mercato fortemente competitiva". Da quale scuola è influenzato?',opts:['Scuola di Chicago','Scuola di Harvard','Ordoliberalismo','Keynesianesimo'],ans:2,expl:'L\'ordoliberalismo ha influenzato i Trattati UE. Il Trattato non "consente" il mercato: lo "instaura".'},
+  {q:'Cosa prevede l\'art. 42 Cost. per l\'espropriazione?',opts:['Riserva di legge e indennizzo, senza motivazione','Riserva di legge, interesse generale e indennizzo','Solo l\'interesse generale','Non è mai ammessa dalla Costituzione'],ans:1,expl:'Art. 42, comma 3: tre condizioni cumulative. Senza di esse si tratta di confisca incostituzionale.'},
+  {q:'Secondo l\'art. 106 TFUE, le imprese pubbliche sono soggette alle regole di concorrenza:',opts:['Mai, per le loro missioni di pubblico interesse','Sempre, senza eccezioni','Sì, salvo che l\'applicazione ostacoli l\'adempimento della missione SIEG affidata','Solo se quotate in borsa'],ans:2,expl:'Art. 106, par. 2: i SIEG sono soggetti alle regole di concorrenza "nei limiti in cui l\'applicazione non osti alla missione affidata".'},
+  {q:'Il Referendum del giugno 2011 ha avuto quale esito per i SPL?',opts:['Ha confermato il modello della gara obbligatoria','Ha abrogato l\'art. 23-bis D.L. 112/2008 con il 95% dei voti','Ha introdotto la gestione in house come regola','Ha trasferito la competenza alle Regioni'],ans:1,expl:'Il 95% dei votanti ha abrogato l\'art. 23-bis. Reazione alla privatizzazione dei servizi essenziali.'},
+  {q:'La Corte Costituzionale ha dichiarato illegittimo l\'art. 4 D.L. 138/2011 perché:',opts:['Violava l\'art. 117 Cost. sulle competenze regionali','Il legislatore aveva riprodotto la medesima ratio dell\'articolo abrogato dal referendum','Era in contrasto con il diritto UE','Mancava la riserva di legge'],ans:1,expl:'Sent. n. 199/2012: il legislatore aveva eluso la volontà popolare riproponendo la stessa ratio dell\'art. 23-bis.'},
+  {q:'Cosa si intende per "gestione in house" dei SPL?',opts:['Gestione da privati tramite gara pubblica','Gestione diretta dall\'ente locale con propri dipendenti','Affidamento a una società controllata dall\'ente senza gara pubblica','Gestione mista pubblico-privata al 50%'],ans:2,expl:'La gestione in house è l\'affidamento a una società che l\'ente pubblico controlla con "controllo analogo" a quello sui propri servizi interni.'},
+  {q:'Perché il decentramento regolatorio è inevitabile secondo Julia Black?',opts:['Per ragioni politiche di equilibrio dei poteri','Per tre motivi: informazioni distribuite, capacità diffuse, potere normativo condiviso','Per garantire l\'indipendenza delle Autorità','Per ridurre i costi della regolazione'],ans:1,expl:'Black identifica tre cause strutturali: sapere tecnico distribuito, leve non solo pubbliche, processi reputazionali privati che creano vincoli reali.'},
+  {q:'Il modello del "mercato dei limoni" di Akerlof dimostra che:',opts:['Il mercato funziona bene con qualsiasi asimmetria informativa','L\'asimmetria informativa può causare il collasso del mercato','Le esternalità sono il principale fallimento del mercato','La regolazione è sempre preferibile al mercato'],ans:1,expl:'Akerlof: nel mercato delle auto usate solo i venditori di beni scadenti trovano conveniente offrire; i compratori si ritirano anticipando la selezione avversa.'},
+  {q:'La scuola di Chicago applicata ad Amazon tenderebbe a concludere che:',opts:['Amazon deve essere smembrata per la posizione dominante','La concentrazione può essere efficiente se offre prezzi bassi e innovazione','Amazon è un cartello da reprimere','Il mercato digitale è un fallimento per definizione'],ans:1,expl:'Chicago analizza gli effetti concreti. Prezzi bassi e innovazione possono riflettere efficienza. Il rischio è il regulatory failure da intervento prematuro.'},
+  {q:'Quale documento ha conferito all\'Italia obiettivi di razionalizzazione dei SPL?',opts:['Il Trattato di Maastricht','Il Piano Nazionale di Ripresa e Resilienza (PNRR)','La Legge Madia 124/2015','Il TUEL 2000'],ans:1,expl:'Il d.lgs. 201/2022 di riordino dei SPL rientra tra gli obiettivi del PNRR italiano.'},
+  {q:'Cosa distingue l\'art. 345 TFUE dalla politica di concorrenza UE?',opts:['L\'art. 345 impone la privatizzazione','L\'art. 345 garantisce la neutralità UE riguardo al regime di proprietà degli Stati','L\'art. 345 introduce la regola del 50% di proprietà pubblica','Non c\'è differenza sostanziale'],ans:1,expl:'Art. 345 TFUE: l\'UE non obbliga né a privatizzare né a nazionalizzare. Gli Stati scelgono liberamente il regime di proprietà.'},
+  {q:'Cosa caratterizza la "Regulatory Governance" rispetto allo "Stato Regolatore" (Scott)?',opts:['Maggiore centralizzazione decisionale','Normativita\' condivisa, distribuita e co-prodotta in rete tra pubblico e privato','Maggiore efficienza grazie alla riduzione degli attori','Esclusione dei privati dalla produzione delle regole'],ans:1,expl:'Colin Scott: la normativita\' non è più prerogativa dello Stato ma emerge dall\'interazione tra istituzioni, imprese, standard tecnici e societa\' civile.'},
+];
+
+// ── SEZIONI HTML ─────────────────────────────────────────────────────────────
+
+const SH={};
+
+SH.home=`<div class="morale-box"><div class="morale-emoji">⚖️</div><div><div class="morale-title">Diritto dell'Economia — metodo prima di tutto.</div><div class="morale-text">Favaro ragiona per <strong>concetti e contrapposizioni</strong>. Studia le scuole di pensiero una contro l'altra, impara gli articoli chiave (41-42 Cost., 106 TFUE) e i casi istituzionali (SPL, SIEG). Usa i <strong>Percorsi Guidati</strong> nell'ordine, poi consolida con Flashcard e Quiz.</div></div></div>
+<div class="stat-grid"><div class="stat-card"><div class="stat-num green" id="s-done">0</div><div class="stat-label">Topic completati</div></div><div class="stat-card"><div class="stat-num blue" id="s-perc">0</div><div class="stat-label">Percorsi finiti</div></div><div class="stat-card"><div class="stat-num yellow" id="s-quiz">0</div><div class="stat-label">Quiz corretti</div></div><div class="stat-card"><div class="stat-num pink" id="s-streak">0</div><div class="stat-label">Streak flashcard</div></div></div>
+<div class="section-header"><h2>Piano Studio — 28 Topic</h2><p>Spunta quando sei sicuro. ❗ alta · ⚡ media · ✓ base</p></div>
+<div class="topic-list" id="topicList"></div>`;
+
+SH.argomenti=`<div class="section-header"><h2>Argomenti per Macro-tema</h2><p>Clic sull'intestazione per espandere. Studia un blocco alla volta.</p></div>
+
+<div class="acc-item">
+<div class="acc-header" onclick="toggleAcc(this)">
+  <span style="font-size:18px;">📐</span>
+  <span class="acc-title">1. Metodologia e Definizioni</span>
+  <span class="acc-chev">▼</span>
+</div>
+<div class="acc-body"><div class="acc-inner">
+  <div class="phbox">Il diritto dell'economia studia il rapporto tra <strong>stato e mercato</strong>: quando e come il diritto interviene a costruire, correggere o limitare i meccanismi economici.</div>
+  <ul>
+    <li><strong>Le tre accezioni di "regolazione"</strong> (Baldwin, Cave &amp; Lodge): insieme di norme + organo di controllo / influenza statale sull'economia / qualsiasi meccanismo di controllo sociale</li>
+    <li><strong>Autoregolazione</strong> vs <strong>pianificazione diretta</strong>: il mercato puro come polo opposto alla gestione pubblica; la regolazione occupa lo spazio intermedio</li>
+    <li><strong>Il mercato come costruzione istituzionale</strong>: non è uno stato di natura ma un sistema di regole giuridiche (proprietà, contratto, concorrenza) che lo rendono possibile</li>
+    <li><strong>Ragioni della regolazione</strong>: fallimenti del mercato (monopolio naturale, esternalità, asimmetrie informative), tutela di valori non economici, redistribuzione</li>
+    <li><strong>Akerlof e il mercato dei limoni</strong>: asimmetria informativa → selezione avversa → intervento pubblico obbligato</li>
+  </ul>
+</div></div>
+</div>
+
+<div class="acc-item">
+<div class="acc-header" onclick="toggleAcc(this)">
+  <span style="font-size:18px;">🏛️</span>
+  <span class="acc-title">2. Le Scuole di Pensiero</span>
+  <span class="acc-chev">▼</span>
+</div>
+<div class="acc-body"><div class="acc-inner">
+  <div class="phbox yellow"><strong>Ordoliberalismo (Scuola di Friburgo)</strong> — Eucken, Böhm, Hayek: il mercato concorrenziale non è spontaneo ma deve essere costruito e garantito dall'ordinamento giuridico. Lo stato disciplina le regole del gioco (Ordnungspolitik), non gestisce l'economia. Influenza diretta su art. 3 TUE e diritto UE della concorrenza.</div>
+  <div class="phbox blue"><strong>Scuola di Harvard</strong> — Mason, Bain: analisi strutturale del mercato (SCP: struttura → condotta → performance). Le concentrazioni di potere economico richiedono correzione regolatoria. Fondamento teorico del diritto antitrust classico.</div>
+  <div class="phbox"><strong>Scuola di Chicago</strong> — Stigler, Posner, Becker: massimizzazione dell'efficienza allocativa come unico criterio. Sospetto verso l'intervento pubblico (regulatory capture). Influenza su politiche deregolatory anni '80.</div>
+  <ul>
+    <li>Confronto chiave: ordoliberalismo costruisce il mercato; Harvard lo sorveglia; Chicago lo lascia fare</li>
+    <li>Capture theory (Stigler): i regolatori finiscono per servire i regolati → critica all'intervento</li>
+    <li>Applicazione alle big tech: Harvard vede struttura oligopolistica → break-up; Chicago vede efficienza → non intervenire</li>
+  </ul>
+</div></div>
+</div>
+
+<div class="acc-item">
+<div class="acc-header" onclick="toggleAcc(this)">
+  <span style="font-size:18px;">📜</span>
+  <span class="acc-title">3. Costituzione ed Economia (artt. 41-42)</span>
+  <span class="acc-chev">▼</span>
+</div>
+<div class="acc-body"><div class="acc-inner">
+  <div class="phbox green"><strong>Art. 41 Cost.</strong> — libertà d'iniziativa economica privata; non può svolgersi in contrasto con l'utilità sociale o arrecare danno alla sicurezza, libertà, dignità umana. Il 3° comma permette alla legge di determinare programmi e controlli per fini sociali.</div>
+  <div class="phbox green"><strong>Art. 42 Cost.</strong> — proprietà pubblica o privata riconosciuta dalla legge; funzione sociale della proprietà privata; espropriazione per motivi di interesse generale con indennizzo.</div>
+  <ul>
+    <li>La "funzione sociale" non è eccezione ma carattere intrinseco della proprietà nell'ordine costituzionale italiano</li>
+    <li>Riserva originaria allo Stato (art. 43): espropriazione o nazionalizzazione di monopoli o servizi essenziali</li>
+    <li>Equilibrio tra libertà del privato e interesse generale: il diritto dell'economia vive in questa tensione</li>
+    <li>Confronto con diritto UE: libertà di stabilimento, libera prestazione di servizi, concorrenza vs golden share nazionale</li>
+  </ul>
+</div></div>
+</div>
+
+<div class="acc-item">
+<div class="acc-header" onclick="toggleAcc(this)">
+  <span style="font-size:18px;">🌐</span>
+  <span class="acc-title">4. TFUE: Imprese Pubbliche e SIEG (artt. 106, 345)</span>
+  <span class="acc-chev">▼</span>
+</div>
+<div class="acc-body"><div class="acc-inner">
+  <div class="phbox blue"><strong>Art. 106 TFUE</strong> — le imprese pubbliche e quelle titolari di diritti speciali/esclusivi sono soggette alle regole del Trattato (in particolare concorrenza), <em>salvo</em> che l'applicazione di tali norme osti all'adempimento della missione loro affidata. Deroga di necessità per i SIEG.</div>
+  <div class="phbox blue"><strong>Art. 345 TFUE</strong> — "Il presente Trattato lascia impregiudicato il regime di proprietà esistente negli Stati membri." Principio di neutralità UE sulla scelta pubblico/privato nelle imprese.</div>
+  <ul>
+    <li><strong>SIEG</strong> (Servizi di Interesse Economico Generale): attività economiche che le autorità pubbliche considerano essenziali e che il mercato non fornirebbe adeguatamente → obbligo di servizio pubblico</li>
+    <li>Test di proporzionalità: la restrizione alla concorrenza deve essere necessaria e proporzionale alla missione SIEG</li>
+    <li>Disciplina degli aiuti di Stato connessa: compatibilità con mercato interno (art. 107 TFUE), pacchetto Almunia</li>
+    <li>Distinzione SIEG / SSIG (Servizi Sociali di Interesse Generale): questi ultimi non economici, fuori dalle norme di concorrenza</li>
+  </ul>
+</div></div>
+</div>
+
+<div class="acc-item">
+<div class="acc-header" onclick="toggleAcc(this)">
+  <span style="font-size:18px;">🚌</span>
+  <span class="acc-title">5. Servizi Pubblici Locali — Evoluzione Normativa</span>
+  <span class="acc-chev">▼</span>
+</div>
+<div class="acc-body"><div class="acc-inner">
+  <div class="phbox"><strong>TUEL (d.lgs. 267/2000)</strong> — testo unico enti locali; gestione diretta o mediante società partecipate senza obbligo di gara; modello "municipalizzato" tradizionale.</div>
+  <div class="phbox yellow"><strong>Art. 23-bis d.l. 112/2008</strong> — svolta liberalizzatrice: gara come regola generale per SPL rilevanza economica; in house come eccezione motivata. <em>Abrogato da referendum 2011</em> (quesito sull'acqua pubblica).</div>
+  <div class="phbox green"><strong>Sentenza Corte Cost. n. 199/2012</strong> — colpisce l'art. 4 d.l. 138/2011 che reintroduceva privatizzazione nonostante il referendum → principio di rispetto della volontà popolare espressa.</div>
+  <div class="phbox blue"><strong>D.lgs. 201/2022</strong> (Riordino SPL) — ricodifica organica: conferma gara come regola; tipizza modelli gestionali; rafforza oneri di motivazione per in house; introduce revisione periodica delle partecipazioni.</div>
+  <ul>
+    <li>In house providing: requisiti → controllo analogo (intensità di controllo superiore al normale), attività prevalente per l'ente, partecipazione pubblica totalitaria</li>
+    <li>Partenariato pubblico-privato: contratto vs PPP istituzionalizzato (società mista)</li>
+    <li>Servizi privi di rilevanza economica: scuole, biblioteche comunali — fuori dalle norme di concorrenza, regime autonomo</li>
+  </ul>
+</div></div>
+</div>
+
+<div class="acc-item">
+<div class="acc-header" onclick="toggleAcc(this)">
+  <span style="font-size:18px;">🕸️</span>
+  <span class="acc-title">6. Governance Reticolare e Policentricità</span>
+  <span class="acc-chev">▼</span>
+</div>
+<div class="acc-body"><div class="acc-inner">
+  <div class="phbox"><strong>Elinor Ostrom</strong> (Nobel 2009) — gestione dei commons: i beni comuni non sono necessariamente soggetti a "tragedia"; le comunità locali sviluppano sistemi di autoregolazione sostenibili (policentricità orizzontale).</div>
+  <div class="phbox blue"><strong>Julia Black</strong> — regulatory pluralism: la regolazione è frammentata tra molteplici attori pubblici, privati, semi-pubblici. I confini tra stato e mercato si dissolvono → meta-regulation, co-regulation.</div>
+  <div class="phbox yellow"><strong>W. Richard Scott</strong> — istituzioni come pilastri: regolativo (norme cogenti), normativo (norme sociali), cognitivo-culturale (schemi interpretativi condivisi). Applicato per capire come il diritto morbido (soft law) acquisisce forza.</div>
+  <ul>
+    <li>Soft law: linee guida, codici di condotta, standard tecnici — vincolano de facto anche senza sanzione giuridica diretta</li>
+    <li>Agenzie indipendenti: autonomia tecnica dalla politica, accountability procedurale (AGCM, AGCOM, ARERA)</li>
+    <li>Europeizzazione della regolazione: rete di autorità nazionali coordinata da autorità UE → ECN, BEREC</li>
+    <li>Ibridazione pubblico-privato: organismi privati che svolgono funzioni regolative (es. certificatori, organismi di normazione)</li>
+  </ul>
+</div></div>
+</div>
+`;
+
+SH.percorsi=`<div class="section-header"><h2>Percorsi Guidati</h2><p>Teoria passo-passo con domande di verifica intercalate. Scegli un percorso e avanza.</p></div>
+<div class="percorsi-grid" id="percorsiGrid"></div>
+<div class="player" id="player" style="display:none">
+  <div class="player-header">
+    <button class="player-back" onclick="closePlayer()">← Percorsi</button>
+    <div class="player-title" id="playerTitle"></div>
+    <div class="player-prog"><div class="player-prog-bar" id="playerProgBar" style="width:0%"></div></div>
+    <div class="player-step-num" id="playerStepNum">1/1</div>
+  </div>
+  <div id="playerSteps"></div>
+  <div class="step-nav">
+    <button class="btn" id="btnPrev" onclick="prevStep()">← Prec.</button>
+    <button class="btn primary" id="btnNext" onclick="nextStep()">Avanti →</button>
+    <div class="step-score" id="stepScore"></div>
+  </div>
+</div>`;
+
+SH.glossario=`<div class="section-header"><h2>Glossario</h2><p>40 voci. Cerca per termine o concetto chiave.</p></div>
+<input class="glossario-search" type="text" id="glossSearch" placeholder="🔍  Cerca… es. SIEG, ordoliberalismo, in house" oninput="renderGlossario(this.value)">
+<div id="glossList"></div>`;
+
+SH.flashcard=`<div class="section-header"><h2>Flashcard</h2><p>Leggi la domanda → rispondi ad alta voce → clicca per verificare → valuta.</p></div>
+<div class="fc-filter">
+  <button class="filter-btn active" onclick="setFCFilter('Tutti',this)">Tutti</button>
+  <button class="filter-btn" onclick="setFCFilter('Regolazione',this)">⚖️ Regolazione</button>
+  <button class="filter-btn" onclick="setFCFilter('Mercato',this)">🏛️ Mercato</button>
+  <button class="filter-btn" onclick="setFCFilter('Scuole',this)">🏫 Scuole</button>
+  <button class="filter-btn" onclick="setFCFilter('Costituzione',this)">📜 Costituzione</button>
+  <button class="filter-btn" onclick="setFCFilter('TFUE',this)">🇪🇺 TFUE</button>
+  <button class="filter-btn" onclick="setFCFilter('SPL',this)">🏙️ SPL</button>
+  <button class="filter-btn" onclick="setFCFilter('Governance',this)">🕸️ Governance</button>
+</div>
+<div class="flashcard-area">
+  <div class="fc-meta"><div class="fc-counter" id="fcCounter">1/24</div><div class="fc-cat-badge" id="fcCat">—</div></div>
+  <div class="flashcard" id="flashcard" onclick="flipCard()">
+    <div class="fc-inner"><div class="fc-front"><div class="fc-label">❓ Domanda</div><div class="fc-question" id="fcQuestion">Caricamento...</div><div class="fc-hint">👆 Clicca per la risposta</div></div>
+    <div class="fc-back"><div class="fc-label">✅ Risposta</div><div class="fc-answer" id="fcAnswer">...</div></div></div>
+  </div>
+  <div class="fc-actions">
+    <button class="btn danger" onclick="rateCard('no')">❌ Non sapevo</button>
+    <button class="btn warn" onclick="rateCard('parz')">🤔 Parziale</button>
+    <button class="btn primary" onclick="rateCard('si')">✅ Sapevo!</button>
+  </div>
+  <div style="display:flex;gap:8px;margin-top:4px">
+    <button class="btn" onclick="prevCard()">← Prec.</button>
+    <button class="btn" onclick="nextCard()">Succ. →</button>
+    <button class="btn" onclick="shuffleFC()">🔀 Mescola</button>
+  </div>
+</div>`;
+
+SH.quiz=`<div class="section-header"><h2>Quiz di Verifica</h2><p>15 domande a risposta multipla su tutti gli argomenti. Mescolate ad ogni sessione.</p></div>
+<div class="quiz-wrap" id="quizWrap"></div>`;
+
+SH.esami=`<div class="section-header"><h2>Esami Passati &amp; Struttura</h2><p>Pattern dell'esame Favaro e domande tipiche per argomento.</p></div>
+<div class="alert-box"><div class="alert-title">⚠️ Formato esame Favaro — Diritto dell'Economia UniPi</div><div class="alert-text"><strong>Orale o scritto</strong> (verificare con la prof). Domande aperte su concetti, distinzioni tra scuole, articoli normativi. Favaro apprezza chi sa <strong>argomentare le contrapposizioni</strong> e collegare dottrina a normativa.</div></div>
+<div class="esame-card"><div class="esame-header"><div class="esame-anno">❗ Domande quasi certe</div><div class="esame-tipo">Alta probabilità</div></div><div class="esame-body">
+<div class="esame-section"><div class="esame-section-title">Teoria generale</div>
+<div class="domanda-item hot" onclick="toggleDomanda(this)"><div class="domanda-q">↪ Cos'è la regolazione? Illustrare le tre accezioni di Baldwin, Cave e Lodge.</div><div class="domanda-ans">💡 1) Norme+controllo (compliance); 2) Influenza statale sull'economia; 3) Qualsiasi meccanismo di controllo sociale. Cave e Lodge aggiungono: la regolazione è la tecnica di governo che occupa lo spazio tra mercato puro e pianificazione diretta.</div></div>
+<div class="domanda-item hot" onclick="toggleDomanda(this)"><div class="domanda-q">↪ Differenza tra regolazione e pianificazione diretta. La regolazione come "tecnica di governo ibrida".</div><div class="domanda-ans">💡 La pianificazione sostituisce il mercato (proprietà pubblica + ordini). La regolazione lascia operare agenti privati fissando regole, standard, prezzi → ibrido tra autonomia privata e controllo pubblico.</div></div>
+<div class="domanda-item hot" onclick="toggleDomanda(this)"><div class="domanda-q">↪ Perché il mercato è una "costruzione giuridico-istituzionale"? Quali scuole lo affermano?</div><div class="domanda-ans">💡 Ordoliberalismo (Eucken): il mercato concorrenziale non esiste spontaneamente ma richiede un ordinamento giuridico che ne garantisca le regole. Anche Ostrom e la scuola istituzionalista condividono questa posizione.</div></div>
+</div>
+<div class="esame-section"><div class="esame-section-title">Le tre scuole</div>
+<div class="domanda-item hot" onclick="toggleDomanda(this)"><div class="domanda-q">↪ Confrontare ordoliberalismo, Scuola di Harvard e Scuola di Chicago nell'analisi del mercato.</div><div class="domanda-ans">💡 Ordo → costruisce il mercato tramite l'ordinamento (Ordnungspolitik). Harvard → sorveglia la struttura industriale (SCP), teme concentrazioni. Chicago → massimizza efficienza, sospetta l'intervento (capture theory, Stigler).</div></div>
+<div class="domanda-item hot" onclick="toggleDomanda(this)"><div class="domanda-q">↪ L'influenza dell'ordoliberalismo sul diritto dell'Unione Europea (art. 3 TUE).</div><div class="domanda-ans">💡 Art. 3 TUE menziona 'economia sociale di mercato altamente competitiva'. Il mercato concorrenziale come obiettivo istituzionale dell'UE è eredità diretta del pensiero ordoliberale tedesco che ha ispirato i padri fondatori.</div></div>
+<div class="domanda-item hot" onclick="toggleDomanda(this)"><div class="domanda-q">↪ Come applichereste Harvard e Chicago al caso delle piattaforme digitali?</div><div class="domanda-ans">💡 Harvard → analisi strutturale (dominant position, lock-in, network effects → intervento antitrust, DMA). Chicago → efficienza della piattaforma (two-sided markets, low prices → no intervento). Tension regolatorio nel DMA/DSA UE.</div></div>
+</div>
+<div class="esame-section"><div class="esame-section-title">Normativa</div>
+<div class="domanda-item hot" onclick="toggleDomanda(this)"><div class="domanda-q">↪ Artt. 41-42 Cost.: libertà d'impresa, funzione sociale della proprietà, espropriazione.</div><div class="domanda-ans">💡 Art. 41: libertà economica + limiti utilità sociale. Art. 42: proprietà pubblica/privata + funzione sociale + indennizzo. Bilanciamento tra autonomia privata e interesse collettivo: fondamento costituzionale di tutta la regolazione economica italiana.</div></div>
+<div class="domanda-item hot" onclick="toggleDomanda(this)"><div class="domanda-q">↪ Art. 106 TFUE: imprese pubbliche, SIEG e deroga alle regole di concorrenza.</div><div class="domanda-ans">💡 Par. 1: imprese pubbliche/privilegi → rispettano il Trattato. Par. 2: SIEG → deroga se necessaria per missione. Par. 3: Commissione veglia. Test: necessità + proporzionalità dell'esenzione. Collegamento con aiuti di Stato (art. 107).</div></div>
+<div class="domanda-item hot" onclick="toggleDomanda(this)"><div class="domanda-q">↪ Evoluzione della disciplina dei SPL: dal TUEL al d.lgs. 201/2022.</div><div class="domanda-ans">💡 TUEL 2000 → gestione diretta/partecipate. 23-bis 2008 → gara come regola, in house eccezionale. Referendum 2011 → abrogazione. Cost. 199/2012 → no reintroduzione privatizzazione. D.lgs. 201/2022 → ricodifica organica, gara + motivazione in house.</div></div>
+</div>
+</div></div>
+<div class="esame-card"><div class="esame-header"><div class="esame-anno">⚡ Domande frequenti</div><div class="esame-tipo">Media probabilità</div></div><div class="esame-body">
+<div class="domanda-item mid" onclick="toggleDomanda(this)"><div class="domanda-q">↪ Obblighi di servizio pubblico: cosa sono e come conformano l'attività economica.</div><div class="domanda-ans">💡 Obblighi imposti dall'autorità pubblica a un'impresa (anche privata) per garantire continuità, universalità, prezzo accessibile, qualità minima di un servizio essenziale. Strumento per conciliare logica di mercato e interesse generale.</div></div>
+<div class="domanda-item mid" onclick="toggleDomanda(this)"><div class="domanda-q">↪ Il referendum 2011 e la sentenza Cost. n. 199/2012: perché il legislatore ha eluso la volontà popolare.</div><div class="domanda-ans">💡 Referendum abroga 23-bis (privatizzazione SPL). Il governo reintroduce sostanzialmente le stesse norme con art. 4 d.l. 138/2011. Corte Cost. 199/2012: incostituzionale perché viola il principio per cui la legge non può ripristinare ciò che il referendum ha abrogato.</div></div>
+<div class="domanda-item mid" onclick="toggleDomanda(this)"><div class="domanda-q">↪ Gestione in house: requisiti del controllo analogo e rapporto con la gara pubblica.</div><div class="domanda-ans">💡 Controllo analogo: influenza determinante sugli obiettivi strategici e sulle decisioni significative (più intenso del normale rapporto socio-società). Attività prevalente per l'ente controllante. Partecipazione pubblica: no privati. Se questi 3 requisiti → esenzione dalla gara (sentenza Teckal CGUE).</div></div>
+<div class="domanda-item mid" onclick="toggleDomanda(this)"><div class="domanda-q">↪ Policentricità: Ostrom, Black e Scott — perché il decentramento regolatorio è inevitabile.</div><div class="domanda-ans">💡 Ostrom: i commons funzionano con autoregolazione locale. Black: la complessità moderna frammenta il potere regolatorio tra molti attori. Scott: istituzioni = pilastri (regolativo, normativo, cognitivo). Policentricità = risposta inevitabile alla complessità tecnica e sociale.</div></div>
+<div class="domanda-item mid" onclick="toggleDomanda(this)"><div class="domanda-q">↪ Soft law e ibridazione pubblico-privato: quando gli standard privati acquistano forza normativa.</div><div class="domanda-ans">💡 Gli standard tecnici privati (ISO, CEN) diventano giuridicamente rilevanti quando il legislatore vi rinvia (rinvio recettizio) o quando sono de facto imprescindibili per accedere al mercato. Meta-regulation: lo stato regola i regolatori privati senza produrre norme di contenuto.</div></div>
+<div class="domanda-item mid" onclick="toggleDomanda(this)"><div class="domanda-q">↪ Fallimenti del mercato: monopolio naturale, esternalità, asimmetrie informative (Akerlof).</div><div class="domanda-ans">💡 Monopolio naturale: costi fissi alti → un solo operatore efficiente → regolazione tariffaria. Esternalità negative: costi non internalizzati → tassa Pigou, permessi commerciabili. Akerlof (limoni): asimmetria informativa → selezione avversa → mercato collassa → certificazione, garanzie obbligatorie.</div></div>
+</div></div>
+<div class="esame-card"><div class="esame-header"><div class="esame-anno">📊 Distribuzione argomenti stimata</div><div class="esame-tipo">Peso relativo</div></div><div class="esame-body">
+<table><thead><tr><th>Argomento</th><th>Peso</th><th>Priorità</th></tr></thead><tbody>
+<tr><td>Regolazione — definizioni e accezioni</td><td>~20%</td><td><span class="chip chip-red">❗ ALTA</span></td></tr>
+<tr><td>Le tre scuole (Ordo, Harvard, Chicago)</td><td>~25%</td><td><span class="chip chip-red">❗ ALTA</span></td></tr>
+<tr><td>Costituzione (artt. 41-42) e TFUE (106, 345)</td><td>~20%</td><td><span class="chip chip-red">❗ ALTA</span></td></tr>
+<tr><td>SIEG e obblighi di servizio pubblico</td><td>~15%</td><td><span class="chip chip-yellow">⚡ MEDIA</span></td></tr>
+<tr><td>SPL — evoluzione normativa</td><td>~10%</td><td><span class="chip chip-yellow">⚡ MEDIA</span></td></tr>
+<tr><td>Governance reticolare e policentricità</td><td>~10%</td><td><span class="chip chip-yellow">⚡ MEDIA</span></td></tr>
+</tbody></table></div></div>
+<div class="tip-box"><div class="tip-title">💡 Strategia Favaro</div><div class="tip-text">Favaro apprezza la capacità di <strong>argomentare le contrapposizioni</strong>: usa la struttura "da un lato... dall'altro lato... la sintesi è...". Cita sempre il <strong>riferimento normativo</strong>. Mostra di aver capito perché le scuole divergono, non solo cosa dicono.</div></div>`;
+
+SH.simula=`<div class="section-header"><h2>Simulazione Esame</h2><p>10 domande casuali. Rispondi senza aiuti, poi correggi.</p></div>
+<div class="quiz-wrap" id="simulaWrap"></div>`;
+
+SH.prof=`<div class="prof-header"><div class="prof-avatar">👩‍⚖️</div><div><div class="prof-name">Prof.ssa Tamara Favaro</div><div class="prof-role">Professore Associato di Diritto dell'Economia · UniPi</div><div class="prof-tags"><span class="chip chip-purple">Diritto dell'Economia</span><span class="chip chip-blue">Regolazione</span><span class="chip chip-blue">SPL</span></div></div></div>
+<div class="info-block"><div class="ib-title">Contatti & Ricevimento</div><ul class="info-list"><li><strong>Email:</strong> tamara.favaro@unipi.it</li><li><strong>Ricevimenti:</strong> monitorare Unimap per aggiornamenti</li><li><strong>Anno accademico:</strong> 2025/2026</li></ul></div>
+<div class="info-block"><div class="ib-title">Argomenti chiave del corso</div><ul class="info-list"><li>Nozione giuridica di regolazione — tre accezioni (Baldwin, Cave & Lodge)</li><li>Il mercato come costruzione istituzionale — tre scuole di pensiero</li><li>Ordoliberalismo — Scuola di Friburgo, Ordnungspolitik, influenza UE</li><li>Scuola di Harvard e Chicago — antitrust e analisi economica</li><li>Artt. 41-42 Cost. — proprietà, funzione sociale, libertà d'impresa</li><li>Art. 106 TFUE — imprese pubbliche, SIEG, deroga concorrenza</li><li>Obblighi di servizio pubblico — conformazione attività economica</li><li>Servizi Pubblici Locali — evoluzione normativa e d.lgs. 201/2022</li><li>Gestione in house e controllo analogo</li><li>Governance reticolare — Ostrom, Black, Scott</li></ul></div>
+<div class="tip-box"><div class="tip-title">🎯 Come prepararsi con Favaro</div><div class="tip-text">Corso teoricamente denso. Valorizza chi <strong>conosce le distinzioni</strong>, sa <strong>collegare dottrina e normativa</strong>, e argomenta le contrapposizioni tra scuole. Studia sempre in coppie concettuali: ordoliberalismo vs liberalismo classico, Harvard vs Chicago, in house vs gara pubblica.</div></div>
+<div class="alert-box"><div class="alert-title">📅 Lezione di recupero</div><div class="alert-text">La prof ha annunciato una lezione di recupero. Controllare le date su Unimap / email istituzionale. Ultima lezione prevista: <strong>22 maggio 2026</strong>.</div></div>`;
+
+// ── STATO ────────────────────────────────────────────────────────────────────
+
+var state={
+  done:JSON.parse(LS.getItem('de_done')||'{}'),
+  percDone:JSON.parse(LS.getItem('de_perc')||'{}'),
+  quizCorrect:parseInt(LS.getItem('de_qc')||'0'),
+  fcStreak:parseInt(LS.getItem('de_streak')||'0'),
+  fcIdx:0,fcFilter:'Tutti',fcList:[...FLASHCARDS],
+  quizState:null,simulaState:null,
+};
+
+function saveState(){
+  LS.setItem('de_done',JSON.stringify(state.done));
+  LS.setItem('de_perc',JSON.stringify(state.percDone));
+  LS.setItem('de_qc',state.quizCorrect);
+  LS.setItem('de_streak',state.fcStreak);
+}
+
+// ── TIMER ─────────────────────────────────────────────────────────────────────
+
+(function(){
+  var key='de_exam_ts';
+  var stored=LS.getItem(key);
+  var target;
+  if(stored){target=parseInt(stored);}else{target=Date.now()+48*3600*1000;LS.setItem(key,target);}
+  function tick(){
+    var diff=target-Date.now();
+    if(diff<0){document.getElementById('countdown').textContent='ESAME!';return;}
+    var h=Math.floor(diff/3600000);
+    var m=Math.floor((diff%3600000)/60000);
+    var s=Math.floor((diff%60000)/1000);
+    document.getElementById('countdown').textContent=String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  }
+  tick();setInterval(tick,1000);
+})();
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+
+function showSection(btn,id){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  var mc=document.getElementById('mainContent');
+  mc.innerHTML='<div class="section active">'+SH[id]+'</div>';
+  if(id==='home')renderHome();
+  else if(id==='percorsi')renderPercorsi();
+  else if(id==='argomenti'){}// static HTML, no render needed
+  else if(id==='glossario')renderGlossario('');
+  else if(id==='flashcard')initFC();
+  else if(id==='quiz')initQuiz();
+  else if(id==='simula')initSimula();
+}
+
+// ── HOME ──────────────────────────────────────────────────────────────────────
+
+function renderHome(){updateHeaderProgress();
+  var done=Object.values(state.done).filter(Boolean).length;
+  var perc=Object.values(state.percDone).filter(Boolean).length;
+  document.getElementById('s-done').textContent=done;
+  document.getElementById('s-perc').textContent=perc;
+  document.getElementById('s-quiz').textContent=state.quizCorrect;
+  document.getElementById('s-streak').textContent=state.fcStreak;
+  var pct=Math.round(done/TOPICS.length*100);
+  document.getElementById('mainProgressBar').style.width=pct+'%';
+  document.getElementById('mainProgressPct').textContent=pct+'%';
+  document.getElementById('topicList').innerHTML=TOPICS.map(tp=>{
+    var isDone=state.done[tp.id];
+    var tagCls=tp.tag==='hot'?'tag-hot':tp.tag==='mid'?'tag-mid':'tag-ok';
+    var tagLbl=tp.tag==='hot'?'❗':tp.tag==='mid'?'⚡':'✓';
+    return '<div class="topic-item'+(isDone?' done':'')+'" onclick="toggleTopic(\''+tp.id+'\',this)"><div class="topic-check">'+(isDone?'✓':'')+'</div><div class="topic-name">'+tp.n+'</div><span class="topic-tag '+tagCls+'">'+tagLbl+'</span></div>';
+  }).join('');
+}
+
+function toggleTopic(id,el){
+  state.done[id]=!state.done[id];saveState();
+  el.classList.toggle('done');
+  el.querySelector('.topic-check').textContent=state.done[id]?'✓':'';
+  var done=Object.values(state.done).filter(Boolean).length;
+  document.getElementById('s-done').textContent=done;
+  var pct=Math.round(done/TOPICS.length*100);
+  document.getElementById('mainProgressBar').style.width=pct+'%';
+  document.getElementById('mainProgressPct').textContent=pct+'%';
+}
+
+// ── PERCORSI ──────────────────────────────────────────────────────────────────
+
+function renderPercorsi(){
+  document.getElementById('percorsiGrid').innerHTML=PERCORSI.map(p=>{
+    var isDone=state.percDone[p.id];
+    return '<div class="percorso-card '+p.cls+'" onclick="startPercorso(\''+p.id+'\')"><div class="p-icon">'+p.icon+'</div><div class="p-title">'+p.title+'</div><div class="p-desc">'+p.desc+'</div><div class="p-meta"><div class="p-steps">'+p.steps.length+' step</div><span class="p-badge '+(isDone?'p-done':'p-todo')+'">'+(isDone?'✓ Fatto':'→ Inizia')+'</span></div></div>';
+  }).join('');
+}
+
+var curPercorso,curStep,stepCheckDone=false;
+
+function startPercorso(id){
+  curPercorso=PERCORSI.find(p=>p.id===id);curStep=0;stepCheckDone=false;
+  document.getElementById('percorsiGrid').style.display='none';
+  var pl=document.getElementById('player');pl.style.display='block';
+  document.getElementById('playerTitle').textContent=curPercorso.title;
+  renderStep();
+}
+
+function closePlayer(){
+  document.getElementById('player').style.display='none';
+  document.getElementById('percorsiGrid').style.display='grid';
+}
+
+function renderStep(){
+  var steps=curPercorso.steps;var s=steps[curStep];
+  var pct=Math.round(curStep/steps.length*100);
+  document.getElementById('playerProgBar').style.width=pct+'%';
+  document.getElementById('playerStepNum').textContent=(curStep+1)+'/'+steps.length;
+  document.getElementById('btnPrev').disabled=curStep===0;
+  document.getElementById('btnNext').textContent=curStep===steps.length-1?'✓ Completa':'Avanti →';
+  stepCheckDone=false;
+  var typeMap={info:'lbl-info INFO',concept:'lbl-concept CONCETTO',check:'lbl-check VERIFICA',recap:'lbl-recap RIEPILOGO'};
+  var parts=typeMap[s.type].split(' ');var cls=parts[0];var lbl=parts[1];
+  var html='<div class="step-type-label '+cls+'">'+lbl+'</div><div class="step-content"><div class="step-h">'+s.h+'</div>';
+  if(s.type==='check'){
+    html+='<div class="check-q">'+s.q+'</div><div class="check-opts">';
+    s.opts.forEach(function(o,i){html+='<button class="check-opt" onclick="answerCheck('+i+','+s.ans+',this)">'+o+'</button>';});
+    html+='</div><div class="check-fb" id="checkFb"></div>';
+  } else {
+    html+='<div class="step-body">'+s.body+'</div>';
+  }
+  html+='</div>';
+  document.getElementById('playerSteps').innerHTML=html;
+}
+
+function answerCheck(i,correct,el){
+  if(stepCheckDone)return;stepCheckDone=true;
+  document.querySelectorAll('.check-opt').forEach(function(b){b.classList.add('locked');});
+  el.classList.add(i===correct?'correct':'wrong');
+  if(i!==correct)document.querySelectorAll('.check-opt')[correct].classList.add('correct');
+  var fb=document.getElementById('checkFb');
+  var s=curPercorso.steps[curStep];
+  fb.className='check-fb show '+(i===correct?'ok':'ko');
+  fb.textContent=(i===correct?'✅ ':'❌ ')+s.fb;
+}
+
+function nextStep(){
+  var steps=curPercorso.steps;
+  if(curStep>=steps.length-1){
+    state.percDone[curPercorso.id]=true;saveState();
+    closePlayer();renderPercorsi();return;
+  }
+  curStep++;renderStep();
+}
+
+function prevStep(){if(curStep>0){curStep--;renderStep();}}
+
+// ── GLOSSARIO ─────────────────────────────────────────────────────────────────
+
+function renderGlossario(q){
+  var gl=document.getElementById('glossList');if(!gl)return;
+  var filtered=GLOSSARIO.filter(function(g){return !q||g.t.toLowerCase().includes(q.toLowerCase())||g.d.toLowerCase().includes(q.toLowerCase());});
+  if(!filtered.length){gl.innerHTML='<div style="color:var(--muted2);padding:20px;text-align:center">Nessun risultato</div>';return;}
+  if(!q){
+    var byLetter={};
+    filtered.forEach(function(g){var l=g.t[0].toUpperCase();if(!byLetter[l])byLetter[l]=[];byLetter[l].push(g);});
+    gl.innerHTML=Object.keys(byLetter).sort().map(function(l){return '<div class="gloss-letter">'+l+'</div>'+byLetter[l].map(function(g){return '<div class="gloss-item"><div class="gloss-term">'+g.t+'</div><div class="gloss-def">'+g.d+'</div><span class="chip chip-'+g.cat+'">'+g.cat+'</span></div>';}).join('');}).join('');
+  } else {
+    gl.innerHTML=filtered.map(function(g){return '<div class="gloss-item"><div class="gloss-term">'+g.t+'</div><div class="gloss-def">'+g.d+'</div><span class="chip chip-'+g.cat+'">'+g.cat+'</span></div>';}).join('');
+  }
+}
+
+// ── FLASHCARD ─────────────────────────────────────────────────────────────────
+
+function initFC(){state.fcList=[...FLASHCARDS];state.fcIdx=0;renderFC();}
+
+function setFCFilter(cat,btn){
+  document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  state.fcFilter=cat;
+  state.fcList=cat==='Tutti'?[...FLASHCARDS]:FLASHCARDS.filter(function(f){return f.cat===cat;});
+  state.fcIdx=0;renderFC();
+}
+
+function renderFC(){
+  var fc=state.fcList[state.fcIdx];if(!fc)return;
+  document.getElementById('fcCounter').textContent=(state.fcIdx+1)+'/'+state.fcList.length;
+  document.getElementById('fcCat').textContent=fc.cat;
+  document.getElementById('fcQuestion').textContent=fc.q;
+  document.getElementById('fcAnswer').innerHTML=fc.a;
+  document.getElementById('flashcard').classList.remove('flipped');
+}
+
+function flipCard(){document.getElementById('flashcard').classList.toggle('flipped');}
+
+function rateCard(r){
+  if(r==='si'){state.fcStreak++;}else{state.fcStreak=0;}
+  saveState();nextCard();
+}
+
+function nextCard(){
+  if(state.fcIdx<state.fcList.length-1){state.fcIdx++;}else{state.fcIdx=0;}
+  renderFC();
+}
+
+function prevCard(){
+  if(state.fcIdx>0){state.fcIdx--;}else{state.fcIdx=state.fcList.length-1;}
+  renderFC();
+}
+
+function shuffleFC(){
+  for(var i=state.fcList.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var tmp=state.fcList[i];state.fcList[i]=state.fcList[j];state.fcList[j]=tmp;}
+  state.fcIdx=0;renderFC();
+}
+
+// ── QUIZ ──────────────────────────────────────────────────────────────────────
+
+function initQuiz(){
+  var qs=[...QUIZ].sort(function(){return Math.random()-.5;});
+  state.quizState={qs:qs,idx:0,correct:0,total:qs.length,answered:false};
+  renderQuizQ(state.quizState,'quizWrap',false);
+}
+
+function initSimula(){
+  var qs=[...QUIZ].sort(function(){return Math.random()-.5;}).slice(0,10);
+  state.simulaState={qs:qs,idx:0,correct:0,total:qs.length,answered:false};
+  renderQuizQ(state.simulaState,'simulaWrap',true);
+}
+
+function renderQuizQ(st,wrapId,isSimula){
+  var w=document.getElementById(wrapId);if(!w)return;
+  if(st.idx>=st.total){
+    var pct=Math.round(st.correct/st.total*100);
+    var col=pct>=70?'var(--accent)':pct>=50?'var(--accent3)':'var(--danger)';
+    w.innerHTML='<div class="quiz-result"><div class="big-score" style="color:'+col+'">'+pct+'%</div><div style="color:var(--muted2);margin:10px 0">'+st.correct+'/'+st.total+' risposte corrette</div><button class="btn primary" onclick="'+(isSimula?'initSimula':'initQuiz')+'()">🔄 Ricomincia</button></div>';
+    return;
+  }
+  var q=st.qs[st.idx];
+  var pct=Math.round(st.idx/st.total*100);
+  var opts=q.opts.map(function(o,i){return '<button class="quiz-opt" onclick="answerQuiz('+i+','+q.ans+',\''+wrapId+'\','+isSimula+')">'+o+'</button>';}).join('');
+  w.innerHTML='<div class="quiz-score-bar">Domanda '+(st.idx+1)+'/'+st.total+' · Corrette: '+st.correct+'</div><div class="quiz-prog"><div class="quiz-prog-bar" style="width:'+pct+'%"></div></div><div class="quiz-q">'+q.q+'</div><div class="quiz-options">'+opts+'</div><div class="quiz-expl" id="quizExpl'+wrapId+'">'+q.expl+'</div><div style="margin-top:14px;display:none" id="quizNext'+wrapId+'"><button class="btn primary" onclick="nextQuiz(\''+wrapId+'\','+isSimula+')">Prossima →</button></div>';
+}
+
+function answerQuiz(i,correct,wrapId,isSimula){
+  var st=isSimula?state.simulaState:state.quizState;
+  if(st.answered)return;st.answered=true;
+  document.querySelectorAll('#'+wrapId+' .quiz-opt').forEach(function(b){b.classList.add('locked');});
+  var opts=document.querySelectorAll('#'+wrapId+' .quiz-opt');
+  opts[i].classList.add(i===correct?'correct':'wrong');
+  if(i!==correct)opts[correct].classList.add('correct');
+  if(i===correct){st.correct++;state.quizCorrect++;saveState();}
+  document.getElementById('quizExpl'+wrapId).classList.add('show');
+  document.getElementById('quizNext'+wrapId).style.display='block';
+}
+
+function nextQuiz(wrapId,isSimula){
+  var st=isSimula?state.simulaState:state.quizState;
+  st.idx++;st.answered=false;renderQuizQ(st,wrapId,isSimula);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+
+renderMorale();
+showSection(document.querySelector('.tab.active'),'home');
+</script>
+
+<footer>
+  <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+    <div style="display:flex;align-items:center;gap:7px;background:#1a1e2e;border:1px solid #252d47;border-radius:7px;padding:5px 11px;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none" width="18" height="18" style="border-radius:4px;flex-shrink:0;"><defs><radialGradient id="fg" cx=".5" cy="0" r="1.15"><stop offset="0" stop-color="#2b3149"/><stop offset=".46" stop-color="#161924"/><stop offset="1" stop-color="#0a0b11"/></radialGradient><linearGradient id="fl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#bcafff"/><stop offset="1" stop-color="#7d6bf0"/></linearGradient></defs><rect width="512" height="512" rx="116" fill="url(#fg)"/><g transform="translate(155 88) scale(2.197)" fill="none"><path d="M14 80 L46 14 L78 80" stroke="#f4f5fb" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/><rect x="30" y="55" width="22" height="9" rx="4.5" fill="url(#fl)"/></g></svg>
+      <span style="font-size:12px;font-weight:800;color:#d4d8f0;letter-spacing:.3px;">ATRIUM</span>
+      <span style="font-size:11px;font-weight:700;color:#9b8ff5;margin-left:2px;">EDU</span>
+    </div>
+    <span style="color:#2a3050;">|</span>
+    <span style="font-size:12px;color:#94a3b8;">© 2026 Federico Orsini, Pisa</span>
+  </div>
+  <div style="font-size:11px;color:#94a3b8;text-align:center;line-height:1.5;flex:1;">
+    Elaborato personale a uso esclusivamente didattico e privato · Vietata la riproduzione senza consenso scritto
+  </div>
+  <div style="font-size:11px;color:#64748b;white-space:nowrap;">Tutti i diritti riservati · Art. 70 L. 633/1941</div>
+</footer>
+</body>
+</html>
