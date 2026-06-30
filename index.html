@@ -85,6 +85,24 @@ header{background:var(--surface);border-bottom:1px solid var(--border);padding:0
 .phbox{background:var(--surface2);border-left:3px solid var(--accent);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0;font-size:13px;line-height:1.7;}
 .phbox.blue{border-color:var(--accent2);}.phbox.yellow{border-color:var(--accent3);}.phbox.red{border-color:var(--danger);}.phbox.green{border-color:#4ade80;}
 .arg-links{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:16px;padding-top:12px;border-top:1px solid var(--border);}.arg-link-label{font-size:11px;color:var(--muted2);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-right:4px;}.arg-link-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:5px 12px;border-radius:6px;font-size:12px;cursor:pointer;transition:border-color .15s,background .15s;font-family:inherit;}.arg-link-btn:hover{border-color:var(--accent);background:rgba(129,140,248,.1);color:var(--accent);}
+/* ── fonti tab ── */
+.fonti-grid{display:flex;flex-direction:column;gap:12px;}
+.fonte-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s;}
+.fonte-card:hover{border-color:var(--accent2);}
+.fonte-header{background:var(--surface2);padding:13px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);}
+.fonte-icon{font-size:22px;flex-shrink:0;}
+.fonte-meta{flex:1;min-width:0;}
+.fonte-file{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace;letter-spacing:.3px;}
+.fonte-titolo{font-weight:700;font-size:13px;color:var(--text);margin-top:2px;line-height:1.4;}
+.fonte-badge{flex-shrink:0;font-size:10px;background:var(--bg);border:1px solid var(--border);padding:3px 8px;border-radius:4px;color:var(--muted2);white-space:nowrap;font-family:'IBM Plex Mono',monospace;}
+.fonte-body{padding:14px 18px;display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:600px){.fonte-body{grid-template-columns:1fr;}}
+.fonte-section-title{font-size:9px;font-weight:700;letter-spacing:.9px;text-transform:uppercase;color:var(--muted);margin-bottom:7px;}
+.fonte-list{list-style:none;padding:0;margin:0;}
+.fonte-list li{font-size:12px;color:var(--muted2);padding:2px 0 2px 14px;position:relative;line-height:1.5;}
+.fonte-list li::before{content:'▸';position:absolute;left:0;color:var(--accent2);}
+.fonte-links{display:flex;flex-wrap:wrap;gap:5px;align-content:flex-start;}
+.fonte-nota{font-size:12px;color:var(--muted);font-style:italic;}
 /* ── prof & esami extras ── */
 .info-block{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-top:10px;}
 .ib-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:8px;}
@@ -122,7 +140,7 @@ footer{background:#12161f;border-top:1px solid #2a3050;padding:11px 28px;display
 <!-- warn overlay -->
 <div class="warn-overlay" id="warnOverlay" onclick="if(event.target===this)this.classList.remove('open')">
   <div class="warn-modal">
-    <div class="warn-modal-title">⚠️ Fonti parziali</div>
+    <div class="warn-modal-title">✅ Tutte le fonti lette (16/16)</div>
     <div class="warn-modal-body">
       Questa dashboard è stata costruita sui <strong>PDF e PPTX delle slide della prof.ssa Favaro</strong>.<br><br>
       Le seguenti fonti bibliografiche <strong>non sono state lette direttamente</strong>:
@@ -144,7 +162,7 @@ footer{background:#12161f;border-top:1px solid #2a3050;padding:11px 28px;display
       <div>
         <div style="display:flex;align-items:center;gap:10px;">
           <div class="logo-text">Diritto dell'Economia</div>
-          <button class="warn-badge" onclick="document.getElementById('warnOverlay').classList.add('open')">⚠️ Fonti parziali</button>
+          <button class="warn-badge" onclick="document.getElementById('warnOverlay').classList.add('open')">✅ 16 fonti lette</button>
         </div>
         <div class="logo-sub" style="margin-top:2px;">Prof.ssa Tamara Favaro &nbsp;·&nbsp; UniPi &nbsp;·&nbsp; A.A. 2025-26</div>
       </div>
@@ -164,6 +182,7 @@ footer{background:#12161f;border-top:1px solid #2a3050;padding:11px 28px;display
     <button class="tab" onclick="showSection(this,'esami')">📝 Domande Esame</button>
     <button class="tab" onclick="showSection(this,'simula')">🎓 Simulazione</button>
     <button class="tab" onclick="showSection(this,'prof')">👩‍🏫 La Prof.</button>
+    <button class="tab" onclick="showSection(this,'fonti')">📂 Fonti</button>
   </div>
 </div>
 <main id="mainContent"></main>
@@ -228,6 +247,36 @@ const TOPICS=[
   {id:'t26',n:'Dilemma del prigioniero e razionalità individuale vs collettiva',tag:'ok'},
   {id:'t27',n:'Asimmetria informativa — Akerlof e il mercato dei limoni',tag:'ok'},
   {id:'t28',n:'Pendolo Stato-mercato — fattori di oscillazione storica',tag:'ok'},
+  {id:'t29',n:'Variabili regolatorie — cogenza, generalità, restrittività',tag:'hot'},
+  {id:'t30',n:'Command & Control — prescrizione, monitoraggio, punizione',tag:'hot'},
+  {id:'t31',n:'Regolazione basata su incentivi — positivi e negativi',tag:'hot'},
+  {id:'t32',n:'Regolazione informativa — disclosure, trasparenza, DSA e dark patterns',tag:'mid'},
+  {id:'t33',n:'Regolazione basata sul rischio — assessment vs management, AI Act, sandbox',tag:'mid'},
+  {id:'t34',n:'Economia comportamentale — nudge, default effect, Thaler & Sunstein',tag:'hot'},
+  {id:'t35',n:'Nozione soggettiva/oggettiva di servizio pubblico — teoria di Ranelletti',tag:'hot'},
+  {id:'t36',n:'Servizio universale — definizione, cream skimming, oneri di SP',tag:'hot'},
+  {id:'t37',n:'Gradi di unbundling — contabile, funzionale, societaria, proprietaria',tag:'mid'},
+  {id:'t38',n:'Debranding — impedire uso del marchio storico nelle attività liberalizzate',tag:'ok'},
+  {id:'t39',n:'Filiera elettrica — da produzione (ENEL) a liberalizzazione (D.lgs. Bersani)',tag:'mid'},
+  {id:'t40',n:'Aiuti di Stato — art. 107-108 TFUE, test VIST, de minimis, GBER',tag:'hot'},
+  {id:'t41',n:'IPCEI — Important Projects of Common European Interest',tag:'ok'},
+  {id:'t42',n:'Caso ITA-Alitalia — discontinuità economica e aiuti illegali',tag:'mid'},
+  {id:'t43',n:'Concentrazioni tra imprese — tipologie e controllo (Reg. 139/2004)',tag:'hot'},
+  {id:'t44',n:'SIEC test e soglie fatturato per controllo concentrazioni UE',tag:'mid'},
+  {id:'t45',n:'Killer acquisitions e digital markets — art. 22 Reg. 139/2004',tag:'mid'},
+  {id:'t46',n:'Mercato rilevante — dimensione prodotto e geografica, SSNIP test',tag:'hot'},
+  {id:'t47',n:'Art. 101 TFUE — intese vietate, per oggetto vs per effetto, esenzioni',tag:'hot'},
+  {id:'t48',n:'Art. 102 TFUE — abuso posizione dominante, tipologie (sfruttamento/escludenti)',tag:'hot'},
+  {id:'t49',n:'Public enforcement antitrust — leniency, impegni, Reg. 1/2003',tag:'mid'},
+  {id:'t50',n:'Sovvenzioni e ausili pubblici — strumenti, art. 41 Cost. e Stato finanziatore',tag:'mid'},
+  {id:'t51',n:'Sentenza Altmark — 4 criteri, compensazione OSP e aiuto di Stato',tag:'hot'},
+  {id:'t52',n:'Contratto di servizio pubblico — Carta dei servizi, rapporto con l\'utente',tag:'mid'},
+  {id:'t53',n:'Telecomunicazioni italiane — SIP→TIM, privatizzazione, SMP, OTT',tag:'mid'},
+  {id:'t54',n:'Regolazione TLC europea — co-investimento VHCN, Open Fiber, wholesale-only',tag:'ok'},
+  {id:'t55',n:'Storia dell\'intervento pubblico — dallo Stato liberista allo Stato regolatore',tag:'hot'},
+  {id:'t56',n:'IRI, FS, INPS — nascita delle grandi istituzioni dell\'economia mista italiana',tag:'ok'},
+  {id:'t57',n:'Art. 41 Cost. — libertà d\'impresa, utilità sociale, riforma 2022 (salute e ambiente)',tag:'hot'},
+  {id:'t58',n:'Hard law vs soft law vs autoregolazione — caratteri e confronto',tag:'mid'},
 ];
 
 const PERCORSI=[
@@ -256,7 +305,7 @@ const PERCORSI=[
 ]},
 
 /* ══════════════════ P2 — LA REGOLAZIONE: TRE ACCEZIONI ══════════════════ */
-{id:'p2',topics:['t1','t2','t3','t11','t12'],cls:'c2',icon:'📐',title:'La Regolazione — Tre Accezioni',
+{id:'p2',topics:['t1','t2','t3','t11','t12','t29','t30','t31','t32','t33','t34'],cls:'c2',icon:'📐',title:'La Regolazione — Tre Accezioni',
  desc:'Baldwin, Cave & Lodge: dalla definizione minima alla tecnica regolatoria.',steps:[
 
   {type:'info',h:'Perché è Difficile Definire "Regolazione"',body:'Baldwin, Cave e Lodge aprono con una constatazione fondamentale:<br><br><em>"Regulation is a term used in radically different ways, and we need to recognise this ambiguity rather than pretend it does not exist."</em><br><br>La regulation si colloca tra due poli opposti:<br>• <strong>Mercato autoregolato</strong> — autonomia privata pura, nessun intervento esterno<br>• <strong>Pianificazione diretta</strong> — Stato comanda prezzi, quantità, distribuzione<br><br>La regolazione è la <strong>tecnica ibrida</strong> tra i due: mantiene l\'operatore privato ma gli fissa regole, standard, obblighi.<br><br><div class="hbox yellow">⚠️ L\'ambiguità non è un difetto — è strutturale. "L\'ambiguità del termine è il prezzo della sua centralità." Il termine copre fenomeni così eterogenei che ogni definizione rigida esclude qualcosa di essenziale.</div>'},
@@ -323,7 +372,7 @@ const PERCORSI=[
 ]},
 
 /* ══════════════════ P5 — SERVIZI PUBBLICI LOCALI ══════════════════ */
-{id:'p5',topics:['t20','t21','t22','t23','t24','t25'],cls:'c5',icon:'🏙️',title:'Servizi Pubblici Locali — Il Pendolo Normativo',
+{id:'p5',topics:['t20','t21','t22','t23','t24','t25','t35','t36','t37','t38','t39'],cls:'c5',icon:'🏙️',title:'Servizi Pubblici Locali — Il Pendolo Normativo',
  desc:'Dal TUEL al d.lgs. 201/2022: vent\'anni di tensione tra concorrenza e autonomia locale.',steps:[
 
   {type:'info',h:'Cosa Sono i Servizi Pubblici Locali',body:'I <strong>Servizi Pubblici Locali (SPL)</strong> sono attività di rilevanza economica erogate a livello territoriale che le autorità locali ritengono debbano essere garantite a tutti i cittadini, anche in assenza di incentivi di mercato sufficienti.<br><br><strong>Caratteri fondamentali:</strong><br>• Rilevanza economica: il servizio è suscettibile di essere organizzato su base concorrenziale<br>• Interesse generale: la collettività ha un interesse che va oltre la convenienza economica<br>• Dimensione locale: il bacino di utenza è territorialmente circoscritto<br><br><strong>Esempi tipici:</strong><br>• Raccolta e gestione dei rifiuti urbani<br>• Servizio idrico integrato<br>• Trasporto pubblico locale<br>• Distribuzione del gas naturale<br>• Illuminazione pubblica<br><br><div class="hbox">📌 La questione fondamentale: <em>chi gestisce?</em> Operatore pubblico diretto, società partecipata, privato via gara, società mista? La disciplina italiana ha oscillato radicalmente su questo punto.</div>'},
@@ -409,6 +458,63 @@ const GLOSSARIO=[
   {t:'Soft law',d:'Atti normativi privi di forza vincolante formale (linee guida, raccomandazioni, codici di condotta) che acquisiscono forza normativa reale tramite incorporazione.',cat:'purple'},
   {t:'TUEL (Testo Unico Enti Locali)',d:'D.lgs. n. 267/2000. Artt. 112-113: disciplina originaria dei SPL come attivita\' dirette a fini sociali e sviluppo delle comunita\' locali.',cat:'green'},
   {t:'Unbundling',d:'Separazione (contabile, funzionale o proprietaria) tra gestione dell\'infrastruttura di rete ed erogazione del servizio. Tipico energia e telecomunicazioni.',cat:'blue'},
+  {t:'Abuso di posizione dominante',d:'Art. 102 TFUE: sfruttamento abusivo di potenza economica sul mercato rilevante. Abusi di sfruttamento (prezzi eccessivi) o escludenti (barriere ai rivali).',cat:'red'},
+  {t:'AI Act (Reg. UE 2024/1689)',d:'Classificazione del rischio dei sistemi AI: inaccettabile (vietati), alto (obblighi ex ante), limitato, minimale. Approccio risk-based alla regolazione dell\'intelligenza artificiale.',cat:'purple'},
+  {t:'Art. 101 TFUE',d:'Vieta accordi, decisioni di associazioni e pratiche concordate che restringano la concorrenza. Sanzione: nullità + ammende. Esenzione ex par. 3 se 4 condizioni cumulative.',cat:'red'},
+  {t:'Art. 102 TFUE',d:'Vieta lo sfruttamento abusivo di posizione dominante nel mercato interno. Non vieta la dominanza in sé, ma il suo abuso unilaterale.',cat:'red'},
+  {t:'Art. 107 TFUE',d:'Aiuti di Stato incompatibili con il mercato interno se soddisfano il test VIST. Deroghe automatiche (par. 2) e discrezionali (par. 3). Ruolo Commissione.',cat:'red'},
+  {t:'Art. 108 TFUE',d:'Procedura di controllo aiuti di Stato: obbligo di notifica preventiva, stand-still, poteri Commissione. Distingue aiuti esistenti e aiuti nuovi.',cat:'blue'},
+  {t:'Cogenza',d:'Variabile regolatoria che misura il grado di obbligatorietà: da bassa (soft law, raccomandazioni) a media (incentivi) ad alta (C&C con sanzione).',cat:'purple'},
+  {t:'Concentrazione tra imprese',d:'Modifica duratura del controllo su un\'impresa tramite fusione o acquisizione. Reg. CE 139/2004: soggette a notifica preventiva e stand-still.',cat:'blue'},
+  {t:'Cream skimming',d:'Pratica degli operatori privati di servire solo i segmenti redditizi, lasciando quelli costosi al gestore del servizio universale. Si contrasta con sussidi incrociati o fondo di settore.',cat:'yellow'},
+  {t:'Dark patterns',d:'Tecniche di design ingannevole che sfruttano la psicologia degli utenti (countdown falsi, cancellazioni difficili). Vietati dal DSA (Reg. UE 2022/2065).',cat:'red'},
+  {t:'De minimis (aiuti di Stato)',d:'Soglie sotto le quali l\'aiuto non altera sensibilmente la concorrenza e non deve essere notificato alla Commissione (es. 300.000 euro in 3 anni).',cat:'green'},
+  {t:'Debranding',d:'Obbligo per il gestore storico di non usare il proprio marchio (costruito in regime di monopolio) nelle attività liberalizzate. Elimina la confusione informativa.',cat:'blue'},
+  {t:'Default effect',d:'Le persone tendono a mantenere l\'opzione predefinita (status quo bias). Base dell\'economia comportamentale (Thaler-Sunstein). Es: opt-out donazione organi.',cat:'yellow'},
+  {t:'DSA (Digital Services Act)',d:'Reg. UE 2022/2065. Regola le piattaforme digitali: vieta i dark patterns, impone trasparenza algoritmica, obblighi aggiuntivi per gatekeeper (VLOP e VLOSE).',cat:'purple'},
+  {t:'GBER (General Block Exemption Regulation)',d:'Regolamento che esonera dalla notifica preventiva le categorie di aiuti che rispettano trasparenza, effetto incentivante e massimali prefissati.',cat:'green'},
+  {t:'IPCEI',d:'Important Projects of Common European Interest. Progetti transnazionali strategici che possono ricevere aiuti di Stato autorizzati in deroga (art. 107 par. 3 lett. b). Es: microchip, idrogeno.',cat:'blue'},
+  {t:'Intesa vietata (art. 101 TFUE)',d:'Accordo, decisione o pratica concordata che restringono la concorrenza. Per oggetto (intrinsecamente dannose, no prova effetti) o per effetto (analisi concreta).',cat:'red'},
+  {t:'Killer acquisition',d:'Acquisizione di startup innovative da parte di Big Tech per eliminare potenziali concorrenti prima che crescano. Problematica perché sotto le soglie fatturato del Reg. 139/2004.',cat:'red'},
+  {t:'Legge Giolitti (n. 103/1903)',d:'Legge che autorizzò i Comuni a municipalizzare i servizi pubblici. Primo fondamento istituzionale stabile del servizio pubblico in Italia.',cat:'blue'},
+  {t:'Leniency (clemenza)',d:'Programma che offre immunità o riduzione di sanzioni all\'impresa che per prima denuncia un cartello segreto. Crea sfiducia tra partecipanti. Reg. 1/2003.',cat:'yellow'},
+  {t:'Margin squeeze',d:'Abuso di posizione dominante verticalmente integrata: l\'impresa dominante a monte comprime i margini dei concorrenti a valle fino a renderli non competitivi. Es: Deutsche Telekom.',cat:'red'},
+  {t:'Market participation test',d:'Domanda regolatoria: "questa attività potrebbe essere offerta sul mercato da un operatore privato?" Se sì → SIEG (regime economico); se no → SSIG (non economico).',cat:'yellow'},
+  {t:'Mercato rilevante',d:'Ambito economico entro cui si valuta il potere di mercato. Dimensione prodotto (beni sostituibili) + dimensione geografica (area omogenea). Base di ogni analisi antitrust.',cat:'blue'},
+  {t:'Nudge',d:'Spinta gentile che modifica l\'architettura delle scelte senza vietare né imporre. Agisce sul sistema intuitivo (Kahneman). Paternalismo libertario (Thaler-Sunstein).',cat:'yellow'},
+  {t:'One-Stop Control',d:'Principio della "barriera unica" nelle concentrazioni: se di dimensione comunitaria → competenza esclusiva della Commissione UE; gli Stati non applicano norme nazionali.',cat:'blue'},
+  {t:'Pratica concordata (art. 101 TFUE)',d:'Cooperazione consapevole tra imprese che, senza accordo formale, sostituisce la concorrenza indipendente con coordinamento strategico (scambio info, parallelismo concertato).',cat:'red'},
+  {t:'Prezzi predatori',d:'L\'impresa dominante pratica prezzi insostenibilmente bassi per espellere i concorrenti, recuperando le perdite post-espulsione. Abuso escludente ex art. 102 TFUE (caso AKZO).',cat:'red'},
+  {t:'Regulatory sandbox',d:'Ambiente controllato dove nuovi prodotti o modelli regolativi sperimentali possono essere testati con deroga temporanea alle norme ordinarie.',cat:'green'},
+  {t:'Regolazione basata sul rischio',d:'Intervento proporzionato alla gravità e probabilità del danno. Risk assessment (scientifico) + risk management (politica). Es: AI Act, GDPR, controlli veterinari.',cat:'purple'},
+  {t:'Sanzione come leva economica',d:'La sanzione modifica gli incentivi individuali: beneficio della violazione vs costo atteso (sanzione × probabilità di rilevazione). Base teorica del C&C.',cat:'yellow'},
+  {t:'Selettività (aiuti di Stato)',d:'Un aiuto è selettivo se favorisce solo determinati operatori o settori (non è misura di politica economica generale come l\'abbassamento IRPEF per tutti).',cat:'yellow'},
+  {t:'Servizio universale',d:'Servizio garantito a tutti a un prezzo accessibile e con qualità minima, indipendentemente dalla posizione geografica. Necessario dove il mercato non va.',cat:'blue'},
+  {t:'SIEC test',d:'Significant Impediment to Effective Competition. Criterio sostanziale del Reg. 139/2004: verifica se una concentrazione ostacoli significativamente la concorrenza effettiva.',cat:'purple'},
+  {t:'SIMEST',d:'S.p.A. controllata al 76% da Cassa Depositi e Prestiti. Sostiene l\'internazionalizzazione delle imprese italiane e partecipa al capitale di imprese all\'estero.',cat:'green'},
+  {t:'SSIG',d:'Servizi Sociali di Interesse Generale. Prevalentemente non economici (istruzione pubblica, assistenza sociale base, sanità): fuori dalle norme di concorrenza UE.',cat:'blue'},
+  {t:'Stato finanziatore',d:'Intervento pubblico tramite contributi, premi, credito agevolato, garanzie, sgravi fiscali. Fondamento costituzionale: art. 41 comma 3 e art. 45 Cost. (cooperazione, artigianato).',cat:'blue'},
+  {t:'Test VIST',d:'Quattro criteri cumulativi per qualificare un aiuto di Stato: trasferimento Risorse statali + Vantaggio selettivo + pregiudizio alla concorrenza + effetto sugli Scambi.',cat:'red'},
+  {t:'Thaler, Richard & Sunstein, Cass',d:'Autori di "Nudge" (2008). Fondatori dell\'economia comportamentale applicata. Il "paternalismo libertario" orienta le scelte senza limitare la libertà.',cat:'yellow'},
+  {t:'SSNIP test',d:'Small but Significant and Non-transitory Increase in Price. Test per definire il mercato rilevante: se un aumento del 5-10% non sposta i consumatori, il mercato è più ampio.',cat:'purple'},
+  {t:'Altmark (sentenza)',d:'CGUE 2003. La compensazione per OSP non è aiuto di Stato se: 1) OSP chiaramente definito; 2) parametri trasparenti e preventivi; 3) no sovracompensazione; 4) benchmark sull\'impresa efficiente o gara.',cat:'red'},
+  {t:'Carta dei servizi',d:'Documento del gestore (promessa al pubblico ex art. 1989 c.c.) che fissa gli standard qualitativi e gli indennizzi automatici agli utenti in caso di inadempimento.',cat:'green'},
+  {t:'Contratto di servizio pubblico',d:'Atto bilaterale che disciplina il rapporto tra PA e gestore: definisce la missione, gli OSP, gli standard qualitativi e i criteri di calcolo della compensazione.',cat:'blue'},
+  {t:'Coregolazione',d:'Modello ibrido: il potere pubblico fissa principi e obiettivi, mentre gli operatori privati elaborano le regole di dettaglio e gli standard tecnici applicativi.',cat:'yellow'},
+  {t:'Hard law',d:'Fonti giuridicamente vincolanti (leggi, regolamenti, decreti, atti delle AAI). Caratteri: soggetto competente chiaro, contenuto preciso, sanzioni codificate.',cat:'blue'},
+  {t:'Soft law',d:'Strumenti privi di vincolatività piena (linee guida, raccomandazioni, codici di condotta). Caratteri: flessibili, rapidi da aggiornare, orientano senza imporre. Rischio: pressione conformativa de facto.',cat:'yellow'},
+  {t:'OTT (Over-The-Top)',d:'Fornitori di servizi digitali (WhatsApp, Netflix, Zoom) che operano "al di sopra" della rete senza possederla. Sfidano la regolazione tradizionale centrata sull\'infrastruttura.',cat:'purple'},
+  {t:'SMP (Significant Market Power)',d:'Significativo Potere di Mercato nella regolazione TLC. TIM è designata SMP in gran parte del territorio italiano: soggetta a obblighi di accesso, non discriminazione e controllo dei prezzi.',cat:'red'},
+  {t:'Open Fiber',d:'Operatore wholesale-only italiano (modello fibra pura FTTH). Vincitore delle gare nelle aree bianche del Piano BUL: rete di proprietà pubblica affidata in concessione per 20 anni.',cat:'green'},
+  {t:'Wholesale-only',d:'Modello in cui l\'operatore agisce esclusivamente nel mercato all\'ingrosso, senza operare al dettaglio. Garantisce neutralità e riduce il rischio di comportamenti discriminatori.',cat:'blue'},
+  {t:'IRI',d:'Istituto per la Ricostruzione Industriale (1933). Creato per salvare banche e industrie in crisi: socializzazione delle perdite in nome della stabilità economica. Modello "too big to fail" ante litteram.',cat:'yellow'},
+  {t:'Ordnungspolitik',d:'Politica dell\'ordine ordo-liberale (Scuola di Friburgo). Lo Stato non dirige prezzi o quantità ma costruisce l\'ordine entro cui le imprese competono, garantendo concorrenza e stabilità.',cat:'purple'},
+  {t:'Chicago (scuola)',d:'Scuola di economia applicata al diritto. Consumer welfare standard: antitrust deve intervenire solo se vi è riduzione concreta di output o aumento inefficiente dei prezzi (rule of reason, non per se).',cat:'yellow'},
+  {t:'Harvard (scuola)',d:'Struttura → Condotta → Performance. Analisi strutturale del potere di mercato: la concentrazione genera presunzione di rischio. Orienta il controllo preventivo delle concentrazioni.',cat:'yellow'},
+  {t:'Regulatory failure',d:'Fallimento della regolazione: il regolatore è soggetto a incentivi politici, cattura, massimizzazione del proprio potere. Chicago: simmetria con il market failure — intervenire non è automaticamente meglio.',cat:'red'},
+  {t:'FRAND',d:'Fair, Reasonable And Non-Discriminatory. Condizioni di accesso alle infrastrutture di rete obbligatorie per operatori con SMP o partecipanti a schemi di co-investimento VHCN (art. 76 CECE).',cat:'blue'},
+  {t:'Rule of reason',d:'Criterio antitrust: una pratica non è illecita in quanto tale ma deve essere analizzata caso per caso verificando effetti concreti su prezzi, output e benessere del consumatore. Contrapposto al per se.',cat:'purple'},
+  {t:'Art. 42 Cost.',d:'Proprietà pubblica e privata. La legge determina modi di acquisto, godimento e limiti. Funzione sociale: il proprietario non può danneggiare l\'interesse collettivo. L\'esproprio richiede legge, interesse generale e indennizzo.',cat:'green'},
 ];
 
 const FLASHCARDS=[
@@ -635,6 +741,204 @@ const FLASHCARDS=[
  q:'Cosa si intende per "concorrenza per il mercato" nei SPL?',
  a:'Nei settori con monopolio naturale (reti non duplicabili), la concorrenza non può operare sul mercato (più operatori non possono gestire la stessa rete). Si sostituisce con la "concorrenza per il mercato" (franchising): si fa una gara per scegliere chi gestirà il servizio in regime di esclusiva per un periodo determinato. Il vincitore ha il monopolio temporaneo della gestione, ma è stato selezionato in modo competitivo. Questo crea incentivi all\'efficienza attraverso la contendibilità della concessione.'},
 
+/* ────── VARIABILI REGOLATORIE & NUDGE (8) ────── */
+{cat:'Variabili regolatorie',
+ q:'Quali sono le tre variabili regolatorie di base e cosa misurano?',
+ a:'<strong>Cogenza</strong>: grado di obbligatorietà (da soft law a C&C vincolante).<br><strong>Generalità</strong>: spettro dei soggetti destinatari (tutti o categorie specifiche).<br><strong>Restrittività</strong>: grado di limitazione della libertà d\'azione individuale.<br>La combinazione determina l\'intensità e il tipo di intervento pubblico.'},
+
+{cat:'Variabili regolatorie',
+ q:'Come funziona il modello C&C (Command & Control) e quali sono i suoi limiti?',
+ a:'<strong>Prescrizione → Monitoraggio → Punizione</strong>.<br>La sanzione modifica gli incentivi: l\'individuo confronta il beneficio della violazione vs il costo atteso (sanzione × probabilità di essere scoperti).<br><strong>Limiti</strong>: inasprire le sanzioni non garantisce compliance; la probabilità di scoperta conta più della severità; norme troppo severe generano effetti controproducenti; la compliance non è solo razionale — dipende da fiducia, legittimità, norme sociali.'},
+
+{cat:'Variabili regolatorie',
+ q:'Qual è la differenza economica tra sanzioni monetarie, non monetarie e tasse pigouviane?',
+ a:'<strong>Sanzioni monetarie</strong> (multe): efficienti, basso costo applicativo, generano entrate pubbliche.<br><strong>Sanzioni non monetarie</strong> (carcere, ritiro patente): costi-opportunità, costose per PA, non generano entrate. Es. lavori socialmente utili = beneficio sociale.<br><strong>Tasse vs sanzioni</strong>: equivalenza economica — entrambe aumentano il costo del comportamento. Differenza chiave: la tassa è certa, la sanzione è incerta (dipende dalla probabilità di controllo).'},
+
+{cat:'Variabili regolatorie',
+ q:'Cosa sono gli incentivi positivi e negativi nella regolazione? Esempio reale.',
+ a:'<strong>Incentivi positivi</strong>: premi e sussidi per comportamenti desiderati. Es: <em>Superbonus 110%</em> (d.l. 34/2020) per ristrutturazioni energetiche.<br><strong>Incentivi negativi</strong>: tasse e oneri per comportamenti indesiderati. Es: <em>ecotassa</em> sui veicoli inquinanti.<br>Lo Stato orienta senza obbligare, preservando la libertà decisionale. Vantaggio: innovazione — la libertà spinge a trovare soluzioni nuove (es. tecnologie pulite).'},
+
+{cat:'Variabili regolatorie',
+ q:'Cos\'è la regolazione informativa (light touch) e quando fallisce?',
+ a:'<strong>Disclosure</strong> obbligatoria (es. MiFID in finanza) e <strong>trasparenza PA</strong> (Amministrazione Trasparente).<br><strong>Vantaggi</strong>: poco intrusiva, rispetta l\'autonomia, corregge l\'asimmetria informativa a basso costo per il regolatore.<br><strong>Fallisce quando</strong>: information overload, bias cognitivi (il consumatore non cambia comunque), rapidità digitale. Risposta: info semplice, comparabile, con grafici (DSA).'},
+
+{cat:'Variabili regolatorie',
+ q:'Cosa vieta il DSA (Reg. UE 2022/2065) in materia di dark patterns?',
+ a:'Il <strong>Digital Services Act</strong> vieta tecniche di design ingannevole:<br>• Countdown falsi per creare urgenza artificiale<br>• Opzioni di rifiuto/cancellazione nascoste o difficili (iscrizione facile, cancellazione difficile)<br>• Pre-selezione di opzioni a favore della piattaforma<br>Ratio: trasparenza ed etica nel design vs bias cognitivi degli utenti.'},
+
+{cat:'Variabili regolatorie',
+ q:'Cos\'è la regulatory sandbox e perché è utile per la regolazione risk-based?',
+ a:'Ambiente controllato dove prodotti, servizi o modelli regolativi sperimentali vengono testati in condizioni reali con deroga temporanea alle norme ordinarie.<br><strong>Utilità</strong>: permette la sperimentazione senza esporre il pubblico al rischio pieno; fornisce dati reali al regolatore; favorisce l\'innovazione mantenendo la tutela.<br><strong>Regolazione agile</strong>: orientata alla sperimentazione, supera la rigidità del C&C classico.'},
+
+{cat:'Variabili regolatorie',
+ q:'Cosa sono il "default effect" e il "nudge" (Thaler & Sunstein)?',
+ a:'<strong>Default effect</strong>: le persone tendono a mantenere l\'opzione predefinita (status quo bias). Case study: nei Paesi opt-in (donazione organi attiva) i donatori sono pochi; nei Paesi opt-out (iscrizione automatica) il numero è molto più alto — <em>stesse persone, sistema diverso</em>.<br><strong>Nudge</strong>: "spinta gentile" che cambia l\'architettura delle scelte senza vietare né obbligare. Agisce sul sistema intuitivo (Kahneman). <strong>Paternalismo libertario</strong>: preserva la libertà di scelta ma orienta verso il benessere collettivo.'},
+
+/* ────── SERVIZI PUBBLICI — NOZIONE (4) ────── */
+{cat:'Servizi Pubblici',
+ q:'Quali sono le tre teorie sulla nozione di servizio pubblico?',
+ a:'<strong>Teoria soggettiva (Ranelletti)</strong>: "è pubblico tutto ciò che è di Stato" — il soggetto titolare determina la pubblicità.<br><strong>Teoria oggettiva</strong>: ciò che conta è la funzione (servire un bisogno collettivo), non il soggetto gestore.<br><strong>Teoria soggettiva temperata</strong>: pubblicità dell\'interesse + inclusione nel sistema regolatorio pubblico. Prevalente nel diritto italiano attuale.<br>Modello francese: interesse generale + soggetto pubblico + regime speciale.'},
+
+{cat:'Servizi Pubblici',
+ q:'Cosa distingue un SIEG da un SSIG? Usa il market participation test.',
+ a:'<strong>Market participation test</strong>: "questa attività potrebbe essere offerta da qualcuno sul mercato?"<br>Se SÌ → <strong>SIEG</strong> (economico): posta, energia, trasporti, acqua. Soggetti ad art. 106(2) TFUE con possibile deroga proporzionata.<br>Se NO → <strong>SSIG</strong> (non economico): istruzione pubblica, assistenza sociale base, sanità. Fuori dalle norme di concorrenza UE.<br>Caso-studio: assistenza domiciliare comunale = SIEG; assistenza regionale integrata = SSIG.'},
+
+{cat:'Servizi Pubblici',
+ q:'Cos\'è il servizio universale e come si finanzia?',
+ a:'<strong>Servizio universale</strong>: servizio garantito a tutti (anche zone non profittevoli) a prezzo accessibile con qualità minima.<br><strong>Problema cream skimming</strong>: gli operatori privati servono solo i segmenti redditizi, lasciando quelli costosi al gestore universale.<br><strong>Finanziamento</strong>: sussidi incrociati (profitti su tratte/utenti redditizi finanziano quelli non redditizi) oppure fondo di settore (contributi da tutti gli operatori).'},
+
+{cat:'Servizi Pubblici',
+ q:'Come nasce il servizio pubblico in Italia? Dalla Legge Giolitti alla nazionalizzazione.',
+ a:'<strong>Legge Giolitti n. 103/1903</strong>: i Comuni possono municipalizzare i servizi pubblici — primo fondamento stabile. Seguono aziende municipalizzate (trasporti, gas).<br><strong>Nazionalizzazioni anni \'60</strong>: ENI (1953), ENEL (1962, L. 1643) — attuazione art. 43 Cost. (monopoli naturali, fonti energia).<br><strong>Liberalizzazioni anni \'90</strong>: D.lgs. Bersani 79/1999 (elettricità). Inversione del modello: da monopolio pubblico a concorrenza regolata.'},
+
+/* ────── INDUSTRIE A RETE (5) ────── */
+{cat:'Industrie a rete',
+ q:'Cos\'è un\'industria a rete e quali caratteristiche la distinguono?',
+ a:'Mercato in cui il servizio viene fornito attraverso un\'infrastruttura di rete fisica o virtuale con: <strong>costi fissi elevatissimi</strong>, <strong>economie di scala e di densità</strong>, <strong>monopolio naturale</strong> su almeno un segmento, <strong>essential facility</strong> (rete non duplicabile nel medio periodo).<br>La filiera è composta da segmenti <em>contendibili</em> (aperti alla concorrenza) e segmenti <em>monopolistici</em> (rete). L\'impresa integrata può discriminare i concorrenti nell\'accesso alla rete (abuso infrastrutturale).'},
+
+{cat:'Industrie a rete',
+ q:'Illustra i 4 gradi di unbundling dalla meno alla più intensa separazione.',
+ a:'1. <strong>Separazione contabile</strong>: stesso soggetto, conti separati → solo trasparenza informativa.<br>2. <strong>Separazione funzionale</strong>: stesso soggetto, team operativi dedicati con divieto di discriminazione.<br>3. <strong>Separazione societaria</strong>: rete e servizio in società distinte (stesso gruppo) → bilanci separati, governance distinta.<br>4. <strong>Separazione proprietaria</strong>: rete e servizio in mani di soggetti diversi → massima tutela. Es: Terna (trasmissione) separata da ENEL (produzione/vendita).'},
+
+{cat:'Industrie a rete',
+ q:'Cos\'è il debranding e perché si applica nelle industrie a rete?',
+ a:'Il <strong>debranding</strong> impone al gestore storico di non utilizzare il proprio marchio — costruito durante il monopolio — nelle attività liberalizzate.<br><strong>Ratio</strong>: il marchio storico trasmette una reputazione guadagnata in regime di privilegio, non di concorrenza. Usarlo nelle nuove attività trasferisce un vantaggio competitivo sleale.<br>Strumento complementare all\'unbundling: elimina la confusione informativa del consumatore.'},
+
+{cat:'Industrie a rete',
+ q:'Descrivi la filiera elettrica italiana: da Legge ENEL (1962) al Decreto Bersani (1999).',
+ a:'<strong>Prima della liberalizzazione</strong> (L. 1643/1962): produzione, trasmissione e distribuzione riservate allo Stato tramite ENEL (monopolio verticale integrato, attuazione art. 43 Cost.).<br><strong>D.lgs. Bersani 79/1999</strong> (attuazione Direttiva 96/92/CE):<br>• Produzione: attività libera e concorrenziale<br>• Trasmissione (alta tensione): Terna S.p.A. — monopolio naturale pubblico<br>• Distribuzione (media/bassa tensione): concessioni pubbliche<br>• Vendita: liberalizzata'},
+
+{cat:'Industrie a rete',
+ q:'Cos\'è la capillarità nei servizi di rete e perché varia tra settori?',
+ a:'<strong>Capillarità</strong> = grado di penetrazione della rete fino all\'utente finale.<br><strong>Alta capillarità (connessione domiciliare)</strong>: elettricità, gas, acqua, TLC — il punto terminale coincide con il domicilio. Copertura quasi totale richiesta.<br><strong>Bassa capillarità (raggiungimento del nodo)</strong>: ferrovie, aeroporti — è l\'utente a raggiungere l\'infrastruttura. La distanza sostenibile dal nodo definisce il servizio universale.'},
+
+/* ────── AIUTI DI STATO (6) ────── */
+{cat:'Aiuti di Stato',
+ q:'Quali sono i 4 criteri cumulativi del test VIST per qualificare un aiuto di Stato (art. 107 TFUE)?',
+ a:'1. <strong>Trasferimento di risorse statali</strong>: non serve esborso diretto — basta rinuncia a dividendi, mancata riscossione sanzioni, vendita terreni sotto costo.<br>2. <strong>Vantaggio selettivo</strong>: favorisce solo certe imprese o produzioni (non misure generali come abbassamento IRPEF per tutti).<br>3. <strong>Pregiudizio alla concorrenza</strong>: capace di falsare o minacciare di falsare il mercato.<br>4. <strong>Effetto sugli scambi</strong>: incide sul commercio tra Stati Membri.'},
+
+{cat:'Aiuti di Stato',
+ q:'Distingui tra deroghe automatiche (par. 2) e discrezionali (par. 3) dell\'art. 107 TFUE.',
+ a:'<strong>Par. 2 — Automatiche (ex lege)</strong>:<br>• Aiuti a carattere sociale ai consumatori senza discriminazione<br>• Aiuti per calamità naturali ed eventi eccezionali (es. COVID-19; Decreto Ristori d.l. 137/2020)<br>• Aiuti alle regioni della Germania colpite dalla divisione storica<br><strong>Par. 3 — Discrezionali (Commissione decide)</strong>:<br>• Coesione territoriale (Mezzogiorno)<br>• IPCEI<br>• Rimedio a grave turbamento dell\'economia (crisi 2008, pandemia 2020)<br>• R&D, PMI, transizione energetica<br>• Settore culturale (cinema, teatro)'},
+
+{cat:'Aiuti di Stato',
+ q:'Cos\'è il GBER e quando un aiuto ne beneficia?',
+ a:'Il <strong>GBER</strong> (General Block Exemption Regulation) esonera automaticamente dalla notifica preventiva (art. 108 TFUE) gli aiuti che rispettano 3 condizioni cumulative:<br>1. <strong>Trasparenza</strong>: il valore dell\'equivalente-sovvenzione è calcolabile ex ante con precisione.<br>2. <strong>Effetto incentivante</strong>: l\'aiuto deve indurre investimenti che non sarebbero stati realizzati senza il supporto pubblico.<br>3. <strong>Massimali</strong>: rispetto delle intensità massime di aiuto fissate per settore.'},
+
+{cat:'Aiuti di Stato',
+ q:'Cosa stabilisce il principio del "market economy investor" (MEI)?',
+ a:'L\'aiuto è <strong>escluso</strong> dalla qualificazione come aiuto di Stato se la condotta pubblica sarebbe stata adottata anche da un investitore privato guidato dal profitto.<br>Se lo Stato conferisce capitale pretendendo una remunerazione di mercato, non c\'è aiuto di Stato.<br><strong>Caso ITA Airways</strong>: i conferimenti di capitale non sono stati qualificati come aiuto di Stato perché conformi al principio MEI — asset acquistati a prezzi di mercato, contratti assegnati via gare aperte.'},
+
+{cat:'Aiuti di Stato',
+ q:'Come funziona la procedura di controllo della Commissione sugli aiuti nuovi (art. 108 TFUE)?',
+ a:'1. <strong>Notifica preventiva</strong>: lo Stato notifica l\'aiuto prima di erogarlo.<br>2. <strong>Stand-still</strong>: divieto di attuare l\'aiuto fino all\'autorizzazione (aiuti "illegali" = erogati senza notifica).<br>3. <strong>Esame Commissione</strong>: verifica compatibilità; può chiedere osservazioni allo Stato.<br>4. <strong>Poteri d\'urgenza</strong>: ingiunzione di sospensione + recupero provvisorio durante l\'indagine.<br>5. <strong>Recupero definitivo</strong>: se incompatibile → restituzione con interessi (ripristino del mercato, non sanzione).'},
+
+{cat:'Aiuti di Stato',
+ q:'Cos\'è la discontinuità economica (caso ITA-Alitalia)?',
+ a:'Le norme UE prevedono che una nuova impresa <strong>non risponde degli aiuti illegali</strong> ricevuti dalla cedente se c\'è <strong>discontinuità economica</strong> reale.<br>Criteri: tipo/quantità di attività trasferite, prezzo pagato (valore di mercato), logica economica autonoma.<br><strong>Conclusione Commissione su ITA</strong>: ITA non è il successore economico di Alitalia — contratti via gare aperte, asset a prezzi di mercato, no trasferimento automatico OSP.'},
+
+/* ────── CONCENTRAZIONI (5) ────── */
+{cat:'Concentrazioni',
+ q:'Quali sono le tre tipologie di concentrazioni tra imprese e i rispettivi rischi antitrust?',
+ a:'<strong>Orizzontali</strong>: imprese nello stesso mercato e stadio produttivo (es. Facebook/Instagram). Rischio: aumento prezzi, riduzione concorrenza diretta.<br><strong>Verticali</strong>: imprese in stadi diversi della filiera. Rischio: foreclosure — barriere all\'entrata per i concorrenti privati di input o distribuzione.<br><strong>Conglomerali</strong>: imprese in mercati distinti. Rischio nei mercati digitali: killer acquisitions (Big Tech compra startup per eliminarla prima che cresca).'},
+
+{cat:'Concentrazioni',
+ q:'Come funziona il sistema di notifica preventiva per le concentrazioni di dimensione UE?',
+ a:'<strong>Reg. 139/2004, due obblighi cardine</strong>:<br>1. <strong>Notifica preventiva</strong>: le imprese informano la Commissione prima di realizzare l\'operazione se superano le soglie di fatturato.<br>2. <strong>Stand-still</strong>: divieto di attuare la concentrazione fino all\'autorizzazione finale.<br><strong>Soglie principali</strong>: fatturato mondiale > 5 mld€ + fatturato UE > 250 mln€ per almeno 2 imprese + regola dei 2/3.<br><strong>One-Stop Control</strong>: se di dimensione comunitaria → solo Commissione competente.'},
+
+{cat:'Concentrazioni',
+ q:'Cos\'è il SIEC test (Reg. 139/2004) e perché sostituisce il test di dominanza?',
+ a:'<strong>SIEC = Significant Impediment to Effective Competition</strong>.<br>Verifica se la concentrazione ostacoli <em>significativamente</em> la concorrenza effettiva — anche senza creare un monopolio perfetto.<br>Più ampio del test di dominanza: copre anche i mercati oligopolistici dove nessuna impresa è dominante singolarmente ma la concentrazione riduce la pressione competitiva collettiva.<br>Il giudizio è <strong>prognostico</strong>: si confronta il mercato post-operazione con lo scenario probabile in assenza dell\'operazione.'},
+
+{cat:'Concentrazioni',
+ q:'Cosa sono le killer acquisitions e perché sfidano il sistema tradizionale di controllo?',
+ a:'Acquisti di startup innovative da parte di Big Tech (Google, Meta, Amazon) per eliminare potenziali concorrenti futuri prima che crescano.<br><strong>Problema</strong>: le startup hanno fatturati molto bassi ma asset strategici enormi (dati, algoritmi, brevetti). Le soglie fatturato del Reg. 139/2004 non le intercettano.<br><strong>Risposta</strong>: art. 22 Reg. (rinvii dalla Commissione) + DMA (art. 14: gatekeeper devono notificare tutte le acquisizioni sotto soglia).'},
+
+{cat:'Concentrazioni',
+ q:'Quando è possibile la nozione di controllo anche senza maggioranza assoluta (art. 3 Reg. 139/2004)?',
+ a:'Si ha concentrazione quando c\'è modifica duratura del controllo.<br><strong>Controllo di fatto con minoranza</strong>: possibile con partecipazioni del 30% se sussistono diritti di veto su decisioni strategiche (investimenti, prezzi, business plan, nomina amministratori).<br><strong>Controllo di diritto</strong>: tipicamente con la maggioranza delle azioni o diritti contrattuali specifici.<br><strong>Joint Venture</strong>: la costituzione di un\'entità economica autonoma che esercita tutte le funzioni è considerata concentrazione (art. 3 par. 4).'},
+
+/* ────── ANTITRUST (6) ────── */
+{cat:'Antitrust',
+ q:'Cos\'è il mercato rilevante e come si definisce con lo SSNIP test?',
+ a:'Il <strong>mercato rilevante</strong> = ambito in cui un\'impresa esercita la propria attività e in cui possono prodursi effetti anticoncorrenziali.<br><strong>Due dimensioni</strong>: mercato del prodotto (beni sostituibili per caratteristiche, prezzo, uso) + mercato geografico (area con condizioni concorrenziali omogenee).<br><strong>SSNIP test</strong>: Small but Significant and Non-transitory Increase in Price — un aumento del 5-10% del prezzo sposta i consumatori verso altri beni? Se sì, quei beni sono nello stesso mercato.'},
+
+{cat:'Antitrust',
+ q:'Cosa vieta l\'art. 101 TFUE e qual è la differenza tra restrizioni per oggetto e per effetto?',
+ a:'Art. 101 vieta <strong>accordi, decisioni e pratiche concordate</strong> che restringano la concorrenza.<br><strong>Per oggetto</strong>: intrinsecamente dannose, vietate senza dimostrare effetti concreti (fissazione prezzi, ripartizione mercati, bid rigging). La natura stessa rivela finalità anticoncorrenziale.<br><strong>Per effetto</strong>: finalità apparentemente lecite ma con impatto concreto negativo → analisi caso per caso.<br><strong>De minimis</strong>: al di sotto del 10% (concorrenti) o 15% (non concorrenti) → non sensibile.'},
+
+{cat:'Antitrust',
+ q:'Come funziona la nozione di "pratiche concordate" e quando il parallelismo è lecito?',
+ a:'La <strong>pratica concordata</strong> = cooperazione consapevole tra imprese che, senza accordo formale, sostituisce la concorrenza con coordinamento strategico.<br>Non serve un contratto: basta scambio di informazioni strategiche (prezzi futuri, strategie, costi) che permette di prevedere le mosse altrui.<br><strong>Il mero parallelismo è lecito</strong> se deriva da autonome scelte economiche razionali. Illecito se c\'è <em>convergenza di volontà</em> consapevole.'},
+
+{cat:'Antitrust',
+ q:'Cos\'è l\'abuso di posizione dominante (art. 102 TFUE)? Distingui abusi di sfruttamento da escludenti.',
+ a:'La <strong>posizione dominante</strong> = capacità di comportarsi indipendentemente dai concorrenti e consumatori. Non è vietata in sé — è vietato il suo <em>sfruttamento abusivo</em>.<br><strong>Abusi di sfruttamento</strong>: prezzi ingiustificatamente elevati, condizioni gravose, tying & bundling.<br><strong>Abusi escludenti</strong>: prezzi predatori (AKZO), margin squeeze (Deutsche Telekom), rifiuto di accesso (essential facility), sconti fidelizzanti (Intel).'},
+
+{cat:'Antitrust',
+ q:'Come funzionano i programmi di leniency (clemenza) nel public enforcement antitrust?',
+ a:'I programmi di <strong>clemenza</strong> operano sui cartelli segreti:<br>• <strong>Immunità totale</strong>: per la prima impresa che denuncia e fornisce elementi decisivi.<br>• <strong>Riduzione</strong>: per chi collabora successivamente con valore aggiunto.<br><strong>Ratio</strong>: trasforma la segretezza (forza del cartello) nel suo punto debole. Crea sfiducia tra i partecipanti — ciascuno sa che l\'altro potrebbe denunciare per primo per ottenere l\'immunità. (Reg. 1/2003)'},
+
+{cat:'Antitrust',
+ q:'Cos\'è il private enforcement antitrust e come si rapporta al public enforcement?',
+ a:'Il <strong>private enforcement</strong> = azioni risarcitorie dei soggetti danneggiati da violazioni antitrust (Direttiva 2014/104/UE recepita in Italia).<br><strong>Effetto vincolante</strong>: la decisione definitiva della Commissione o dell\'AGCM vincola il giudice civile nelle follow-on actions.<br><strong>Tensione</strong>: la leniency rischia di essere disincentivata se il denunciante è poi esposto a azioni risarcitorie maggiori. Equilibrio delicato tra i due sistemi.'},
+
+/* ────── ALTMARK & OSP (4) ────── */
+{cat:'OSP & Altmark',
+ q:'Quali sono i 4 criteri cumulativi Altmark e cosa comporta il loro rispetto?',
+ a:'<strong>CGUE 2003, causa C-280/00</strong>: la compensazione per OSP <strong>non è aiuto di Stato</strong> se:<br>1. <strong>OSP chiaramente definito</strong> con atto pubblico.<br>2. <strong>Parametri trasparenti e preventivi</strong> per il calcolo.<br>3. <strong>No sovracompensazione</strong>: la compensazione non eccede i costi netti + utile ragionevole.<br>4. <strong>Benchmark efficiente</strong>: costi di un\'impresa media ben gestita o selezione via gara.<br>Se anche uno solo manca → la compensazione è aiuto di Stato da notificare alla Commissione.'},
+
+{cat:'OSP & Altmark',
+ q:'Cos\'è il contratto di servizio pubblico e quale funzione svolge nel sistema degli OSP?',
+ a:'Il <strong>contratto di servizio pubblico</strong> è l\'atto bilaterale (diritto pubblico) che formalizza il rapporto PA-gestore:<br>• Definisce la <strong>missione</strong> e gli OSP (continuità, capillarità, qualità, tariffa).<br>• Fissa i <strong>parametri di compensazione</strong>.<br>• Stabilisce criteri di aggiornamento tariffario e modalità di verifica.<br><strong>Funzione</strong>: perno regolatorio del sistema multilivello. L\'eteronomia pubblicistica comprime l\'autonomia privata del gestore. Dal contratto discendono le condizioni applicabili anche all\'utenza.'},
+
+{cat:'OSP & Altmark',
+ q:'Cos\'è la Carta dei Servizi e quale schema giuridico le si applica?',
+ a:'Atto unilaterale del gestore che indica puntualmente:<br>• <strong>Standard qualitativi e quantitativi</strong> delle prestazioni.<br>• <strong>Meccanismi di indennizzo automatico</strong> in caso di inadempimento.<br><strong>Natura giuridica</strong>: promessa al pubblico (art. 1989 c.c.) — negozio giuridico unilaterale efficace dalla pubblicazione. Il gestore è vincolato civilmente e, per i gestori pubblici, anche amministrativamente.<br>Strumento di tutela del soggetto debole: l\'utente è assistito da fonti eterogenee che integrano il contratto di utenza.'},
+
+{cat:'OSP & Altmark',
+ q:'Come si struttura il rapporto tra PA, gestore e utente nel sistema degli OSP?',
+ a:'<strong>Schema multilivello (5 strati)</strong>:<br>1. <strong>Autorità pubblica</strong>: individua l\'interesse generale e lo formalizza in un atto di incarico.<br>2. <strong>Contratto di servizio</strong>: regola PA-gestore (missione, standard, compensazione).<br>3. <strong>Regolamento di servizio</strong>: atto unilaterale del gestore che organizza l\'erogazione.<br>4. <strong>Carta dei servizi</strong>: rende vincolanti gli standard verso tutti gli utenti.<br>5. <strong>Contratto di utenza</strong>: rapporto individuale (adesione a condizioni predeterminate).<br>Obbligo a contrarre: art. 2597 c.c. (gestore in monopolio non può rifiutare la prestazione).'},
+
+/* ────── TELECOMUNICAZIONI (4) ────── */
+{cat:'Telecomunicazioni',
+ q:'Come evolve il settore TLC in Italia da SIP a TIM e qual è il paradosso italiano?',
+ a:'<strong>1964</strong>: cinque concessionarie fuse in SIP — monopolio verticale integrato sotto IRI.<br><strong>1994</strong>: nasce Telecom Italia.<br><strong>1997-1999</strong>: privatizzazione marcata (>50% ceduto al mercato, più intensa di Francia e Germania).<br><strong>TIM e SMP</strong>: TIM è designata operatore con Significativo Potere di Mercato (SMP) in gran parte del territorio: obblighi di accesso, non discriminazione, controllo prezzi.<br><strong>Paradosso italiano</strong>: buona copertura NGA (>30 Mbps) ma grave ritardo sulle reti VHCN (fibra FTTH). La "trappola del rame" (FTTC accettabile) ha ritardato il passaggio alla fibra pura.'},
+
+{cat:'Telecomunicazioni',
+ q:'Cosa sono gli OTT e come cambiano il modello regolatorio tradizionale delle TLC?',
+ a:'Gli <strong>OTT (Over-The-Top)</strong> sono fornitori di servizi digitali (WhatsApp, Netflix, Zoom, Skype) che operano "al di sopra" della rete senza possederla.<br><strong>Rottura del modello tradizionale</strong>: prima c\'era corrispondenza rigida infrastruttura-servizio. Ora chi possiede la rete (hardware) e chi offre servizi (software) sono soggetti distinti.<br><strong>Implicazioni regolatory</strong>: la regolazione centrata sull\'incumbent non cattura i soggetti dominanti dell\'ecosistema digitale. Il potere economico si sposta dall\'infrastruttura alla piattaforma (Big Tech come "regolatori privati").'},
+
+{cat:'Telecomunicazioni',
+ q:'Cos\'è il Piano BUL e come funziona il modello Open Fiber nelle aree bianche?',
+ a:'<strong>Piano BUL 2015 (Banda Ultra Larga)</strong>: intervento pubblico sulle aree in fallimento di mercato.<br><strong>Cluster</strong>: Aree Nere (due reti NGA → investimento privato) / Aree Grigie / Aree Bianche-Dissestate (rame → gara pubblica).<br><strong>Modello aree bianche</strong>: la rete è di <strong>proprietà pubblica</strong> ma affidata in concessione a <strong>Open Fiber</strong> per 20 anni. Open Fiber opera come <strong>wholesale-only puro</strong>: rete aperta a tutti i retail provider senza discriminazioni.<br><strong>Piano Italia a 1 Giga (PNRR)</strong>: modello gap funding — cofinanziamento pubblico di infrastrutture private con obbligo di accesso wholesale.'},
+
+{cat:'Telecomunicazioni',
+ q:'Cos\'è il co-investimento VHCN nel Codice Europeo delle Comunicazioni e perché deregola?',
+ a:'Il <strong>CECE (Dir. 2018/1972)</strong> incentiva il co-investimento in reti ad altissima capacità (VHCN/fibra):<br><strong>Art. 76 CECE</strong>: se un operatore SMP offre co-investimento aperto a condizioni <strong>FRAND</strong>, vengono rimossi gli obblighi di accesso regolamentati → <strong>deregolazione marcata</strong>.<br>Forme: comproprietà, cofinanziamento a lungo termine, accordi di acquisto con diritti strutturali.<br><strong>Wholesale-only (art. 80)</strong>: light touch regulation — meno obblighi perché non c\'è rischio di discriminazione verso il proprio retail.<br>Obiettivo: bilanciare promozione investimenti infrastrutturali e tutela della concorrenza.'},
+
+/* ────── STORIA INTERVENTO PUBBLICO (4) ────── */
+{cat:'Storia economica',
+ q:'Illustra le 6 fasi dell\'evoluzione dell\'intervento pubblico in Italia dal 1861 ad oggi.',
+ a:'1. <strong>Stato liberista (1861-1900)</strong>: mercato unico nazionale, difesa dai dazi, alienazione beni demaniali. "Stato monoclasse" borghese.<br>2. <strong>Prima industrializzazione (1900-1920)</strong>: FS (1905, nazionalizzazione giolittiana), INPS (1898→1919 obbl.), sovvenzioni industria pesante.<br>3. <strong>Economia mista (1920-1945)</strong>: IRI (1933), dirigismo, codice civile 1942, enti pubblici economici.<br>4. <strong>Stato sociale (1945-1970)</strong>: Costituzione 1948, nazionalizzazione ENEL (L. 1643/1962), partecipazioni statali (ENI).<br>5. <strong>Crisi e liberalizzazioni (1970-2000)</strong>: privatizzazioni, Bersani, nascita AAI.<br>6. <strong>Stato regolatore (2000-oggi)</strong>: ARERA, AGCOM, ART — non produce, disciplina.'},
+
+{cat:'Storia economica',
+ q:'Perché nasce l\'IRI nel 1933 e cosa simboleggia nel diritto dell\'economia?',
+ a:'<strong>IRI</strong> (Istituto per la Ricostruzione Industriale) nasce nel 1933 per salvare banche e industrie in crisi durante la Grande Depressione.<br><strong>Logica</strong>: socializzazione delle perdite — lo Stato assume partecipazioni nelle imprese in difficoltà per stabilizzare il sistema produttivo. Modello "too big to fail" ante litteram.<br><strong>Significato nel diritto dell\'economia</strong>: lo Stato imprenditore entra nel mercato come operatore attivo, non come regolatore. Genera tensioni con le norme di concorrenza (aiuti di Stato, distorsione del mercato). Scioglimento completato nel 2002.'},
+
+/* ────── ART. 41 COST. & MODELLI DI STATO (3) ────── */
+{cat:'Diritto costituzionale economico',
+ q:'Analizza l\'art. 41 Cost.: i tre commi, l\'utilità sociale e la riforma del 2022.',
+ a:'<strong>Comma 1</strong>: "L\'iniziativa economica privata è libera." Valenza duplice: libertà verticale (individuo vs Stato) + parità orizzontale tra concorrenti (ruolo AGCM).<br><strong>Comma 2</strong>: la libertà d\'impresa non può svolgersi in contrasto con la <strong>utilità sociale</strong> né in modo da recare danno alla sicurezza, libertà e dignità umana. Clausola valvola: lega libertà d\'impresa all\'ordine concorrenziale.<br><strong>Comma 3</strong>: la legge determina i programmi e controlli per indirizzare l\'attività economica a fini sociali (piano Vanoni, politiche industriali).<br><strong>Riforma 2022</strong>: inserimento esplicito di <strong>salute e ambiente</strong>. Sviluppo sostenibile come paradigma giuridico: libertà d\'impresa dentro un ordine di compatibilità ecologica intergenerazionale.'},
+
+{cat:'Diritto costituzionale economico',
+ q:'Come si articola il sistema hard law / soft law / autoregolazione e quando ciascuno prevale?',
+ a:'<table class="stbl"><tr><th>Forma</th><th>Vincolatività</th><th>Emittente</th><th>Adattabilità</th></tr><tr><td><strong>Hard law</strong></td><td>Massima (sanzione)</td><td>Stato/AAI</td><td>Bassa (rigida)</td></tr><tr><td><strong>Soft law</strong></td><td>Indiretta (pressione)</td><td>Autorità tecniche</td><td>Alta (flessibile)</td></tr><tr><td><strong>Self-regulation</strong></td><td>Privata/etica</td><td>Operatori di mercato</td><td>Massima (reattiva)</td></tr></table><strong>Hard law</strong> prevale quando interessi pubblici non proteggibili altrimenti.<br><strong>Soft law</strong> prevale in settori tecno-complessi (finanza, digitale) dove la rigidità legale è inadatta.<br><strong>Autoregolazione</strong> prevale quando gli operatori hanno expertise superiore al regolatore.<br><strong>Coregolazione</strong>: mix ibrido — Stato fissa principi, privati elaborano regole di dettaglio.'},
+
+{cat:'Diritto costituzionale economico',
+ q:'Confronta le scuole di Harvard e Chicago nel diritto antitrust: analisi strutturale vs effects-based.',
+ a:'<strong>Harvard (Bain, Mason)</strong>: Struttura → Condotta → Performance. La concentrazione di mercato è di per sé rischiosa. Intervento preventivo. Analisi strutturale.<br><strong>Chicago (Bork, Posner)</strong>: Consumer welfare standard. La concentrazione può essere frutto di efficienza (economie di scala, innovazione). Rule of reason: serve prova empirica di riduzione output o aumento prezzi. Regulatory failure simmetrico al market failure.<br><strong>Divergenza chiave</strong>: <em>onere della prova</em>.<br>• Harvard: la concentrazione crea presunzione di rischio → chi vuole concentrare deve dimostrare l\'assenza di effetti negativi.<br>• Chicago: l\'intervento crea presunzione di costo → chi vuole intervenire deve dimostrare il danno concreto.<br>Il diritto UE contemporaneo si muove su questa tensione.'},
+
 /* ────── GOVERNANCE RETICOLARE (7) ────── */
 {cat:'Governance',
  q:'Perché il paradigma statocentrico entra in crisi e cosa lo sostituisce?',
@@ -782,6 +1086,102 @@ const QUIZ=[
  opts:['La Regulatory Governance è meno efficace dello Stato Regolatore','Nella Regulatory Governance la normatività è co-prodotta in reti di attori pubblici e privati, con legittimità procedurale anziché gerarchica','La Regulatory Governance si applica solo ai mercati finanziari','Lo Stato Regolatore è più moderno della Regulatory Governance'],
  ans:1,fb:'Stato Regolatore: produzione centralizzata (solo Stato), controllo gerarchico, legittimità dalla fonte normativa (Parlamento). Regulatory Governance: normatività co-prodotta (pubblico + privato + ibrido), controllo reticolare e distribuito, legittimità dalle procedure e dalla partecipazione. Lo Stato è ancora importante ma non più monopolista della normatività.'},
 
+,
+
+/* ────── NUOVI QUIZ DA FILE 6, 8, 10, 13, 14, 15 ────── */
+
+/* VARIABILI REGOLATORIE */
+{cat:'Variabili Regolatorie',q:'Quale delle seguenti misure ha alta cogenza secondo le variabili regolatorie?',
+ opts:['Una raccomandazione non vincolante della Commissione UE','Un obbligo di disclosure dei prezzi per le imprese','Un divieto con sanzione penale (command & control)','Un incentivo fiscale per comportamenti virtuosi'],
+ ans:2,fb:'Alta cogenza: obblighi e divieti giuridicamente vincolanti con sanzione diretta (C&C). Le raccomandazioni sono soft law (bassa cogenza); la regolazione informativa e i incentivi fiscali hanno cogenza media.'},
+
+{cat:'Variabili Regolatorie',q:'Il Superbonus 110% (d.l. 34/2020) è un esempio di quale tecnica regolatoria?',
+ opts:['Command & Control: impone l\'efficientamento energetico','Incentivo positivo: premia comportamenti virtuosi senza obbligarli','Regolazione informativa: informa i cittadini sui benefici ambientali','Sanzione negativa: punisce chi non ristruttura'],
+ ans:1,fb:'Il Superbonus è un incentivo positivo (sussidio): lo Stato rende conveniente la ristrutturazione energetica senza imporla. Il comportamento rimane facoltativo — lo Stato orienta senza obbligare, preservando la libertà decisionale dei destinatari.'},
+
+{cat:'Variabili Regolatorie',q:'I dark patterns vietati dal DSA (Reg. UE 2022/2065) sono un esempio di:',
+ opts:['Abuso di posizione dominante (art. 102 TFUE)','Violazione della regolazione informativa: sfruttano i bias cognitivi degli utenti a scapito della trasparenza','Aiuto di Stato selettivo a favore delle piattaforme','Intesa vietata tra piattaforme digitali (art. 101 TFUE)'],
+ ans:1,fb:'I dark patterns (countdown falsi, cancellazioni difficili, opzioni nascoste) sfruttano i bias cognitivi e distorcono l\'autonomia informativa degli utenti. Il DSA li vieta perché annullano l\'effetto protettivo della disclosure obbligatoria.'},
+
+{cat:'Variabili Regolatorie',q:'Cosa distingue un nudge da una norma C&C secondo Thaler e Sunstein?',
+ opts:['Il nudge è più costoso e meno efficace del C&C','Il nudge modifica l\'architettura delle scelte senza vietare né obbligare, preservando la libertà decisionale','Il nudge richiede sanzioni più severe per funzionare','Il nudge è applicabile solo ai mercati finanziari'],
+ ans:1,fb:'Il nudge è "paternalismo libertario" (Thaler-Sunstein): cambia il contesto decisionale agendo sul sistema intuitivo (Kahneman) senza limitare la libertà di scelta. L\'opt-out sulle donazioni di organi è il caso classico: chi vuole non donare può sempre scegliere diversamente.'},
+
+/* SERVIZI PUBBLICI */
+{cat:'Servizi Pubblici',q:'La teoria soggettiva del servizio pubblico (Ranelletti) afferma che:',
+ opts:['Il SP è definito dalla funzione svolta, non dal soggetto gestore','È pubblico tutto ciò che appartiene allo Stato: il soggetto titolare determina la pubblicità del servizio','Il SP richiede necessariamente la gestione diretta da parte di enti locali','Il SP coincide sempre con un SIEG ai sensi del TFUE'],
+ ans:1,fb:'Ranelletti (teoria soggettiva): è pubblico tutto ciò che è di Stato. Il soggetto gestore (pubblico) determina la qualità del servizio. Contrapposta alla teoria oggettiva (conta la funzione) e alla teoria soggettiva temperata (interesse pubblico + sistema regolatorio).'},
+
+{cat:'Servizi Pubblici',q:'Cosa si intende per cream skimming e come si contrasta nel servizio universale?',
+ opts:['Gli operatori privati servono solo i segmenti redditizi, lasciando quelli costosi al gestore universale. Si contrasta con sussidi incrociati o fondo di settore.','Una forma di cartello tra gestori di servizi pubblici.','Gli operatori pubblici erogano servizi di qualità superiore alle aspettative.','Gli operatori privati entrano nei mercati pubblici solo dopo autorizzazione statale.'],
+ ans:0,fb:'Il cream skimming (scrematura) avviene quando i privati servono solo gli utenti e le zone redditizie, lasciando quelli costosi al gestore del servizio universale. Si contrasta con: 1) sussidi incrociati (i profitti su tratte redditizie finanziano quelle non redditizie); 2) fondo di settore (contributi da tutti gli operatori del mercato).'},
+
+/* AIUTI DI STATO */
+{cat:'Aiuti di Stato',q:'Il test VIST prevede 4 criteri cumulativi. Quale dei seguenti NON è uno di essi?',
+ opts:['Trasferimento di risorse statali','Vantaggio selettivo per alcune imprese o produzioni','Notifica preventiva alla Commissione UE','Effetto sugli scambi tra Stati Membri'],
+ ans:2,fb:'La notifica preventiva è un obbligo procedurale (art. 108 TFUE), non un criterio sostanziale del test VIST. Il test VIST verifica: 1) Trasferimento risorse; 2) Vantaggio selettivo; 3) pregiudizio concorrenza; 4) effetto scambi. Solo se tutti e 4 presenti si qualifica come aiuto di Stato incompatibile.'},
+
+{cat:'Aiuti di Stato',q:'Il Decreto Ristori (d.l. 137/2020 — misure COVID-19) rientrava in quale deroga all\'art. 107 TFUE?',
+ opts:['Par. 2 lett. a): aiuti a carattere sociale ai consumatori','Par. 2 lett. b): aiuti per eventi eccezionali — la pandemia è un evento eccezionale','Par. 3 lett. d): aiuti al settore culturale','Par. 3 lett. a): aiuti alle regioni sottosviluppate'],
+ ans:1,fb:'La pandemia COVID-19 rientra nella deroga automatica del par. 2 lett. b): aiuti per calamità naturali o altri eventi eccezionali. La Commissione ha adottato il Temporary Framework del 13 marzo 2020 autorizzando gli Stati a mobilitare risorse nazionali per mitigare gli effetti della pandemia.'},
+
+{cat:'Aiuti di Stato',q:'Quando la compensazione per un OSP non costituisce aiuto di Stato secondo i criteri Altmark?',
+ opts:['Quando l\'impresa è interamente pubblica','Quando i 4 criteri Altmark sono soddisfatti: OSP definito, parametri trasparenti, compensazione non superiore ai costi netti, benchmark sull\'impresa efficiente','Quando la Commissione autorizza preventivamente','Quando l\'importo è inferiore a 500.000 euro annui'],
+ ans:1,fb:'I 4 criteri Altmark sono cumulativi (CGUE 2003): 1) OSP chiaramente definito con atto pubblico; 2) parametri di calcolo prestabiliti e trasparenti; 3) compensazione non superiore ai costi netti; 4) livello determinato con benchmark sull\'impresa efficiente o tramite gara competitiva. Se anche uno manca, la compensazione è aiuto di Stato da notificare.'},
+
+/* CONCENTRAZIONI */
+{cat:'Concentrazioni',q:'Qual è la principale differenza tra concentrazione orizzontale e verticale ai fini antitrust?',
+ opts:['Orizzontale: imprese in mercati diversi; verticale: stesso mercato','Orizzontale: imprese nello stesso mercato (rischio aumento prezzi); verticale: imprese in stadi diversi della filiera (rischio foreclosure)','Orizzontale: vietata sempre; verticale: ammessa sempre','Verticale: riguarda solo il settore energetico; orizzontale: tutti i settori'],
+ ans:1,fb:'Orizzontale: unisce concorrenti diretti — rischio aumento prezzi e riduzione pressione competitiva. Verticale: unisce operatori in fasi diverse della filiera — rischio foreclosure (barriere all\'ingresso per i concorrenti privati di input o distribuzione). Le due tipologie richiedono analisi antitrust diverse.'},
+
+{cat:'Concentrazioni',q:'Perché le killer acquisitions sfidano il sistema tradizionale di controllo delle concentrazioni?',
+ opts:['Perché avvengono tra imprese dello stesso Paese','Perché le startup hanno fatturati bassi o nulli ma asset strategici enormi (dati, algoritmi), sfuggendo alle soglie del Reg. 139/2004','Perché riguardano solo il settore farmaceutico','Perché la Commissione non ha poteri su acquisizioni di imprese non quotate'],
+ ans:1,fb:'Il sistema si basa su soglie di fatturato. Una startup con fatturato zero ma dati unici e milioni di utenti non le supera e sfugge al controllo. Il DMA impone ai gatekeeper di notificare tutte le acquisizioni. Il caso Illumina/Grail (settembre 2024) ha però limitato i poteri della Commissione di accettare rinvii da autorità nazionali non competenti per legge nazionale.'},
+
+{cat:'Concentrazioni',q:'Il principio One-Stop Control nelle concentrazioni UE significa che:',
+ opts:['La Commissione e le autorità nazionali esaminano insieme ogni concentrazione','Le concentrazioni di dimensione comunitaria sono esaminate SOLO dalla Commissione UE e gli Stati non applicano le norme nazionali','Le concentrazioni possono essere notificate in un solo Stato membro a scelta','La Commissione approva tutte le concentrazioni con effetti su un solo Stato'],
+ ans:1,fb:'One-Stop Control (barriera unica): se la concentrazione ha dimensione comunitaria (supera le soglie del Reg. 139/2004), viene esaminata solo dalla Commissione UE. Gli Stati non possono applicare parallelamente le proprie norme nazionali. Eccezioni: mercato distinto (art. 4 par. 4) e interessi legittimi nazionali (art. 21 par. 4).'},
+
+/* ANTITRUST */
+{cat:'Antitrust',q:'Lo SSNIP test viene usato per determinare:',
+ opts:['Se un\'impresa ha posizione dominante','Se una fusione supera le soglie di fatturato per la notifica','I confini del mercato rilevante del prodotto e geografico','Se un accordo tra imprese costituisce pratica concordata'],
+ ans:2,fb:'Lo SSNIP test (Small but Significant Non-transitory Increase in Price) definisce il mercato rilevante. Si valuta se un aumento del prezzo del 5-10% sposti i consumatori verso altri prodotti. Se sì, quei prodotti sono nello stesso mercato. Se no, il mercato è già correttamente delimitato. Simula il comportamento di un ipotetico monopolista.'},
+
+{cat:'Antitrust',q:'Il mero parallelismo dei prezzi tra imprese concorrenti è di per sé un\'intesa vietata ex art. 101 TFUE?',
+ opts:['Sì: qualsiasi uniformità di prezzi implica coordinamento vietato','No: il parallelismo può derivare da autonome scelte economiche razionali — serve la prova di convergenza di volontà consapevole','Sì: ma solo se il parallelismo riguarda prezzi finali al consumatore','No: il 101 TFUE vieta solo accordi scritti, non comportamenti paralleli'],
+ ans:1,fb:'Il mero parallelismo non basta. Se tutte le imprese alzano i prezzi perché salgono i costi delle materie prime, è razionale individualmente. L\'intesa richiede convergenza di volontà: le imprese devono aver manifestato l\'intenzione comune di uniformare i comportamenti, anche senza accordo formale.'},
+
+{cat:'Antitrust',q:'Cosa sono gli sconti fidelizzanti come abuso di posizione dominante (caso Intel)?',
+ opts:['Sconti commerciali legittimi che premiano i clienti fedeli','Sconti che inducono i clienti a rifornirsi esclusivamente dalla dominante, chiudendo il mercato ai concorrenti: abuso escludente ex art. 102 TFUE','Riduzioni di prezzo permesse solo ai grossisti, non ai consumatori finali','Incentivi legittimi per promuovere l\'innovazione nei mercati tecnologici'],
+ ans:1,fb:'Gli sconti fidelizzanti (loyalty rebates) diventano abusi escludenti quando non remunerano efficienze reali ma condizionano lo sconto al fatto che il cliente si rifornisca esclusivamente dalla dominante. Riducono lo spazio contendibile per i concorrenti, chiudendo il mercato (caso Intel).'},
+
+/* ALTMARK & OSP */
+{cat:'OSP & Altmark',q:'Quale dei seguenti criteri Altmark riguarda la verifica dell\'efficienza gestionale del gestore?',
+ opts:['Obbligo chiaramente definito con atto pubblico','Parametri di calcolo stabiliti preventivamente e in modo trasparente','Benchmark sull\'impresa efficiente o selezione via gara competitiva','Nessuna sovracompensazione rispetto ai costi netti'],
+ ans:2,fb:'Il 4° criterio Altmark (CGUE 2003) riguarda l\'efficienza: la compensazione deve essere determinata sulla base di un\'analisi dei costi di un\'impresa media ben gestita, o in alternativa tramite una procedura di gara competitiva. Serve per evitare che la compensazione copra le inefficienze del gestore specifico.'},
+
+{cat:'OSP & Altmark',q:'Il contratto di servizio pubblico è assimilabile a un normale contratto di diritto privato?',
+ opts:['Sì, è un contratto bilaterale regolato integralmente dal codice civile','No: è un atto di diritto pubblico che comprime l\'autonomia privata del gestore — le condizioni fondamentali sono eterodeterminate dalla PA','Sì, ma solo quando il gestore è un soggetto privato','No: è un atto unilaterale della PA che non richiede il consenso del gestore'],
+ ans:1,fb:'Il contratto di servizio pubblico ha natura pubblicistica: fissa la missione, gli OSP, gli standard qualitativi e i criteri di compensazione in modo vincolante per il gestore. L\'autonomia privata è fortemente compressa — il gestore non può derogare alle condizioni fondamentali. Dal contratto discendono poi le condizioni applicabili ai rapporti con l\'utenza.'},
+
+/* TELECOMUNICAZIONI */
+{cat:'Telecomunicazioni',q:'Perché il Piano BUL 2015 interviene nelle "aree bianche" e con quale modello?',
+ opts:['Perché in quelle aree la concorrenza è eccessiva e occorre razionalizzarla','Perché in quelle aree c\'è un fallimento di mercato: nessun operatore privato investe spontaneamente nella fibra. Il modello adottato è la concessione pubblica (rete di proprietà pubblica affidata a Open Fiber)','Perché le aree bianche corrispondono alle grandi città dove la domanda è elevata','Perché l\'UE impone agli Stati di investire direttamente nelle infrastrutture TLC'],
+ ans:1,fb:'Le aree bianche (cluster C-D) sono zone in fallimento di mercato: solo rete in rame, nessun operatore disposto a investire autonomamente. Lo Stato interviene con gare pubbliche: la rete è di proprietà pubblica ma affidata in concessione per 20 anni a Open Fiber, che opera come wholesale-only puro, senza vendere al dettaglio, garantendo accesso neutrale a tutti i retail provider.'},
+
+/* STORIA E MODELLI DI STATO */
+{cat:'Storia economica',q:'Cosa rappresenta l\'istituzione dell\'IRI nel 1933 nel diritto dell\'economia?',
+ opts:['Il primo esempio di autorità indipendente di regolazione settoriale in Italia','Lo Stato che entra nel mercato come imprenditore per salvare imprese in crisi: socializzazione delle perdite e stabilizzazione sistemica','La prima privatizzazione italiana di un\'impresa pubblica in settore concorrenziale','Il tentativo di applicare le norme UE sugli aiuti di Stato in anticipo rispetto ai Trattati'],
+ ans:1,fb:'L\'IRI (1933) nasce per salvare banche e industrie travolte dalla Grande Depressione. Lo Stato assume partecipazioni nelle imprese in crisi: non è regolatore ma imprenditore diretto (Stato imprenditore). Socializza le perdite in nome della stabilità sistemica — un modello "too big to fail" ante litteram, che permarrà per decenni fino allo scioglimento nel 2002.'},
+
+/* ART. 41 COST. */
+{cat:'Diritto costituzionale economico',q:'Cosa introduce la riforma dell\'art. 41 Cost. del 2022 rispetto al testo originario?',
+ opts:['Elimina il riferimento all\'utilità sociale, liberalizzando pienamente l\'iniziativa economica','Inserisce esplicitamente salute e ambiente come limiti alla libertà d\'impresa: sviluppo sostenibile come paradigma giuridico','Attribuisce allo Stato il potere di pianificare l\'intera economia nazionale','Vieta le nazionalizzazioni di imprese private senza indennizzo'],
+ ans:1,fb:'La riforma 2022 integra nell\'art. 41 Cost. salute e ambiente come limiti espliciti all\'iniziativa economica, accanto alla precedente utilità sociale. Non è un limite puntuale ma un paradigma: lo sviluppo sostenibile come criterio interpretativo di compatibilità intergenerazionale. L\'art. 41 diventa la sede in cui il diritto costituzionale economico definisce il perimetro del mercato: libertà sì, ma dentro un ordine di compatibilità sociale ed ecologica.'},
+
+{cat:'Diritto costituzionale economico',q:'Qual è la differenza fondamentale tra la scuola di Harvard e quella di Chicago nell\'analisi antitrust?',
+ opts:['Harvard analizza il benessere dei consumatori, Chicago analizza la struttura delle imprese','Harvard presume rischio nella concentrazione (analisi strutturale); Chicago presume costo nell\'intervento pubblico e richiede prova empirica dell\'effetto concreto (rule of reason)','Harvard ammette solo il per se, Chicago solo l\'analisi caso per caso','Non ci sono differenze rilevanti: entrambe applicano lo stesso consumer welfare standard'],
+ ans:1,fb:'Harvard (Bain): struttura concentrata → rischio → intervento preventivo. Il controllo delle concentrazioni è centrale. Chicago (Bork/Posner): la concentrazione può derivare da efficienza. L\'onere della prova si inverte — chi interviene deve dimostrare il danno concreto a output e prezzi. Chicago introduce anche il regulatory failure: il regolatore può fallire al pari del mercato.'}
 ];
 
 
@@ -789,7 +1189,7 @@ const SH={};
 
 SH.home=`<div class="morale-box" id="moraleBox"><div class="morale-emoji">⚖️</div><div><div class="morale-title" id="moraleTitle">Diritto dell'Economia — metodo prima di tutto.</div><div class="morale-text" id="moraleText">Favaro ragiona per <strong>concetti e contrapposizioni</strong>. Studia le scuole di pensiero una contro l'altra, impara gli articoli chiave (41-42 Cost., 106 TFUE) e i casi istituzionali (SPL, SIEG). Usa i <strong>Percorsi Guidati</strong> nell'ordine, poi consolida con Flashcard e Quiz.</div></div></div>
 <div class="stat-grid"><div class="stat-card"><div class="stat-num green" id="s-done">0</div><div class="stat-label">Topic completati</div></div><div class="stat-card"><div class="stat-num blue" id="s-perc">0</div><div class="stat-label">Percorsi finiti</div></div><div class="stat-card"><div class="stat-num yellow" id="s-quiz">0</div><div class="stat-label">Quiz corretti</div></div><div class="stat-card"><div class="stat-num pink" id="s-streak">0</div><div class="stat-label">Streak flashcard</div></div></div>
-<div class="section-header"><h2>Piano Studio — 28 Topic</h2><p>Spunta quando sei sicuro. ❗ alta &nbsp;·&nbsp; ⚡ media &nbsp;·&nbsp; ✓ base</p></div>
+<div class="section-header"><h2>Piano Studio — 58 Topic</h2><p>Spunta quando sei sicuro. ❗ alta &nbsp;·&nbsp; ⚡ media &nbsp;·&nbsp; ✓ base</p></div>
 <div class="topic-list" id="topicList"></div>`;
 
 SH.argomenti=`<div class="section-header"><h2>Argomenti per Macro-tema</h2><p>Ogni blocco = un capitolo dell\'esame. Espandi, studia la sintesi, poi usa i link per approfondire.</p></div>
@@ -1399,6 +1799,161 @@ function showToast(msg){
 
 // timer removed
 
+// ── FONTI ─────────────────────────────────────────────────────────────────────
+
+const FONTI=[
+{file:'5.pdf',tipo:'PDF',pagine:'55 slide',icona:'📑',
+ titolo:'Teoria della regolazione — Baldwin, Cave & Lodge',
+ argomenti:['Tre accezioni di regolazione (controllo sociale / influenza comportamenti / controllo settoriale)','Regolazione come categoria mobile e "concetto ombrello"','Natura ibrida: né mercato autoregolato né pianificazione diretta','Regulatory State anglosassone: origini e contrapposizione allo Stato dirigista','Policentricità — Elinor Ostrom: centri decisionali indipendenti ma coordinati','Julia Black: regolazione come tentativo distribuito di alterare comportamenti','Colin Scott: dallo Stato regolatore alla Regulatory Governance','Ibridazione pubblico-privato nel ciclo regolativo (produzione, applicazione, controllo)','Fallimenti della regolazione: risorse, expertise, cattura, frammentazione, ciclo elettorale','Commitment regolatorio e autorità indipendenti (Majone 2001)'],
+ topics:['t1','t2','t3','t13','t14'],
+ flashcats:['Regolazione','Governance'],
+ glossario:['Regulatory State','Soft law','Coregolazione','Regulatory failure','Ordnungspolitik']},
+
+{file:'6 new (1).pptx',tipo:'PPTX',pagine:'~60 slide',icona:'📊',
+ titolo:'Variabili regolatorie, C&C, incentivi, nudge, AI Act, DSA',
+ argomenti:['Tre variabili regolatorie: cogenza, generalità, restrittività','Modello C&C (Command & Control): prescrizione → monitoraggio → punizione','Sanzione come leva economica: costo atteso vs beneficio della violazione','Differenza economica tra sanzioni monetarie, non monetarie e tasse pigouviane','Incentivi positivi (Superbonus 110%) e negativi (ecotassa)','Regolazione informativa e trasparenza — MiFID, Amministrazione Trasparente','Dark patterns vietati dal DSA (Reg. UE 2022/2065)','Regolazione basata sul rischio: assessment vs management','Regulatory sandbox — sperimentazione controllata','Economia comportamentale: nudge, default effect, paternalismo libertario (Thaler & Sunstein)'],
+ topics:['t29','t30','t31','t32','t33','t34'],
+ flashcats:['Variabili regolatorie'],
+ glossario:['Cogenza','Dark patterns','DSA','Default effect','Nudge','Regulatory sandbox','Thaler, Richard & Sunstein, Cass']},
+
+{file:'7.pdf',tipo:'PDF',pagine:'34 slide',icona:'📑',
+ titolo:'Forme della regolazione — hard law, soft law, autoregolazione, regolazione vs antitrust',
+ argomenti:['Hard law: caratteri (soggetto, contenuto, destinatari, sanzioni)','Soft law: comunicazioni, standard tecnici, linee guida — flessibilità vs pressione conformativa','Autoregolazione (self-regulation): codici etici privati, policy piattaforme','Coregolazione: Stato fissa principi, privati elaborano regole di dettaglio','Confronto hard/soft/self: vincolatività, adattabilità, legittimazione','Regolazione vs antitrust: distinzione ex ante (costitutiva) / ex post (repressiva)','Regolazione economica vs regolazione sociale','Intervento diretto vs indiretto — programmazione economica e Stato imprenditore','Sistema policentrico e graduato'],
+ topics:['t10','t11','t17','t58'],
+ flashcats:['Diritto costituzionale economico'],
+ glossario:['Hard law','Soft law','Coregolazione']},
+
+{file:'8.pptx',tipo:'PPTX',pagine:'~40 slide',icona:'📊',
+ titolo:'Nozione di servizio pubblico — teorie, SIEG/SIG, servizio universale, storia',
+ argomenti:['Teoria soggettiva (Ranelletti): "è pubblico tutto ciò che è di Stato"','Teoria oggettiva: conta la funzione, non il soggetto gestore','Teoria soggettiva temperata: titolarità pubblica + responsabilità verso la comunità (art. 2 TUSP)','Market participation test: attività economica vs non economica','SIEG vs SSIG: differenze di regime e applicabilità norme UE','Servizio universale: definizione, cream skimming, sussidi incrociati, fondo di settore','Storia del servizio pubblico in Italia: Legge Giolitti n. 103/1903','Nazionalizzazioni anni \'60: ENI (1953), ENEL (1962, L. 1643)','Liberalizzazioni anni \'90: D.lgs. Bersani 79/1999'],
+ topics:['t35','t36'],
+ flashcats:['Servizi Pubblici'],
+ glossario:['Cream skimming','Legge Giolitti','Market participation test','SSIG','Servizio universale']},
+
+{file:'9.pdf',tipo:'PDF',pagine:'44 slide',icona:'📑',
+ titolo:'Obblighi di servizio pubblico — Altmark, contratto di servizio, Carta dei servizi',
+ argomenti:['OSP come strumento di conformazione dell\'attività economica','Natura eteronoma degli OSP: vincoli pubblicistici ante autonomia privata','OSP nel trasporto: esercizio, trasporto, tariffari','Compensazione degli OSP: costi netti + utile ragionevole','Sentenza Altmark (CGUE 2003): 4 criteri cumulativi — OSP definito, parametri trasparenti, no sovracompensazione, benchmark efficiente','Contratto di servizio pubblico: perno regolatorio, eteronomia, proiezione temporale','Carta dei servizi: promessa al pubblico (art. 1989 c.c.), standard e indennizzi','Schema multilivello: PA → contratto → regolamento → Carta → contratto utenza','Obbligo a contrarre (art. 2597 c.c.) in regime di monopolio','Autorità di regolazione: funzioni regolatoria, tariffaria, vigilanza, sanzionatoria'],
+ topics:['t19','t51','t52'],
+ flashcats:['OSP & Altmark'],
+ glossario:['Altmark (sentenza)','Carta dei servizi','Contratto di servizio pubblico']},
+
+{file:'10 (1).pptx',tipo:'PPTX',pagine:'~35 slide',icona:'📊',
+ titolo:'Industrie a rete — unbundling, debranding, filiera elettrica',
+ argomenti:['Caratteri delle industrie a rete: costi fissi elevati, economie di scala/densità, monopolio naturale','Essential facility: infrastruttura non duplicabile nel breve periodo','Segmenti contendibili vs monopolistici nella filiera','Gradi di unbundling: contabile → funzionale → societario → proprietario','Separazione proprietaria: Terna (trasmissione) separata da ENEL (produzione/vendita)','Debranding: divieto di uso del marchio storico nelle attività liberalizzate','Filiera elettrica italiana: L. 1643/1962 (monopolio ENEL) → D.lgs. Bersani 79/1999','Capillarità: connessione domiciliare (elettricità, gas, acqua) vs raggiungimento del nodo (ferrovie)'],
+ topics:['t25','t37','t38','t39'],
+ flashcats:['Industrie a rete'],
+ glossario:['Debranding','Essential facility','Unbundling']},
+
+{file:'11.pdf',tipo:'PDF',pagine:'88 slide',icona:'📑',
+ titolo:'Servizi pubblici locali — d.lgs. 201/2022, in house, PPP, AAI',
+ argomenti:['Evoluzione normativa SPL: TUEL 2000 (art. 112), art. 23-bis D.L. 112/2008','Referendum giugno 2011 (95% a favore abrogazione) e sentenza Cost. n. 199/2012','Sentenza Cost. n. 272/2004: illegittimità art. 113-bis (servizi non economici)','Riforma Madia 2015 e arresto sentenza n. 251/2016','D.lgs. 201/2022: servizi obbligatori vs ulteriori, sussidiarietà orizzontale','Modalità di gestione: gara, società mista, in house, gestione in economia (art. 14)','In house providing: sentenza Teckal (CGUE 1999), tre requisiti cumulativi (controllo analogo, attività prevalente 80%, capitale pubblico)','Stadt Halle: incompatibilità con socio privato','PPP: contrattuale (concessione) e istituzionale (società mista)','Gara a doppio oggetto: scelta del socio + affidamento del servizio','Legge 481/1995: nascita delle AAI (ARERA, AGCOM, ART)','Funzioni AAI: regolatoria, tariffaria, vigilanza, sanzionatoria'],
+ topics:['t12','t20','t21','t22','t23','t24'],
+ flashcats:['Servizi Pubblici'],
+ glossario:['In house providing','PPP (Partenariato Pubblico-Privato)','Società mista']},
+
+{file:'12.pdf',tipo:'PDF',pagine:'58 slide',icona:'📑',
+ titolo:'Telecomunicazioni nell\'era digitale — TIM, OTT, Open Fiber, VHCN',
+ argomenti:['Dal passato analogico (reti specializzate) alle reti generiche IP','Separazione tra proprietari rete (hardware) e fornitori servizi (software/OTT)','OTT (Over-The-Top): WhatsApp vs SMS, Zoom vs VoIP, Netflix vs TV lineare','Big Tech come "regolatori privati": controllo accesso ai mercati finali','Storia TLC italiana: regime 1923 → SIP (1964) → Telecom Italia (1994) → privatizzazione 1997-99','TIM e SMP: obblighi di accesso, non discriminazione, controllo prezzi','Fasi liberalizzazione UE: Libro Verde 1987 → Framework 2002 → CECE 2018','Nuovo Codice Europeo Comunicazioni (Dir. 2018/1972): investimenti VHCN e incumbent','Piano BUL 2015: cluster Aree Nere/Grigie/Bianche, Open Fiber concessione 20 anni','Open Fiber: modello wholesale-only puro, neutralità della rete','Strategia AGCOM geograficamente differenziata: eccezione Milano (nessun SMP)','Piano Italia a 1 Giga (PNRR): modello gap funding con obbligo accesso wholesale','Co-investimento VHCN (art. 76 CECE): condizioni FRAND, deregolazione marcata','Modello wholesale-only (art. 80 CECE): light touch regulation'],
+ topics:['t53','t54'],
+ flashcats:['Telecomunicazioni'],
+ glossario:['FRAND','OTT (Over-The-Top)','Open Fiber','SMP (Significant Market Power)','Wholesale-only']},
+
+{file:'13 DEF.pptx',tipo:'PPTX',pagine:'87 slide',icona:'📊',
+ titolo:'Aiuti di Stato — art. 107-108 TFUE, test VIST, GBER, ITA-Alitalia',
+ argomenti:['Art. 107 TFUE: nozione di aiuto di Stato','Test VIST: 4 criteri cumulativi (Trasferimento risorse / Vantaggio selettivo / pregiudizio concorrenza / effetto Scambi)','Deroghe automatiche art. 107 par. 2: aiuti sociali, calamità, COVID-19 (Decreto Ristori)','Deroghe discrezionali art. 107 par. 3: coesione, IPCEI, R&D, settore culturale','GBER: esonero automatico da notifica — trasparenza, effetto incentivante, massimali','De minimis: soglia 300.000€ su 3 anni','Principio MEI (Market Economy Investor): la condotta pubblica che anche un privato avrebbe adottato non è aiuto','Procedura art. 108: notifica preventiva → stand-still → esame → recupero con interessi','IPCEI: Important Projects of Common European Interest','Caso ITA-Alitalia: discontinuità economica, criteri, conclusione Commissione','Stato finanziatore (art. 41 Cost.): SIMEST, Invitalia, Cassa Depositi e Prestiti','Art. 45 Cost.: cooperazione. Art. 53 Cost.: capacità contributiva'],
+ topics:['t40','t41','t42','t50'],
+ flashcats:['Aiuti di Stato'],
+ glossario:['De minimis','GBER','IPCEI','Selettività','SIMEST','Stato finanziatore','Test VIST']},
+
+{file:'14 real.pptx',tipo:'PPTX',pagine:'29 slide',icona:'📊',
+ titolo:'Concentrazioni tra imprese — Reg. 139/2004, SIEC test, killer acquisitions',
+ argomenti:['Tipologie: orizzontali (stesso mercato), verticali (filiera diversa), conglomerali','Rischi: aumento prezzi (orizzontali), foreclosure (verticali), killer acquisitions (conglomerali)','Reg. 139/2004: notifica preventiva + stand-still','Soglie fatturato: 5 mld€ mondiale + 250 mln€ UE + regola 2/3','One-Stop Control: competenza esclusiva Commissione per dimensione comunitaria','SIEC test (Significant Impediment to Effective Competition): più ampio del test di dominanza','Controllo di fatto con minoranza: diritti di veto su decisioni strategiche (art. 3)','Joint Venture come concentrazione (art. 3 par. 4)','Killer acquisitions: startup a basso fatturato ma asset strategici','Art. 22 Reg.: rinvii dalla Commissione su richiesta Stati (caso Illumina/Grail 2024)','DMA (Digital Markets Act): gatekeeper notificano acquisizioni sotto soglia'],
+ topics:['t43','t44','t45'],
+ flashcats:['Concentrazioni'],
+ glossario:['Concentrazione tra imprese','Killer acquisition','One-Stop Control','SIEC test']},
+
+{file:'15.pptx',tipo:'PPTX',pagine:'63 slide',icona:'📊',
+ titolo:'Mercato rilevante, art. 101-102 TFUE, leniency, private enforcement',
+ argomenti:['Mercato rilevante: dimensione prodotto + geografica','SSNIP test (5-10%): ipotetico monopolista e confini del mercato','Mercati digitali: effetti di rete, mercati multi-sided','Nozione funzionale di impresa (CGUE): qualsiasi entità che svolge attività economica','Art. 101 TFUE: intese vietate — accordi, decisioni e pratiche concordate','Per oggetto vs per effetto: fissazione prezzi, ripartizione mercati, bid rigging','De minimis art. 101: 10% (concorrenti) / 15% (non concorrenti)','Pratiche concordate: convergenza di volontà senza accordo formale (price leadership)','Art. 102 TFUE: abuso posizione dominante — sfruttamento ed escludenti','Prezzi predatori (AKZO), margin squeeze (Deutsche Telekom), essential facility','Tying & bundling (Microsoft), sconti fidelizzanti/loyalty rebates (Intel)','Leniency: immunità totale (primo) + riduzione (successivi)','Impegni art. 9 Reg. 1/2003','Private enforcement (Dir. 2014/104/UE): follow-on actions, effetto vincolante decisione AGCM'],
+ topics:['t46','t47','t48','t49'],
+ flashcats:['Antitrust'],
+ glossario:['Art. 101 TFUE','Art. 102 TFUE','Intesa vietata','Leniency','Margin squeeze','Mercato rilevante','Pratica concordata','Prezzi predatori','Rule of reason','SSNIP test']},
+
+{file:'26.02.2026.pdf',tipo:'PDF',pagine:'1 pagina',icona:'📅',
+ titolo:'Presentazione del corso — informazioni generali (nessun contenuto sostanziale)',
+ argomenti:['Informazioni amministrative del corso','Contatti della professoressa Tamara Favaro','Nessun contenuto tematico estratto'],
+ topics:[],
+ flashcats:[],
+ glossario:[],
+ nota:'Documento di presentazione: dati personali e ricevimento. Nessun contenuto tematico incluso nella dashboard.'},
+
+{file:'26.02.2026 (1).pdf',tipo:'PDF',pagine:'1 pagina',icona:'📅',
+ titolo:'Presentazione del corso — duplicato (nessun contenuto sostanziale)',
+ argomenti:['Duplicato del file precedente','Nessun contenuto tematico estratto'],
+ topics:[],
+ flashcats:[],
+ glossario:[],
+ nota:'Duplicato della presentazione iniziale del corso. Nessun contenuto aggiuntivo.'},
+
+{file:'27.02.2026.pdf',tipo:'PDF',pagine:'106 slide',icona:'📑',
+ titolo:'Nozione giuridica di mercato — ordoliberalismo, Harvard, Chicago, fallimenti',
+ argomenti:['Mercato come costruzione giuridica, non ordine naturale','Tre concezioni del mercato: ordine giuridico (ordoliberalismo/UE), struttura economica (Harvard), meccanismo efficiente (Chicago)','Ordoliberalismo — Scuola di Friburgo (Eucken, Böhm): mercato come ordine costruito e garantito','Ordnungspolitik: politica dell\'ordine vs politica congiunturale','Influenza ordoliberale nei Trattati UE (art. 3 TUE, art. 119 TFUE)','Scuola di Harvard (Bain, Mason): struttura → condotta → performance, analisi strutturale','Scuola di Chicago (Bork, Posner): consumer welfare standard, rule of reason, regulatory failure','Confronto Harvard-Chicago: presunzione di rischio (struttura) vs presunzione di costo (intervento)','Applicazione al caso piattaforme digitali dominanti','Fallimenti del mercato: monopolio naturale, esternalità, asimmetrie informative (Akerlof)','Dilemma del prigioniero: razionalità individuale vs efficienza collettiva'],
+ topics:['t4','t5','t6','t7','t8','t9','t26','t27'],
+ flashcats:['Regolazione'],
+ glossario:['Chicago (scuola)','Harvard (scuola)','Ordnungspolitik','Regulatory failure','Rule of reason']},
+
+{file:'12.03.2026 VERO.pdf',tipo:'PDF',pagine:'25 slide',icona:'📑',
+ titolo:'Proprietà e libertà d\'impresa nel modello costituzionale — artt. 41-42-43 Cost., art. 106 TFUE',
+ argomenti:['Art. 42 Cost.: proprietà pubblica e privata, economia mista, riserva di legge','Funzione sociale della proprietà: limiti ambientali, aree strategiche, socialità','Espropriazione (art. 42 c.3): legge + interesse generale + indennizzo','Art. 345 TFUE: neutralità UE sul regime di proprietà (Stati scelgono autonomamente)','Art. 106 TFUE: imprese pubbliche e diritti speciali — obblighi concorrenza + eccezione SIEG par. 2','Art. 41 Cost. c.1: libertà d\'impresa — valenza verticale (vs Stato) e orizzontale (concorrenza)','Art. 41 Cost. c.2: utilità sociale come clausola valvola','Extraprofitti e tassazione straordinaria: segnale vs rendita sistemica, proporzionalità','Riforma costituzionale 2022: inserimento di salute e ambiente nell\'art. 41','Concorrenza come principio costituzionale multilivello: art. 3 TUE, art. 119 TFUE, art. 117 Cost.'],
+ topics:['t15','t16','t17','t57'],
+ flashcats:['Diritto costituzionale economico'],
+ glossario:['Art. 42 Cost.','Art. 106 TFUE']},
+
+{file:'settimana II.pdf',tipo:'PDF',pagine:'70+ slide',icona:'📑',
+ titolo:'Modelli di Stato e storia dell\'intervento pubblico in Italia (1861→oggi)',
+ argomenti:['Sei modelli di Stato: liberista, dirigista, imprenditore, sociale, finanziatore, regolatore','Pendolo Stato-mercato: crisi economiche come fattori di espansione dell\'intervento','Intervento diretto (produzione) vs indiretto (regolazione)','Fase I (1861-1900): Stato liberista — mercato unico nazionale, alienazione beni demaniali','Stato liberale monoclasse: borghesia e potere economico','Fase II (1900-1920): prima industrializzazione — FS (1905, nazionalizzazione giolittiana), INPS (1898→1919 obbligatorio)','Legge 103/1903 Giolitti: municipalizzazione dei servizi pubblici','Fase III (1920-1945): economia mista — IRI (1933), codice civile 1942, dirigismo','IRI: socializzazione delle perdite, "too big to fail" ante litteram','Fase IV (1945-1970): Stato sociale — Costituzione 1948, ENEL (1962), partecipazioni statali','Fase V (1970-2000): crisi e liberalizzazioni — privatizzazioni, nascita AAI','Fase VI (2000-oggi): Stato regolatore — ARERA, AGCOM, ART'],
+ topics:['t28','t55','t56'],
+ flashcats:['Storia economica'],
+ glossario:['IRI','Ordnungspolitik']}
+];
+
+function renderFonti(){
+  var html='<div class="section-header"><h2>📂 Fonti del materiale</h2><p>'+FONTI.length+' documenti analizzati. Per ogni file: argomenti estratti e dove trovarli nella dashboard.</p></div>';
+  html+='<div class="fonti-grid">';
+  FONTI.forEach(function(f){
+    var topicsStr=f.topics.length>0?f.topics.map(function(t){
+      var top=TOPICS.find(function(x){return x.id===t;});
+      return top?('<span class="chip chip-purple" title="'+top.n+'">'+t+'</span>'):'';
+    }).join(''):'<span class="fonte-nota">Nessun topic</span>';
+    var flashStr=f.flashcats.length>0?f.flashcats.map(function(c){return '<span class="chip chip-blue">Flashcard: '+c+'</span>';}).join(''):'';
+    var glossStr=f.glossario.length>0?f.glossario.map(function(g){return '<span class="chip chip-green">'+g+'</span>';}).join(''):'';
+    var rightCol=f.nota
+      ?'<div class="fonte-section"><div class="fonte-section-title">NOTA</div><p class="fonte-nota">'+f.nota+'</p></div>'
+      :'<div class="fonte-section"><div class="fonte-section-title">TOPIC COLLEGATI</div><div class="fonte-links">'+topicsStr+'</div></div>'
+       +(flashStr?'<div class="fonte-section" style="margin-top:10px"><div class="fonte-section-title">FLASHCARD & QUIZ</div><div class="fonte-links">'+flashStr+'</div></div>':'')
+       +(glossStr?'<div class="fonte-section" style="margin-top:10px"><div class="fonte-section-title">GLOSSARIO</div><div class="fonte-links">'+glossStr+'</div></div>':'');
+    html+='<div class="fonte-card">'
+      +'<div class="fonte-header">'
+        +'<span class="fonte-icon">'+f.icona+'</span>'
+        +'<div class="fonte-meta">'
+          +'<div class="fonte-file">'+f.file+'</div>'
+          +'<div class="fonte-titolo">'+f.titolo+'</div>'
+        +'</div>'
+        +'<span class="fonte-badge">'+f.tipo+' · '+f.pagine+'</span>'
+      +'</div>'
+      +'<div class="fonte-body">'
+        +'<div>'
+          +'<div class="fonte-section-title">ARGOMENTI ESTRATTI</div>'
+          +'<ul class="fonte-list">'+f.argomenti.map(function(a){return '<li>'+a+'</li>';}).join('')+'</ul>'
+        +'</div>'
+        +'<div>'+rightCol+'</div>'
+      +'</div>'
+    +'</div>';
+  });
+  html+='</div>';
+  document.getElementById('mainContent').innerHTML='<div class="section active">'+html+'</div>';
+}
+
 // ── NAVIGATION ────────────────────────────────────────────────────────────────
 
 function navTo(id){
@@ -1421,6 +1976,7 @@ function showSection(btn,id){
     else if(id==='flashcard')initFC();
     else if(id==='quiz')initQuiz();
     else if(id==='simula')initSimula();
+    else if(id==='fonti')renderFonti();
   },0);
 }
 
